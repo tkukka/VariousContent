@@ -6,17 +6,18 @@ TARGET = ./$(BUILD)/test1
 CC = gcc
 CXX = g++
 CPP = $(CXX) -E
+SIZE = size -B
 
 ifeq ($(strip $(BUILD)),Debug)
    DEFS = -DDEDUG -UNDEBUG
-   CFLAGS += $(DEFS) -g3 -ggdb -O0 -pedantic -Wall -Wextra -std=C99 -pie
-   CXXFLAGS += $(DEFS) -g3 -ggdb -O0 -pedantic -Wall -Wextra -std=c++17 -pie
-   LDFLAGS += -Wl,-pie -Wl,-z,defs -Wl,-z,now -Wl,-M=$(TARGET).map
+   CFLAGS += $(DEFS) -g3 -ggdb -Og -pedantic -Wall -Wextra -std=c11
+   CXXFLAGS += $(DEFS) -g3 -ggdb -Og -pedantic -Wall -Wextra -std=c++17
+   LDFLAGS += -Wl,-z,defs -Wl,-z,now -Wl,-M=$(TARGET).map
 else
    DEFS = -DNDEDUG -UDEBUG
-   CFLAGS += $(DEFS) -O2 -pedantic -Wall -Wextra -std=C99 -pie -s
-   CXXFLAGS += $(DEFS) -O2 -pedantic -Wall -Wextra -std=c++17 -pie
-   LDFLAGS += -Wl,-pie -Wl,-z,defs -Wl,-z,now -Wl,-M=$(TARGET).map -Wl,-s
+   CFLAGS += $(DEFS) -O2 -pedantic -Wall -Wextra -std=c11 -march=native
+   CXXFLAGS += $(DEFS) -O2 -pedantic -Wall -Wextra -std=c++17 -march=native
+   LDFLAGS += -Wl,-z,defs -Wl,-z,now -Wl,-M=$(TARGET).map -Wl,-s
 endif
 
 SRCS_C =
@@ -24,14 +25,8 @@ SRCS_CXX = test1.cpp
 SRCS = $(SRCS_CXX) $(SRCS_C)
 OBJS_CXX = $(SRCS_CXX:.cpp=.o)
 OBJS_C = $(SRCS_C:.c=.o)
-SIZE = size -B
+OBJS := $(addprefix ./$(BUILD)/,$(OBJS_CXX)) $(addprefix ./$(BUILD)/,$(OBJS_C))
 DEPEND = ./.depend.$(BUILD)
-
-ifeq ($(strip $(SRCS_C)),)
-   OBJS := $(addprefix ./$(BUILD)/,$(OBJS_CXX))
-else
-   OBJS := $(addprefix ./$(BUILD)/,$(OBJS_CXX)) $(addprefix ./$(BUILD)/,$(OBJS_C))
-endif
 
 .PHONY: clean distclean depend all memsize
 
