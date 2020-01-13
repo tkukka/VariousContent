@@ -1,0 +1,6 @@
+lukusana/.codelite/
+*.txt
+lukusana/Debug/
+lukusana/Release/
+lukusana/.depend*
+
