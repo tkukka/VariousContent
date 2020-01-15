@@ -66,6 +66,12 @@ void push_to_stack(StackHandle stack, NodeDataType data)
     new_node->data = data;
     stack->top = new_node;
     stack->count++;
+#ifdef DEBUG
+    if (stack->count > my_stack.used_count)
+        {
+        my_stack.used_count = stack->count;    
+        }
+#endif      
     }
 
 /*   print_stack
@@ -108,6 +114,9 @@ void print_stack(StackHandle stack)
 StackHandle create_stack(void)
     {
     my_stack.count = 0;
+#ifdef DEBUG
+    my_stack.used_count = 0;
+#endif    
     my_stack.top = NULL;    
         
     return &my_stack;
@@ -128,6 +137,13 @@ void destroy_stack(StackHandle stack)
     {
     assert(stack != NULL); /* Validi pinon osoitin? */
     assert(stack->count == 0); /* Pinon oltava tyhjä */
+#ifdef DEBUG
+    printf("\nPinossa oli solmuja: %d\n", my_stack.used_count);
+#endif
+   
     my_stack.count = 0;
+#ifdef DEBUG
+    my_stack.used_count = 0;
+#endif        
     my_stack.top = NULL;  
     }

@@ -6,9 +6,8 @@ SANITIZER :=
 ASAN_TYPE := leak
 .SUFFIXES:
 .SUFFIXES: .c .h .cpp .o .a
-PREFIX = x86_64-linux-gnu-
-CC = clang-8 #$(PREFIX)gcc-8
-CXX = clang-8 #$(PREFIX)g++-8
+CC = clang-8 # gcc-8
+CXX = clang-8 # g++-8
 CPP = $(CXX) -E
 SIZE = size -B
 CPPFLAGS =
@@ -34,7 +33,7 @@ ifeq ($(strip $(BUILD)),Debug)
    CFLAGS += -fdebug-prefix-map=$$(pwd)=.. 
    CXXFLAGS += -fdebug-prefix-map=$$(pwd)=.. 
    
-   DEFS = -DDEDUG -UNDEBUG -D_GLIBCXX_ASSERTIONS
+   DEFS = -DDEBUG -UNDEBUG -D_GLIBCXX_ASSERTIONS
    LDFLAGS += $(DEBUG_INFO)
 
    ifeq ($(strip $(SANITIZER)),asan)
@@ -66,7 +65,7 @@ ifeq ($(strip $(BUILD)),Debug)
    endif
 # Release    
 else
-   DEFS = -DNDEDUG -UDEBUG
+   DEFS = -DNDEBUG -UDEBUG
    CFLAGS += $(DEFS) -O2 $(WARNINGS) -std=c11 -march=native -fPIE -fstack-protector-strong 
    CXXFLAGS += $(DEFS) -O2 $(WARNINGS) -std=c++17 -march=native -fPIE -fstack-protector-strong
    ifdef USE_CLANG

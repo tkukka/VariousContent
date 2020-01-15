@@ -14,7 +14,10 @@ typedef struct node
 /* Linkitetyn pinon tietotyyppi */
 typedef struct
     {
-    int   count; /* solmujen lukumäärä */
+    int   count; /* solmujen lukumäärä pinossa */
+#ifdef DEBUG
+    int   used_count;  /* tilasto: pinon täyttöaste solmuina */
+#endif    
     Node  *top;  /* linkki päällimmäiseen solmuun */
     } Stack;
 
