@@ -83,7 +83,7 @@
       <CustomBuild Enabled="yes">
         <RebuildCommand/>
         <CleanCommand>make BUILD=Release clean</CleanCommand>
-        <BuildCommand>make CC=gcc-8" CXX=g++-8 BUILD=Release</BuildCommand>
+        <BuildCommand>make CC=gcc-8 CXX=g++-8 BUILD=Release</BuildCommand>
         <PreprocessFileCommand/>
         <SingleFileCommand/>
         <MakefileGenerationCommand/>

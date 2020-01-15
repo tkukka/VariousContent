@@ -5,10 +5,10 @@
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Environment/>
-      <Project Name="lukusana-cxx" ConfigName="Debug"/>
       <Project Name="lukusana-c" ConfigName="Debug"/>
+      <Project Name="lukusana-cxx" ConfigName="Debug"/>
     </WorkspaceConfiguration>
-    <WorkspaceConfiguration Name="Release" Selected="yes">
+    <WorkspaceConfiguration Name="Release" Selected="no">
       <Environment/>
       <Project Name="lukusana-cxx" ConfigName="Release"/>
       <Project Name="lukusana-c" ConfigName="Release"/>
