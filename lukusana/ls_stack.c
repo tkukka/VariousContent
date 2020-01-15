@@ -6,7 +6,7 @@
 
 
 static Stack my_stack;
-
+static int stack_initialized = 0;
 
 /*   pop_from_stack
  *
@@ -26,6 +26,8 @@ NodeDataType pop_from_stack(void)
                                  lyhytaikainen säilö */
     Node          *ptr;  /* Poistettavan solmun osoitin */
     
+    assert(stack_initialized);
+
     if(my_stack.count == 0)
       { /* Pino on tyhjä, joten kutsuja saa NULL:in */
       return NULL;
@@ -56,6 +58,7 @@ void push_to_stack(StackHandle stack, NodeDataType data)
     {
     Node  *new_node = NULL;
 
+    assert(stack_initialized);
     assert(stack != NULL); /* Validi pinon osoitin? */
     /* Luodaan uusi solmu, alustetaan solmun tiedot ja
        asetetaan se sitten pinoon päällimmäiseksi */
@@ -76,7 +79,7 @@ void push_to_stack(StackHandle stack, NodeDataType data)
 /*   print_stack
  *
  *   Tulostaa annetusta pinosta kaiken datan/tekstin peräkkäin.
- *   Lopussa pino on tyhjä.
+ *
  *
  *   Parametrit:
  *          Ei mitään
@@ -87,13 +90,32 @@ void push_to_stack(StackHandle stack, NodeDataType data)
  */
 void print_stack(void)
     {
+    assert(stack_initialized);
+    printf("Antamasi luku sanallisessa muodossa: ");
+    for(const Node *ptr = my_stack.top; ptr != NULL; ptr = ptr->next)
+        {
+        printf("%s", ptr->data);
+        }
+    }
+
+/*   clear_stack
+ *
+ *   Tyhjentää pinon solmuista.
+ *
+ *   Parametrit:
+ *          Ei mitään
+ *
+ *   Paluuarvo:
+ *          Ei mitään
+ *
+ */
+void clear_stack(void)
+    {
     NodeDataType data;  /* Kulloinkin käsiteltävän solmun data */
     
-    printf("Antamasi luku sanallisessa muodossa: ");
     data = pop_from_stack();
     while ( data != NULL) /* Käy läpi solmuja kunnes NULL ilmoittaa lopun */
         {
-        printf("%s", data);
         data = pop_from_stack();
         }
     }
@@ -116,12 +138,13 @@ StackHandle init_stack(void)
     my_stack.used_count = 0;
 #endif    
     my_stack.top = NULL;
+    stack_initialized = 1;
     return &my_stack;
     }
 
 /*   close_stack
  *
- *   Tuhoaa pinon. Pinon on oltava tyhjä.
+ *   Sulkee pinon. Pinon on oltava tyhjä.
  *
  *   Parametrit:
  *          Ei mitään

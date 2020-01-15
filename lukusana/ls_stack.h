@@ -2,7 +2,7 @@
 #define LS_STACK_H
 
 /* solmun tieto; osoite vakiomerkkijonoon */
-typedef const char *NodeDataType; 
+typedef const char *NodeDataType;
 
 /* Solmun tietotyyppi tulostettavaa tekstiä varten */
 typedef struct node
@@ -27,6 +27,7 @@ NodeDataType pop_from_stack(void);
 void push_to_stack(StackHandle stack, NodeDataType data);
 void print_stack(void);
 StackHandle init_stack(void);
+void clear_stack(void);
 void close_stack(void);
 
 #endif /* LS_STACK_H */

@@ -164,13 +164,14 @@ int main(int argc, char *argv[])
         {  /* Jokin virhe tapahtui, ohjelman suoritus lopetetaan */
         return EXIT_FAILURE;
         }
-    
+
     /* Alustetaan pino, muunnetaan luku sanalliseen muotoon ja
        tulostetaan esitys pinosta */
     StackHandle stack = init_stack();
     make_string_presentation(number, stack);
     print_stack();
-    /* Suljetaan pino ja lopetetaan ohjelma */
+    /* Tyhjätään pino ja lopetetaan ohjelma */
+    clear_stack();
     close_stack();
     printf("\n");
     return EXIT_SUCCESS;  /* Ohjelma suoritettu onnistuneesti */
