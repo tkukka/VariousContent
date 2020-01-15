@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Project Name="lukusana-c" Version="11000" InternalType="">
-  <VirtualDirectory Name="lukusana">
-    <File Name="lukusana.c"/>
-    <File Name="Makefile"/>
-  </VirtualDirectory>
   <Plugins>
     <Plugin Name="qmake">
       <![CDATA[00020001N0005Debug0000000000000001N0007Release000000000000]]>
     </Plugin>
   </Plugins>
+  <VirtualDirectory Name="lukusana">
+    <File Name="lukusana.c"/>
+    <File Name="Makefile"/>
+  </VirtualDirectory>
   <Description/>
   <Dependencies/>
   <Settings Type="Executable">
@@ -42,7 +42,7 @@
       <CustomBuild Enabled="yes">
         <RebuildCommand/>
         <CleanCommand>make clean</CleanCommand>
-        <BuildCommand>make CC=gcc-8" CXX=g++-8</BuildCommand>
+        <BuildCommand>make CC=gcc-8 CXX=g++-8</BuildCommand>
         <PreprocessFileCommand/>
         <SingleFileCommand/>
         <MakefileGenerationCommand/>

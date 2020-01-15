@@ -173,13 +173,13 @@ int main(int argc, char *argv[])
         printf("\nLuvun on oltava väliltä %lu - %lu.\n", LOWER_LIMIT,
             UPPER_LIMIT);
 #endif
-        return 1;
+        return EXIT_FAILURE;
         }
 
     /* Tarkista syöte ja muunna se merkkimuodosta kokonaisluvuksi */
     if( validate_and_convert_input(ARG_USER_INPUT, &number ) )
         {  /* Jokin virhe tapahtui, ohjelman suoritus lopetetaan */
-        return 1;
+        return EXIT_FAILURE;
         }
     /* Luodaan pino, muunnetaan luku sanalliseen muotoon ja
        tulostetaan esitys pinosta */
@@ -192,11 +192,11 @@ int main(int argc, char *argv[])
         destroy_stack(stack);
         stack = NULL;
         printf("\n");
-        return 0;  /* Ohjelma suoritettu onnistuneesti */
+        return EXIT_SUCCESS;  /* Ohjelma suoritettu onnistuneesti */
         }
     else
         {  /* Muisti loppui(?), ohjelman suoritus lopetetaan */
-        return 1;
+        return EXIT_FAILURE;
         }
     }
 
