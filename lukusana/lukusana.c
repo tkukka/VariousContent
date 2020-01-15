@@ -233,7 +233,7 @@ int validate_and_convert_input(const char *input, unsigned long *number)
         }
 
     /* Käydään koko syöte läpi merkki merkiltä.*/
-    while( *input != 0 )
+    while( *input != '\0' )
         {
         if( !( isdigit((int) *input) ) ) /* Merkki ei ole numeromerkki? */
             {
@@ -274,7 +274,7 @@ int validate_and_convert_input(const char *input, unsigned long *number)
     assert( conv_endp != origin); /* Muunnos muulla tavalla pielessä?*/
 
     /* Syöte lukualueen sisällä? */
-    if ( *number < LOWER_LIMIT || *number > UPPER_LIMIT )
+    if ( *number > UPPER_LIMIT )
         {
 #if defined(__BORLANDC__)  || defined(_MSC_VER) /* Skandit kuntoon
                                                    esikääntäjälipuilla */

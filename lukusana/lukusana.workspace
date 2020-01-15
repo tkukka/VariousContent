@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Workspace Name="lukusana" Database="" Version="10000">
-  <Project Name="lukusana-cxx" Path="lukusana-cxx.project" Active="Yes"/>
+  <Project Name="lukusana-cxx" Path="lukusana-cxx.project" Active="No"/>
+  <Project Name="lukusana-c" Path="lukusana-c.project" Active="Yes"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Environment/>
       <Project Name="lukusana-cxx" ConfigName="Debug"/>
+      <Project Name="lukusana-c" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Release" Selected="yes">
       <Environment/>
       <Project Name="lukusana-cxx" ConfigName="Release"/>
+      <Project Name="lukusana-c" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>
