@@ -5,6 +5,9 @@
 #include "ls_stack.h"
 
 
+static Stack my_stack;
+
+
 /*   pop_from_stack
  *
  *   Poistaa pinosta solmun ja palauttaa sen sisältämän tekstivakion
@@ -104,15 +107,10 @@ void print_stack(Stack *stack)
  */
 Stack *create_stack(void)
     {
-    Stack   *stack = NULL;
-    /* Varataan muisti ja alustetaan pino */
-    stack = (Stack *) malloc( sizeof(Stack) );
-    if(stack != NULL)
-        {
-        stack->count = 0;
-        stack->top = NULL;
-        }
-    return stack;
+    my_stack.count = 0;
+    my_stack.top = NULL;    
+        
+    return &my_stack;
     }
 
 /*   destroy_stack
@@ -130,8 +128,6 @@ void destroy_stack(Stack *stack)
     {
     assert(stack != NULL); /* Validi pinon osoitin? */
     assert(stack->count == 0); /* Pinon oltava tyhjä */
-    if(stack)
-        {
-        free(stack);
-        }
+    my_stack.count = 0;
+    my_stack.top = NULL;  
     }
