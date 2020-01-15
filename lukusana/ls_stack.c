@@ -14,30 +14,29 @@ static Stack my_stack;
  *   osoitteen kutsujalle
  *
  *   Parametrit:
- *          stack        osoite pinoon, jolle operaatio tehdään
+ *          Ei mitään
  *
  *   Paluuarvo:
  *          osoite tekstivakioon tai NULL, jos
  *          pino oli tyhjä
  */
-NodeDataType pop_from_stack(StackHandle stack)
+NodeDataType pop_from_stack(void)
     {
     NodeDataType  node_data; /* Solmun datan palauttamiseen tarvittava
                                  lyhytaikainen säilö */
     Node          *ptr;  /* Poistettavan solmun osoitin */
-
-    assert(stack != NULL); /* Validi pinon osoitin? */
-    if(stack->count == 0)
+    
+    if(my_stack.count == 0)
       { /* Pino on tyhjä, joten kutsuja saa NULL:in */
       return NULL;
       }
     /* Otetaan käsittelyyn pinon päällimmäinen solmu */
-    ptr = stack->top;
+    ptr = my_stack.top;
     assert(ptr != NULL); /* Tarkista onko pino sekaisin */
-    stack->top = ptr->next;  /* Linkitä ohi poistettavan solmun */
+    my_stack.top = ptr->next;  /* Linkitä ohi poistettavan solmun */
     node_data = ptr->data; /* Kopiointi return:ia varten */
     free(ptr);  /* Solmun viemän muistin vapautus */
-    stack->count--;
+    my_stack.count--;
     return node_data;
     }
 
@@ -80,63 +79,60 @@ void push_to_stack(StackHandle stack, NodeDataType data)
  *   Lopussa pino on tyhjä.
  *
  *   Parametrit:
- *          stack        osoite pinoon, jonka sisältö tulostetaan
+ *          Ei mitään
  *
  *   Paluuarvo:
  *          Ei mitään
  *
  */
-void print_stack(StackHandle stack)
+void print_stack(void)
     {
     NodeDataType data;  /* Kulloinkin käsiteltävän solmun data */
-
-    assert(stack != NULL); /* Validi pinon osoitin? */
+    
     printf("Antamasi luku sanallisessa muodossa: ");
-    data = pop_from_stack(stack);
+    data = pop_from_stack();
     while ( data != NULL) /* Käy läpi solmuja kunnes NULL ilmoittaa lopun */
         {
         printf("%s", data);
-        data = pop_from_stack(stack);
+        data = pop_from_stack();
         }
     }
 
-/*   create_stack
+/*   init_stack
  *
- *   Luo pinon ja alustaa sen valmiiksi.
+ *   Alustaa pinon valmiiksi.
  *
  *   Parametrit:
  *          Ei mitään
  *
  *   Paluuarvo:
- *          Osoite luotuun pinoon
+ *          Osoite pinoon
  *
  */
-StackHandle create_stack(void)
+StackHandle init_stack(void)
     {
     my_stack.count = 0;
 #ifdef DEBUG
     my_stack.used_count = 0;
 #endif    
-    my_stack.top = NULL;    
-        
+    my_stack.top = NULL;
     return &my_stack;
     }
 
-/*   destroy_stack
+/*   close_stack
  *
  *   Tuhoaa pinon. Pinon on oltava tyhjä.
  *
  *   Parametrit:
- *          stack       pino, joka tuhotaan
+ *          Ei mitään
  *
  *   Paluuarvo:
  *          Ei mitään
  *
  */
-void destroy_stack(StackHandle stack)
+void close_stack(void)
     {
-    assert(stack != NULL); /* Validi pinon osoitin? */
-    assert(stack->count == 0); /* Pinon oltava tyhjä */
+    assert(my_stack.count == 0); /* Pinon oltava tyhjä */
 #ifdef DEBUG
     printf("\nPinossa oli solmuja: %d\n", my_stack.used_count);
 #endif

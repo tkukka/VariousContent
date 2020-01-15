@@ -126,9 +126,9 @@ static NodeDataType SPACE = " ";
  *     (Kuvaukset toteutusten yhteydessä)
  */
 
-int validate_and_convert_input(const char *input, unsigned long *number);
+static int validate_and_convert_input(const char *input, unsigned long *number);
 
-void make_string_presentation(unsigned long number, StackHandle stack);
+static void make_string_presentation(unsigned long number, StackHandle stack);
 
 
 /*
@@ -136,7 +136,6 @@ void make_string_presentation(unsigned long number, StackHandle stack);
  */
 int main(int argc, char *argv[])
     {
-    StackHandle stack = NULL;   /* Ohjelman käyttämä dyn.varattava pino */
     unsigned long number;  /* Käyttäjän antama luku */
 
     printf("Ohjelma muuttaa annetun luvun sanalliseen muotoon.\n");
@@ -165,23 +164,16 @@ int main(int argc, char *argv[])
         {  /* Jokin virhe tapahtui, ohjelman suoritus lopetetaan */
         return EXIT_FAILURE;
         }
-    /* Luodaan pino, muunnetaan luku sanalliseen muotoon ja
+    
+    /* Alustetaan pino, muunnetaan luku sanalliseen muotoon ja
        tulostetaan esitys pinosta */
-    stack = create_stack();
-    if(stack != NULL)
-        {
-        make_string_presentation(number, stack);
-        print_stack(stack);
-        /* Vapautetaan pinon muisti ja lopetetaan ohjelma */
-        destroy_stack(stack);
-        stack = NULL;
-        printf("\n");
-        return EXIT_SUCCESS;  /* Ohjelma suoritettu onnistuneesti */
-        }
-    else
-        {  /* Muisti loppui(?), ohjelman suoritus lopetetaan */
-        return EXIT_FAILURE;
-        }
+    StackHandle stack = init_stack();
+    make_string_presentation(number, stack);
+    print_stack();
+    /* Suljetaan pino ja lopetetaan ohjelma */
+    close_stack();
+    printf("\n");
+    return EXIT_SUCCESS;  /* Ohjelma suoritettu onnistuneesti */
     }
 
 /*
@@ -206,7 +198,7 @@ int main(int argc, char *argv[])
  *          INPUT_OK      syöte on OK, 'number' sisältää lukuarvon
  *
  */
-int validate_and_convert_input(const char *input, unsigned long *number)
+static int validate_and_convert_input(const char *input, unsigned long *number)
     {
     const char  *origin = input; /* Syötteen alku muunnosta varten */
     char        *conv_endp;  /* Muunnoksen pysäyttäneen merkin osoitin */
@@ -291,7 +283,7 @@ int validate_and_convert_input(const char *input, unsigned long *number)
  *          Ei mitään
  *
  */
-void make_string_presentation(unsigned long number, StackHandle stack)
+static void make_string_presentation(unsigned long number, StackHandle stack)
     {
     assert(stack != NULL); /* Validi pinon osoitin? */
 

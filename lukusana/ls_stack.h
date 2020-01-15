@@ -23,10 +23,10 @@ typedef struct
 
 typedef Stack *StackHandle;
 
-NodeDataType pop_from_stack(StackHandle stack);
+NodeDataType pop_from_stack(void);
 void push_to_stack(StackHandle stack, NodeDataType data);
-void print_stack(StackHandle stack);
-StackHandle create_stack(void);
-void destroy_stack(StackHandle stack);
+void print_stack(void);
+StackHandle init_stack(void);
+void close_stack(void);
 
 #endif /* LS_STACK_H */
