@@ -18,11 +18,12 @@ typedef struct
     Node  *top;  /* linkki päällimmäiseen solmuun */
     } Stack;
 
+typedef Stack *StackHandle;
 
-NodeDataType pop_from_stack(Stack *stack);
-void push_to_stack(Stack *stack, NodeDataType data);
-void print_stack(Stack *stack);
-Stack *create_stack(void);
-void destroy_stack(Stack *stack);
+NodeDataType pop_from_stack(StackHandle stack);
+void push_to_stack(StackHandle stack, NodeDataType data);
+void print_stack(StackHandle stack);
+StackHandle create_stack(void);
+void destroy_stack(StackHandle stack);
 
 #endif /* LS_STACK_H */

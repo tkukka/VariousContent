@@ -20,7 +20,7 @@ static Stack my_stack;
  *          osoite tekstivakioon tai NULL, jos
  *          pino oli tyhjä
  */
-NodeDataType pop_from_stack(Stack *stack)
+NodeDataType pop_from_stack(StackHandle stack)
     {
     NodeDataType  node_data; /* Solmun datan palauttamiseen tarvittava
                                  lyhytaikainen säilö */
@@ -53,7 +53,7 @@ NodeDataType pop_from_stack(Stack *stack)
  *          Ei mitään
  *
  */
-void push_to_stack(Stack *stack, NodeDataType data)
+void push_to_stack(StackHandle stack, NodeDataType data)
     {
     Node  *new_node = NULL;
 
@@ -80,7 +80,7 @@ void push_to_stack(Stack *stack, NodeDataType data)
  *          Ei mitään
  *
  */
-void print_stack(Stack *stack)
+void print_stack(StackHandle stack)
     {
     NodeDataType data;  /* Kulloinkin käsiteltävän solmun data */
 
@@ -105,7 +105,7 @@ void print_stack(Stack *stack)
  *          Osoite luotuun pinoon
  *
  */
-Stack *create_stack(void)
+StackHandle create_stack(void)
     {
     my_stack.count = 0;
     my_stack.top = NULL;    
@@ -124,7 +124,7 @@ Stack *create_stack(void)
  *          Ei mitään
  *
  */
-void destroy_stack(Stack *stack)
+void destroy_stack(StackHandle stack)
     {
     assert(stack != NULL); /* Validi pinon osoitin? */
     assert(stack->count == 0); /* Pinon oltava tyhjä */

@@ -128,7 +128,7 @@ static NodeDataType SPACE = " ";
 
 int validate_and_convert_input(const char *input, unsigned long *number);
 
-void make_string_presentation(unsigned long number, Stack *stack);
+void make_string_presentation(unsigned long number, StackHandle stack);
 
 
 /*
@@ -136,7 +136,7 @@ void make_string_presentation(unsigned long number, Stack *stack);
  */
 int main(int argc, char *argv[])
     {
-    Stack *stack = NULL;   /* Ohjelman käyttämä dyn.varattava pino */
+    StackHandle stack = NULL;   /* Ohjelman käyttämä dyn.varattava pino */
     unsigned long number;  /* Käyttäjän antama luku */
 
     printf("Ohjelma muuttaa annetun luvun sanalliseen muotoon.\n");
@@ -291,7 +291,7 @@ int validate_and_convert_input(const char *input, unsigned long *number)
  *          Ei mitään
  *
  */
-void make_string_presentation(unsigned long number, Stack *stack)
+void make_string_presentation(unsigned long number, StackHandle stack)
     {
     assert(stack != NULL); /* Validi pinon osoitin? */
 
