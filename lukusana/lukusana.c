@@ -33,7 +33,7 @@
  *  joten ne on helpointa määritellä tässä.)
  */
 
-static const char *NUMBERS_0_19[] =
+static NodeDataType NUMBERS_0_19[] =
     {
     "nolla",
     "yksi",
@@ -85,21 +85,21 @@ static const char *NUMBERS_0_19[] =
 /* Monikkomuotoinen tekstivakio kymmenille */
 #if defined(__BORLANDC__) || defined(_MSC_VER)   /* Skandit kuntoon
                                                     esikääntäjälipuilla */
-static const char *TENS = "kymment";
+static NodeDataType TENS = "kymment";
 #else
-static const char *TENS = "kymmentä";
+static NodeDataType TENS = "kymmentä";
 #endif
 
 /* Monikkomuotoinen tekstivakio sadoille */
-static const char *HUNDREDS = "sataa";
+static NodeDataType HUNDREDS = "sataa";
 
 /* Yksikkömuotoinen tekstivakio luvulle 100 */
-static const char *ONE_HUNDRED = "sata";
+static NodeDataType ONE_HUNDRED = "sata";
 
 /* Monikkomuotoisten tekstivakioiden taulukko tuhannen
  * eri potensseille. Taulukon indeksi = 1000:n eksponentti
  */
-static const char *THOUSANDS_BY_EXP[] =
+static NodeDataType THOUSANDS_BY_EXP[] =
     {
     " ",        /* blanko, jota ei tulosteta */
     "tuhatta",
@@ -110,7 +110,7 @@ static const char *THOUSANDS_BY_EXP[] =
 /* Yksikkömuotoisten tekstivakioiden taulukko tuhannen
  * eri potensseille. Taulukon indeksi = 1000:n eksponentti
  */
-static const char *THOUSAND_BY_EXP[] =
+static NodeDataType THOUSAND_BY_EXP[] =
     {
     " ",     /* blanko, jota ei tulosteta */
     "tuhat",
@@ -119,7 +119,7 @@ static const char *THOUSAND_BY_EXP[] =
     };
 
 /* Tulostuksen tekstivakio välilyönnille. */
-static const char *SPACE = " ";
+static NodeDataType SPACE = " ";
 
 /*
  *     Aliohjelmien esittelyt
@@ -414,6 +414,3 @@ void make_string_presentation(unsigned long number, Stack *stack)
     }
 
 /* Tiedoston loppu */
-
-
-

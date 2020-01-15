@@ -20,9 +20,9 @@ static Stack my_stack;
  *          osoite tekstivakioon tai NULL, jos
  *          pino oli tyhjä
  */
-const char *pop_from_stack(Stack *stack)
+NodeDataType pop_from_stack(Stack *stack)
     {
-    const char    *node_data; /* Solmun datan palauttamiseen tarvittava
+    NodeDataType  node_data; /* Solmun datan palauttamiseen tarvittava
                                  lyhytaikainen säilö */
     Node          *ptr;  /* Poistettavan solmun osoitin */
 
@@ -47,13 +47,13 @@ const char *pop_from_stack(Stack *stack)
  *
  *   Parametrit:
  *          stack        osoite pinoon, jolle operaatio tehdään
- *          data         tekstivakion osoite
+ *          data         teksti
  *
  *   Paluuarvo:
  *          Ei mitään
  *
  */
-void push_to_stack(Stack *stack, const char *data)
+void push_to_stack(Stack *stack, NodeDataType data)
     {
     Node  *new_node = NULL;
 
@@ -82,7 +82,7 @@ void push_to_stack(Stack *stack, const char *data)
  */
 void print_stack(Stack *stack)
     {
-    const char  *data;  /* Kulloinkin käsiteltävän solmun data */
+    NodeDataType data;  /* Kulloinkin käsiteltävän solmun data */
 
     assert(stack != NULL); /* Validi pinon osoitin? */
     printf("Antamasi luku sanallisessa muodossa: ");
