@@ -9,12 +9,12 @@ CPP = $(CXX) -E
 SIZE = size -B
 
 ifeq ($(strip $(BUILD)),Debug)
-   DEFS = -DDEDUG -UNDEBUG
+   DEFS = -DDEBUG -UNDEBUG
    CFLAGS += $(DEFS) -g3 -ggdb -Og -pedantic -Wall -Wextra -std=c11
    CXXFLAGS += $(DEFS) -g3 -ggdb -Og -pedantic -Wall -Wextra -std=c++17
    LDFLAGS += -Wl,-z,defs -Wl,-z,now -Wl,-M=$(TARGET).map
 else
-   DEFS = -DNDEDUG -UDEBUG
+   DEFS = -DNDEBUG -UDEBUG
    CFLAGS += $(DEFS) -O2 -pedantic -Wall -Wextra -std=c11 -march=native
    CXXFLAGS += $(DEFS) -O2 -pedantic -Wall -Wextra -std=c++17 -march=native
    LDFLAGS += -Wl,-z,defs -Wl,-z,now -Wl,-M=$(TARGET).map -Wl,-s
