@@ -6,9 +6,9 @@
     </Plugin>
   </Plugins>
   <VirtualDirectory Name="lukusana">
+    <File Name="lukusana_main.c"/>
     <File Name="ls_stack.c"/>
     <File Name="ls_stack.h"/>
-    <File Name="lukusana.c"/>
     <File Name="Makefile"/>
   </VirtualDirectory>
   <Description/>
