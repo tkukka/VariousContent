@@ -11,11 +11,13 @@ typedef struct node
     NodeDataType data; 
     } Node;
 
+#undef LS_STACK_USAGE
+
 /* Linkitetyn pinon tietotyyppi */
 typedef struct
     {
     int   count; /* solmujen lukumäärä pinossa */
-#ifdef DEBUG
+#if defined(DEBUG) && defined(LS_STACK_USAGE)
     int   used_count;  /* tilasto: pinon täyttöaste solmuina */
 #endif    
     Node  *top;  /* linkki päällimmäiseen solmuun */
