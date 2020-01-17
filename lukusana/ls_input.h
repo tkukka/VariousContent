@@ -14,3 +14,4 @@ int validate_and_convert_input(const char *input, unsigned long *number);
 
 
 #endif
+
