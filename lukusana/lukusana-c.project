@@ -6,6 +6,8 @@
     </Plugin>
   </Plugins>
   <VirtualDirectory Name="lukusana">
+    <File Name="ls_input.h"/>
+    <File Name="ls_input.c"/>
     <File Name="lukusana_main.c"/>
     <File Name="ls_stack.c"/>
     <File Name="ls_stack.h"/>

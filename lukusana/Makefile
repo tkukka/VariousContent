@@ -80,7 +80,7 @@ else
    
 endif
 
-SRCS_C = lukusana_main.c ls_stack.c
+SRCS_C = lukusana_main.c ls_input.c ls_stack.c
 SRCS_CXX =
 SRCS = $(SRCS_CXX) $(SRCS_C)
 OBJS_CXX = $(SRCS_CXX:.cpp=.o)

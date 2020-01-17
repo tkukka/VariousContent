@@ -1,4 +1,4 @@
-#include <stdlib.h> 
+#include <stdlib.h>    /* malloc, free -funktiot */
 #include <stdio.h>     /* tulostusfunktio printf() */
 #include <assert.h>    /* assert-makro/funktio */
 
