@@ -3,4 +3,6 @@ lukusana/.codelite/
 lukusana/Debug/
 lukusana/Release/
 lukusana/.depend*
+lukusana/lib-Debug/
+lukusana/lib-Release/
 
