@@ -69,7 +69,7 @@ clean:
 distclean: clean
 	@echo --- Distclean ---
 	$(RM) $(DEPEND)
-	-test -d $(BUILD) && rmdir $(BUILD)
+	rmdir $(BUILD) || true
 
 ifneq ($(MAKECMDGOALS),clean)
    -include $(DEPEND)           # ./$(BUILD)/test1.o: test1.cpp test1.h
