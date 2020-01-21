@@ -33,3 +33,4 @@ void clear_stack(void);
 void close_stack(void);
 
 #endif /* LS_STACK_H */
+

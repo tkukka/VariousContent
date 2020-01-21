@@ -233,3 +233,4 @@ void make_string_presentation(unsigned long number, StackHandle stack)
             }  /* while (number != 0) */
         } /* else number != 0*/
     }
+

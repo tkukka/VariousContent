@@ -7,3 +7,4 @@
 void make_string_presentation(unsigned long number, StackHandle stack);
 
 #endif
+

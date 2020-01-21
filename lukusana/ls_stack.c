@@ -173,3 +173,4 @@ void close_stack(void)
 #endif        
     my_stack.top = NULL;  
     }
+
