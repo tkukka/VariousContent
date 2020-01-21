@@ -6,4 +6,15 @@ Contents
 * tested C++17 feature availabilty and compilation with gcc/g++ 7.4.0 on Linux (test1.cpp, test1.h)
 * the source contains one experiment of ANSI escape codes to produce red text. See: [Wikipedia](https://en.wikipedia.org/wiki/ANSI_escape_code#Example_of_use_in_C) 
 ## lukusana
-Kesken. WIP.
+Sisältö
+* Wanha C-kielen harjoitustyö uudelleen tarkasteltana
+* Makefile lisätty, koodia hajautettu useampaan tiedostoon
+* Debug, Release käännökset
+* Testejä
+
+
+Contents
+* An old C-programming assignment revisited
+* Added Makefile, source code split
+* Debug, Release builds
+* More tests
