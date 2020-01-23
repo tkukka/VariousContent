@@ -12,8 +12,8 @@ INPUT_FAIL_2 = -2
 class InputTestCase(unittest.TestCase):
     def setUp(self):
         self.lib = ctypes.CDLL(SO_FILE)
-        self.argtypes = [ctypes.c_char_p, ctypes.POINTER(ctypes.c_ulong)]
-        self.restype = ctypes.c_int
+        self.lib.validate_and_convert_input.argtypes = [ctypes.c_char_p, ctypes.POINTER(ctypes.c_ulong)]
+        self.lib.validate_and_convert_input.restype = ctypes.c_int
 
     def test_000(self):
         t = ctypes.c_char_p(b'4464')
