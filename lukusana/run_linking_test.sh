@@ -1,7 +1,7 @@
 #!/bin/bash
-# Usage: 
-#        to run the tests                        ./linking_test.sh
-#        to clean up files created by tests      ./linking_test.sh clean
+# Usage:
+#        to run the tests                        ./run_linking_test.sh
+#        to clean up files created by tests      ./run_linking_test.sh clean
 set -e
 lib_path_debug=lib-Debug
 lib_path_release=lib-Release
