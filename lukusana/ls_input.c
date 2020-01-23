@@ -36,6 +36,13 @@ int validate_and_convert_input(const char *input, unsigned long *number)
         return INPUT_PARAM_ERROR;
         }
 
+    /* Tyhjä merkkijono */
+    if (*input == '\0')
+        {
+        printf("\n\aAnnoit tyhjän syötteen.\n");
+        return INPUT_ERROR;
+        }
+
     /* Käydään koko syöte läpi merkki merkiltä.*/
     while( *input != '\0' )
         {
