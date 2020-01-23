@@ -58,6 +58,7 @@ int main(int argc, char *argv[])
        tulostetaan esitys pinosta */
     StackHandle stack = init_stack();
     make_string_presentation(number, stack);
+    printf("Antamasi luku sanallisessa muodossa: ");
     print_stack();
     /* Tyhjätään pino ja lopetetaan ohjelma */
     clear_stack();

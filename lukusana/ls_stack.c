@@ -96,7 +96,7 @@ void print_stack(void)
 #if defined(DEBUG)        
     assert(stack_initialized);
 #endif
-    printf("Antamasi luku sanallisessa muodossa: ");
+
     for(const Node *ptr = my_stack.top; ptr != NULL; ptr = ptr->next)
         {
         printf("%s", ptr->data);
