@@ -194,6 +194,81 @@ class InputTestCase(unittest.TestCase):
         self.assertEqual(INPUT_OK, self.lib.validate_and_convert_input(t, pd))
         self.assertEqual(499999, d.value)     
 
+# ---------------------------------------------------------------------
+class Node(ctypes.Structure):
+    pass
+
+Node._fields_ = [('next', ctypes.POINTER(Node)),
+                 ('data', ctypes.c_char_p)]
+
+
+class Stack(ctypes.Structure):
+    _fields_ = [('count', ctypes.c_int),
+                ('top', ctypes.POINTER(Node))]
+
+
+class StackTestCase(unittest.TestCase):
+    def setUp(self):
+        self.lib = ctypes.CDLL(SO_FILE)
+        self.lib.init_stack.argtypes = None
+        self.lib.init_stack.restype = ctypes.POINTER(Stack)
+        self.stack_handle = self.lib.init_stack()
+
+        self.lib.push_to_stack.argtypes = [ctypes.POINTER(Stack), ctypes.c_char_p]
+        self.lib.push_to_stack.restype = None
+
+        self.lib.pop_from_stack.argtypes = None
+        self.lib.pop_from_stack.restype = ctypes.c_char_p
+
+        self.lib.print_stack.argtypes = None
+        self.lib.print_stack.restype = None
+
+        self.lib.clear_stack.argtypes = None
+        self.lib.clear_stack.restype = None
+
+        self.lib.close_stack.argtypes = None
+        self.lib.close_stack.restype = None
+
+    def tearDown(self):
+        self.lib.clear_stack()
+        self.lib.close_stack()
+
+
+    def test_000(self):
+        self.lib.print_stack()
+
+    def test_001(self):
+        t = ctypes.c_char_p(b' - 1. test\n')
+        self.lib.push_to_stack(self.stack_handle, t)
+        self.lib.print_stack()
+
+    def test_002(self):
+        t = ctypes.c_char_p(b'2. test')
+        self.lib.push_to_stack(self.stack_handle, t)
+        self.lib.print_stack()
+        r = self.lib.pop_from_stack()
+        self.assertEqual(r, b'2. test')
+
+    def test_003(self):
+        t = ctypes.c_char_p(b'3. test')
+        self.lib.push_to_stack(self.stack_handle, t)
+        self.lib.push_to_stack(self.stack_handle, t)
+        self.lib.push_to_stack(self.stack_handle, t)
+        self.lib.push_to_stack(self.stack_handle, t)
+        self.lib.push_to_stack(self.stack_handle, t)
+        self.lib.print_stack()
+        self.lib.clear_stack()
+        r = self.lib.pop_from_stack()
+        self.assertIs(r, None)
+
+    def test_004(self):
+        t = ctypes.c_char_p(b'test 4')
+        self.lib.push_to_stack(self.stack_handle, t)
+        t2 = ctypes.c_char_p(b'test -')
+        self.lib.push_to_stack(self.stack_handle, t2)
+        r = self.lib.pop_from_stack()
+        r = self.lib.pop_from_stack()
+        self.assertEqual(r, b'test 4')
 
 # ----------------------------------------------------------------------
 if __name__ == "__main__":
