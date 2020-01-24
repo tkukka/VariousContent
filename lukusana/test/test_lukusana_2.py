@@ -277,6 +277,66 @@ class PresentationTestCase(unittest.TestCase):
         ans = b'satayksi'
         self.common_func(n, ans)
 
+    def test_043(self):
+        n = ctypes.c_ulong(119)
+        ans = 'satayhdeksäntoista'.encode('utf-8')
+        self.common_func(n, ans)
+
+    def test_044(self):
+        n = ctypes.c_ulong(120)
+        ans = 'satakaksikymmentä'.encode('utf-8')
+        self.common_func(n, ans)
+
+    def test_045(self):
+        n = ctypes.c_ulong(121)
+        ans = 'satakaksikymmentäyksi'.encode('utf-8')
+        self.common_func(n, ans)
+
+    def test_046(self):
+        n = ctypes.c_ulong(159)
+        ans = 'sataviisikymmentäyhdeksän'.encode('utf-8')
+        self.common_func(n, ans)
+
+    def test_047(self):
+        n = ctypes.c_ulong(199)
+        ans = 'satayhdeksänkymmentäyhdeksän'.encode('utf-8')
+        self.common_func(n, ans)
+
+    def test_048(self):
+        n = ctypes.c_ulong(200)
+        ans = b'kaksisataa'
+        self.common_func(n, ans)
+
+    def test_049(self):
+        n = ctypes.c_ulong(218)
+        ans = b'kaksisataakahdeksantoista'
+        self.common_func(n, ans)
+
+    def test_050(self):
+        n = ctypes.c_ulong(318)
+        ans = b'kolmesataakahdeksantoista'
+        self.common_func(n, ans)
+
+    def test_051(self):
+        n = ctypes.c_ulong(569)
+        ans = 'viisisataakuusikymmentäyhdeksän'.encode('utf-8')
+        self.common_func(n, ans)
+
+    def test_052(self):
+        n = ctypes.c_ulong(999)
+        ans = 'yhdeksänsataayhdeksänkymmentäyhdeksän'.encode('utf-8')
+        self.common_func(n, ans)
+
+    def test_053(self):
+        n = ctypes.c_ulong(1000)
+        ans = b'tuhat'
+        self.common_func(n, ans)        
+        
+    def test_054(self):
+        n = ctypes.c_ulong(1001)
+        ans = b'tuhat yksi'
+        self.common_func(n, ans)        
+
 # ----------------------------------------------------------------------
 if __name__ == "__main__":
     unittest.main()
