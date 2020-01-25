@@ -35,10 +35,10 @@ endif
 # Common
 ifdef USE_CLANG
   WARNINGS += -Wtautological-compare -Wtautological-constant-in-range-compare -Wgnu
-  DEBUG_INFO := -g3 -glldb -Og
+  DEBUG_INFO := -g3 -glldb -O0
   LDFLAGS += -fuse-ld=lld-8
 else
-  DEBUG_INFO := -g3 -ggdb -Og
+  DEBUG_INFO := -g3 -ggdb -O0
   LDFLAGS += -fuse-ld=gold
 endif
 

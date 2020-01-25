@@ -119,10 +119,30 @@ void make_string_presentation(unsigned long number, StackHandle stack)
     if (number == 0 )  /* Nollan muunnos on erikoistapaus */
         {
         push_to_stack(stack, NUMBERS_0_19[0]);
+        return;
         }
-    else  /* Nollaa suurempien lukujen muunnos */
+
+    /* Nollaa suurempien lukujen muunnos */
         {
+        unsigned long prev_group_val = 0;
+        /* prev_group_val:
+         *   hoitaa sananvälin (SPACE) pois lopusta tapauksissa
+         *      mmm 000
+         *      mmm 000 000
+         *      mmm 000 000 000
+         *
+         *   m > 0
+         */
         int t = 0; /* Tuhatluvun eksponentti / ryhmälaskuri */
+        int earlier_nonzero_group = 0;
+        /* earlier_nonzero_group:
+         *   hoitaa sananvälin (SPACE) tapauksissa
+         *      mmm 000 zzz
+         *      mmm 000 000 zzz
+         *      mmm 000 zzz nnn
+         *
+         *   m, z > 0, n >= 0
+         */
 
         /* Silmukassa käsitellään annettua lukua 'number' kolmen numeron
          * ryhmissä. Ryhmän lukuarvo on 1000:n jakojäännös. Jakojäännöksestä
@@ -154,7 +174,10 @@ void make_string_presentation(unsigned long number, StackHandle stack)
                 if (t > 0)
                     {
                     /* Erotetaan edellisen ryhmän teksti välilyönnillä */
-                    push_to_stack(stack, SPACE);
+                    if (prev_group_val || earlier_nonzero_group)
+                        {
+                        push_to_stack(stack, SPACE);
+                        }
                     assert(t <= 3); /* Varmistusta. Toteutus riittää
                                      * miljardeihin asti eli
                                      * maksimi kertaluokka on 1000^3
@@ -165,6 +188,13 @@ void make_string_presentation(unsigned long number, StackHandle stack)
                            * Teksti: "tuhat", "miljoona", "miljardi"
                            */
                         push_to_stack(stack, THOUSAND_BY_EXP[t]);
+                        prev_group_val = number % 1000;
+
+                        if (prev_group_val)
+                            {
+                            earlier_nonzero_group = 1;
+                            }
+
                         /* Numeroryhmä käsitelty. Hypätään suoraan luvussa
                          * vasemmalle 3 numeroa, siis
                          * seuraavaan kolmen numeron ryhmään */
@@ -227,10 +257,17 @@ void make_string_presentation(unsigned long number, StackHandle stack)
 
                 } /* if (group_val != 0) */
 
+            prev_group_val = number % 1000;
+
+            if (prev_group_val)
+                {
+                earlier_nonzero_group = 1;
+                }
+
             number /= 1000; /* Siirrytään seuraan 3 numeron ryhmään, siis
                              * seuraavaan tuhatluvun eksponenttiin */
             t++;            /* Tuhansien eksponentti kasvaa */
             }  /* while (number != 0) */
-        } /* else number != 0*/
+        }
     }
 

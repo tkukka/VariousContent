@@ -330,12 +330,287 @@ class PresentationTestCase(unittest.TestCase):
     def test_053(self):
         n = ctypes.c_ulong(1000)
         ans = b'tuhat'
-        self.common_func(n, ans)        
+        self.common_func(n, ans)
         
     def test_054(self):
         n = ctypes.c_ulong(1001)
         ans = b'tuhat yksi'
-        self.common_func(n, ans)        
+        self.common_func(n, ans)
+
+    def test_055(self):
+        n = ctypes.c_ulong(1019)
+        ans = 'tuhat yhdeksäntoista'.encode('utf-8')
+        self.common_func(n, ans)
+
+    def test_056(self):
+        n = ctypes.c_ulong(1020)
+        ans = 'tuhat kaksikymmentä'.encode('utf-8')
+        self.common_func(n, ans)
+
+    def test_057(self):
+        n = ctypes.c_ulong(1021)
+        ans = 'tuhat kaksikymmentäyksi'.encode('utf-8')
+        self.common_func(n, ans)
+
+    def test_058(self):
+        n = ctypes.c_ulong(1099)
+        ans = 'tuhat yhdeksänkymmentäyhdeksän'.encode('utf-8')
+        self.common_func(n, ans)
+
+    def test_059(self):
+        n = ctypes.c_ulong(1100)
+        ans = b'tuhat sata'
+        self.common_func(n, ans)
+
+    def test_060(self):
+        n = ctypes.c_ulong(1102)
+        ans = b'tuhat satakaksi'
+        self.common_func(n, ans)
+
+    def test_061(self):
+        n = ctypes.c_ulong(1199)
+        ans = 'tuhat satayhdeksänkymmentäyhdeksän'.encode('utf-8')
+        self.common_func(n, ans)
+
+    def test_062(self):
+        n = ctypes.c_ulong(1200)
+        ans = b'tuhat kaksisataa'
+        self.common_func(n, ans)
+
+    def test_063(self):
+        n = ctypes.c_ulong(1205)
+        ans = b'tuhat kaksisataaviisi'
+        self.common_func(n, ans)
+
+    def test_064(self):
+        n = ctypes.c_ulong(1250)
+        ans = 'tuhat kaksisataaviisikymmentä'.encode('utf-8')
+        self.common_func(n, ans)
+
+    def test_065(self):
+        n = ctypes.c_ulong(1299)
+        ans = 'tuhat kaksisataayhdeksänkymmentäyhdeksän'.encode('utf-8')
+        self.common_func(n, ans)
+
+    def test_066(self):
+        n = ctypes.c_ulong(1300)
+        ans = b'tuhat kolmesataa'
+        self.common_func(n, ans)
+
+    def test_067(self):
+        n = ctypes.c_ulong(1999)
+        ans = 'tuhat yhdeksänsataayhdeksänkymmentäyhdeksän'.encode('utf-8')
+        self.common_func(n, ans)
+
+    def test_068(self):
+        n = ctypes.c_ulong(2000)
+        ans = b'kaksituhatta'
+        self.common_func(n, ans)
+
+    def test_069(self):
+        n = ctypes.c_ulong(2020)
+        ans = 'kaksituhatta kaksikymmentä'.encode('utf-8')
+        self.common_func(n, ans)
+
+    def test_070(self):
+        n = ctypes.c_ulong(2501)
+        ans = b'kaksituhatta viisisataayksi'
+        self.common_func(n, ans)
+
+    def test_071(self):
+        n = ctypes.c_ulong(3000)
+        ans = b'kolmetuhatta'
+        self.common_func(n, ans)
+
+    def test_072(self):
+        n = ctypes.c_ulong(3018)
+        ans = b'kolmetuhatta kahdeksantoista'
+        self.common_func(n, ans)
+
+    def test_073(self):
+        n = ctypes.c_ulong(9999)
+        ans = 'yhdeksäntuhatta yhdeksänsataayhdeksänkymmentäyhdeksän'.encode('utf-8')
+        self.common_func(n, ans)
+
+    def test_074(self):
+        n = ctypes.c_ulong(10000)
+        ans = b'kymmenentuhatta'
+        self.common_func(n, ans)
+
+    def test_075(self):
+        n = ctypes.c_ulong(15000)
+        ans = b'viisitoistatuhatta'
+        self.common_func(n, ans)
+
+    def test_076(self):
+        n = ctypes.c_ulong(21999)
+        ans = 'kaksikymmentäyksituhatta yhdeksänsataayhdeksänkymmentäyhdeksän'.encode('utf-8')
+        self.common_func(n, ans)
+
+    def test_077(self):
+        n = ctypes.c_ulong(30000)
+        ans = 'kolmekymmentätuhatta'.encode('utf-8')
+        self.common_func(n, ans)
+
+    def test_078(self):
+        n = ctypes.c_ulong(52879)
+        ans = 'viisikymmentäkaksituhatta kahdeksansataaseitsemänkymmentäyhdeksän'.encode('utf-8')
+        self.common_func(n, ans)
+
+    def test_079(self):
+        n = ctypes.c_ulong(72009)
+        ans = 'seitsemänkymmentäkaksituhatta yhdeksän'.encode('utf-8')
+        self.common_func(n, ans)
+
+    def test_080(self):
+        n = ctypes.c_ulong(99999)
+        ans = 'yhdeksänkymmentäyhdeksäntuhatta yhdeksänsataayhdeksänkymmentäyhdeksän'.encode('utf-8')
+        self.common_func(n, ans)
+
+    def test_081(self):
+        n = ctypes.c_ulong(100000)
+        ans = b'satatuhatta'
+        self.common_func(n, ans)
+
+    def test_082(self):
+        n = ctypes.c_ulong(100001)
+        ans = b'satatuhatta yksi'
+        self.common_func(n, ans)
+
+    def test_083(self):
+        n = ctypes.c_ulong(100100)
+        ans = b'satatuhatta sata'
+        self.common_func(n, ans)
+
+    def test_084(self):
+        n = ctypes.c_ulong(550310)
+        ans = 'viisisataaviisikymmentätuhatta kolmesataakymmenen'.encode('utf-8')
+        self.common_func(n, ans)
+
+    def test_085(self):
+        n = ctypes.c_ulong(990800)
+        ans = 'yhdeksänsataayhdeksänkymmentätuhatta kahdeksansataa'.encode('utf-8')
+        self.common_func(n, ans)
+
+    def test_086(self):
+        n = ctypes.c_ulong(999999)
+        ans = 'yhdeksänsataayhdeksänkymmentäyhdeksäntuhatta yhdeksänsataayhdeksänkymmentäyhdeksän'.encode('utf-8')
+        self.common_func(n, ans)
+
+    def test_087(self):
+        n = ctypes.c_ulong(1000000)
+        ans = b'miljoona'
+        self.common_func(n, ans)
+
+    def test_088(self):
+        n = ctypes.c_ulong(1000001)
+        ans = b'miljoona yksi'
+        self.common_func(n, ans)
+
+    def test_089(self):
+        n = ctypes.c_ulong(1001000)
+        ans = b'miljoona tuhat'
+        self.common_func(n, ans)
+
+    def test_090(self):
+        n = ctypes.c_ulong(1100000)
+        ans = b'miljoona satatuhatta'
+        self.common_func(n, ans)
+
+    def test_091(self):
+        n = ctypes.c_ulong(1500000)
+        ans = b'miljoona viisisataatuhatta'
+        self.common_func(n, ans)
+
+    def test_092(self):
+        n = ctypes.c_ulong(1500001)
+        ans = b'miljoona viisisataatuhatta yksi'
+        self.common_func(n, ans)
+
+    def test_093(self):
+        n = ctypes.c_ulong(5000674)
+        ans = 'viisimiljoonaa kuusisataaseitsemänkymmentäneljä'.encode('utf-8')
+        self.common_func(n, ans)
+
+    def test_094(self):
+        n = ctypes.c_ulong(5426674)
+        ans = 'viisimiljoonaa neljäsataakaksikymmentäkuusituhatta kuusisataaseitsemänkymmentäneljä'.encode('utf-8')
+        self.common_func(n, ans)
+
+    def test_095(self):
+        n = ctypes.c_ulong(45000000)
+        ans = 'neljäkymmentäviisimiljoonaa'.encode('utf-8')
+        self.common_func(n, ans)
+
+    def test_096(self):
+        n = ctypes.c_ulong(99000099)
+        ans = 'yhdeksänkymmentäyhdeksänmiljoonaa yhdeksänkymmentäyhdeksän'.encode('utf-8')
+        self.common_func(n, ans)
+
+    def test_097(self):
+        n = ctypes.c_ulong(99999999)
+        ans = 'yhdeksänkymmentäyhdeksänmiljoonaa yhdeksänsataayhdeksänkymmentäyhdeksäntuhatta yhdeksänsataayhdeksänkymmentäyhdeksän'.encode('utf-8')
+        self.common_func(n, ans)
+
+    def test_098(self):
+        n = ctypes.c_ulong(100000000)
+        ans = b'satamiljoonaa'
+        self.common_func(n, ans)
+
+    def test_099(self):
+        n = ctypes.c_ulong(945000000)
+        ans = 'yhdeksänsataaneljäkymmentäviisimiljoonaa'.encode('utf-8')
+        self.common_func(n, ans)
+
+    def test_100(self):
+        n = ctypes.c_ulong(1000000000)
+        ans = b'miljardi'
+        self.common_func(n, ans)
+
+    def test_101(self):
+        n = ctypes.c_ulong(1000000001)
+        ans = b'miljardi yksi'
+        self.common_func(n, ans)
+
+    def test_102(self):
+        n = ctypes.c_ulong(1000001000)
+        ans = b'miljardi tuhat'
+        self.common_func(n, ans)
+
+    def test_103(self):
+        n = ctypes.c_ulong(1001000000)
+        ans = b'miljardi miljoona'
+        self.common_func(n, ans)
+
+    def test_104(self):
+        n = ctypes.c_ulong(1001001000)
+        ans = b'miljardi miljoona tuhat'
+        self.common_func(n, ans)
+
+    def test_105(self):
+        n = ctypes.c_ulong(2000000000)
+        ans = b'kaksimiljardia'
+        self.common_func(n, ans)
+
+    def test_106(self):
+        n = ctypes.c_ulong(2000000001)
+        ans = b'kaksimiljardia yksi'
+        self.common_func(n, ans)
+
+    def test_107(self):
+        n = ctypes.c_ulong(2000001000)
+        ans = b'kaksimiljardia tuhat'
+        self.common_func(n, ans)
+
+    def test_108(self):
+        n = ctypes.c_ulong(2000100000)
+        ans = b'kaksimiljardia satatuhatta'
+        self.common_func(n, ans)
+
+    def test_109(self):
+        n = ctypes.c_ulong(2001000000)
+        ans = b'kaksimiljardia miljoona'
+        self.common_func(n, ans)
 
 # ----------------------------------------------------------------------
 if __name__ == "__main__":
