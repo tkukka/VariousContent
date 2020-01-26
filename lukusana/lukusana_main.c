@@ -35,16 +35,11 @@ int main(int argc, char *argv[])
             {
             printf("\nAnnoit liian monta parametria. ");
             }
-#if defined(__BORLANDC__)  || defined(_MSC_VER)  /* Skandit kuntoon
-                                                    esikääntäjälipuilla */
-        printf("Ohjelman kytt: %s <luku>\n", ARG_PROGRAM_NAME );
-        printf("\nLuvun on oltava vlilt %lu - %lu.\n", LOWER_LIMIT,
-            UPPER_LIMIT);
-#else
+
         printf("Ohjelman käyttö: %s <luku>\n", ARG_PROGRAM_NAME );
         printf("\nLuvun on oltava väliltä %lu - %lu.\n", LOWER_LIMIT,
             UPPER_LIMIT);
-#endif
+
         return EXIT_FAILURE;
         }
 

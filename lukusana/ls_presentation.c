@@ -10,93 +10,63 @@
  *  joten ne on helpointa määritellä tässä.)
  */
 
-static NodeDataType NUMBERS_0_19[] =
+static const char NUMBERS_0_19[][17] =
     {
-    "nolla",
-    "yksi",
-    "kaksi",
-    "kolme",
-#if defined(__BORLANDC__) || defined(_MSC_VER) /* Skandit kuntoon
-                                                  esikääntäjälipuilla */
-    "nelj",
-#else
-    "neljä",
-#endif
-    "viisi",
-    "kuusi",
-#if defined(__BORLANDC__) || defined(_MSC_VER)
-    "seitsemn",
-#else
-    "seitsemän",
-#endif
-    "kahdeksan",
-#if defined(__BORLANDC__) || defined(_MSC_VER)
-    "yhdeksn",
-#else
-    "yhdeksän",
-#endif
-    "kymmenen",
-    "yksitoista",
-    "kaksitoista",
-    "kolmetoista",
-#if defined(__BORLANDC__) || defined(_MSC_VER)
-    "neljtoista",
-#else
-    "neljätoista",
-#endif
-    "viisitoista",
-    "kuusitoista",
-#if defined(__BORLANDC__) || defined(_MSC_VER)
-    "seitsemntoista",
-#else
-    "seitsemäntoista",
-#endif
-    "kahdeksantoista",
-#if defined(__BORLANDC__) || defined(_MSC_VER)
-    "yhdeksntoista"
-#else
-    "yhdeksäntoista"
-#endif
+    u8"nolla",
+    u8"yksi",
+    u8"kaksi",
+    u8"kolme",
+    u8"neljä",
+    u8"viisi",
+    u8"kuusi",
+    u8"seitsemän",
+    u8"kahdeksan",
+    u8"yhdeksän",
+    u8"kymmenen",
+    u8"yksitoista",
+    u8"kaksitoista",
+    u8"kolmetoista",
+    u8"neljätoista",
+    u8"viisitoista",
+    u8"kuusitoista",
+    u8"seitsemäntoista",
+    u8"kahdeksantoista",
+    u8"yhdeksäntoista"
     };
 
 /* Monikkomuotoinen tekstivakio kymmenille */
-#if defined(__BORLANDC__) || defined(_MSC_VER)   /* Skandit kuntoon
-                                                    esikääntäjälipuilla */
-static NodeDataType TENS = "kymment";
-#else
-static NodeDataType TENS = "kymmentä";
-#endif
+static const char TENS[] = u8"kymmentä";
 
 /* Monikkomuotoinen tekstivakio sadoille */
-static NodeDataType HUNDREDS = "sataa";
+static const char HUNDREDS[] = u8"sataa";
 
 /* Yksikkömuotoinen tekstivakio luvulle 100 */
-static NodeDataType ONE_HUNDRED = "sata";
+static const char ONE_HUNDRED[] = u8"sata";
 
 /* Monikkomuotoisten tekstivakioiden taulukko tuhannen
  * eri potensseille. Taulukon indeksi = 1000:n eksponentti
  */
-static NodeDataType THOUSANDS_BY_EXP[] =
+static const char THOUSANDS_BY_EXP[][10] =
     {
-    " ",        /* blanko, jota ei tulosteta */
-    "tuhatta",
-    "miljoonaa",
-    "miljardia"
+    u8" ",        /* blanko, jota ei tulosteta */
+    u8"tuhatta",
+    u8"miljoonaa",
+    u8"miljardia"
     };
 
 /* Yksikkömuotoisten tekstivakioiden taulukko tuhannen
  * eri potensseille. Taulukon indeksi = 1000:n eksponentti
  */
-static NodeDataType THOUSAND_BY_EXP[] =
+static const char THOUSAND_BY_EXP[][9] =
     {
-    " ",     /* blanko, jota ei tulosteta */
-    "tuhat",
-    "miljoona",
-    "miljardi"
+    u8" ",     /* blanko, jota ei tulosteta */
+    u8"tuhat",
+    u8"miljoona",
+    u8"miljardi"
     };
 
 /* Tulostuksen tekstivakio välilyönnille. */
-static NodeDataType SPACE = " ";
+static const char SPACE[] = u8" ";
 
 /*   make_string_presentation
  *

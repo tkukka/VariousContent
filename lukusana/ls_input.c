@@ -48,14 +48,10 @@ int validate_and_convert_input(const char *input, unsigned long *number)
         {
         if( !( isdigit((int) *input) ) ) /* Merkki ei ole numeromerkki? */
             {
-#if defined(__BORLANDC__)   || defined(_MSC_VER) /* Skandit kuntoon
-                                                    esikääntäjälipuilla */
-            printf("\n\aSytteesi sislsi muita merkkej kuin numeroita. "
-                "Ensimminen virheellinen merkki: %c\n", *input);
-#else
+
             printf("\n\aSyötteesi sisälsi muita merkkejä kuin numeroita. "
                 "Ensimmäinen virheellinen merkki: %c\n", *input);
-#endif
+
             return INPUT_ERROR;
             }
         input++;
@@ -71,14 +67,9 @@ int validate_and_convert_input(const char *input, unsigned long *number)
     if ( *number == ULONG_MAX && errno == ERANGE )
         {
         printf("\n\aAntamasi luku oli suurempi kuin %lu. ", ULONG_MAX);
-#if defined(__BORLANDC__)  || defined(_MSC_VER)  /* Skandit kuntoon
-                                                    esikääntäjälipuilla */
-        printf("Luvun on oltava vlilt %lu - %lu.\n", LOWER_LIMIT,
-            UPPER_LIMIT);
-#else
         printf("Luvun on oltava väliltä %lu - %lu.\n", LOWER_LIMIT,
             UPPER_LIMIT);
-#endif
+
         return INPUT_ERROR;
         }
 
@@ -87,14 +78,9 @@ int validate_and_convert_input(const char *input, unsigned long *number)
     /* Syöte lukualueen sisällä? */
     if ( *number > UPPER_LIMIT )
         {
-#if defined(__BORLANDC__)  || defined(_MSC_VER) /* Skandit kuntoon
-                                                   esikääntäjälipuilla */
-        printf("\n\aAntamasi luku ei ollut vlilt %lu - %lu.\n",
-            LOWER_LIMIT, UPPER_LIMIT);
-#else
         printf("\n\aAntamasi luku ei ollut väliltä %lu - %lu.\n",
             LOWER_LIMIT, UPPER_LIMIT);
-#endif
+
         return INPUT_ERROR;
         }
 
