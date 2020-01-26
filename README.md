@@ -8,6 +8,7 @@ Contents
 ## lukusana
 
 Sisältö
+* Ohjelma tulostaa annetun numeron kirjoitetussa muodossa
 * Wanha C-kielen harjoitustyö uudelleen tarkasteltuna
 * Makefile lisätty, koodi hajautettu useampaan tiedostoon
 * Debug & Release käännökset (GCC 8.30, Clang 8.0)
@@ -16,6 +17,7 @@ Sisältö
 
 
 Contents
+* Program to spell out a given number
 * An old C-programming assignment revisited
 * Added Makefile, source code split
 * Debug & Release builds (GCC 8.30, Clang 8.0)
