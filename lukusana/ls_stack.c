@@ -39,7 +39,7 @@ NodeDataType pop_from_stack(void)
     assert(ptr != NULL); /* Tarkista onko pino sekaisin */
     my_stack.top = ptr->next;  /* Linkitä ohi poistettavan solmun */
     node_data = ptr->data; /* Kopiointi return:ia varten */
-    free(ptr);  /* Solmun viemän muistin vapautus */
+    free((void*)ptr);  /* Solmun viemän muistin vapautus */
     my_stack.count--;
     return node_data;
     }
@@ -53,10 +53,10 @@ NodeDataType pop_from_stack(void)
  *          data         teksti
  *
  *   Paluuarvo:
- *          Ei mitään
- *
+ *          0            pinoon lisääminen epäonnistui
+ *          1            pinoon lisääminen onnistui
  */
-void push_to_stack(StackHandle stack, NodeDataType data)
+int push_to_stack(StackHandle stack, NodeDataType data)
     {
     Node  *new_node = NULL;
 #if defined(DEBUG)
@@ -67,16 +67,21 @@ void push_to_stack(StackHandle stack, NodeDataType data)
        asetetaan se sitten pinoon päällimmäiseksi */
     new_node = (Node *) malloc( sizeof(Node) );
     assert(new_node != NULL); /* Muistinvaraus OK? */
-    new_node->next = stack->top;
-    new_node->data = data;
-    stack->top = new_node;
-    stack->count++;
-#if defined(DEBUG) && defined(LS_STACK_USAGE)
-    if (stack->count > my_stack.used_count)
+    if (new_node)
         {
-        my_stack.used_count = stack->count;    
+        new_node->next = stack->top;
+        new_node->data = data;
+        stack->top = new_node;
+        stack->count++;
+#if defined(DEBUG) && defined(LS_STACK_USAGE)
+        if (stack->count > my_stack.used_count)
+            {
+            my_stack.used_count = stack->count;
+            }
+#endif
+        return 1;
         }
-#endif      
+    return 0;
     }
 
 /*   print_stack

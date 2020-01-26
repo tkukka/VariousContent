@@ -215,7 +215,7 @@ class StackTestCase(unittest.TestCase):
         self.stack_handle = self.lib.init_stack()
 
         self.lib.push_to_stack.argtypes = [ctypes.POINTER(Stack), ctypes.c_char_p]
-        self.lib.push_to_stack.restype = None
+        self.lib.push_to_stack.restype = ctypes.c_int
 
         self.lib.pop_from_stack.argtypes = None
         self.lib.pop_from_stack.restype = ctypes.c_char_p

@@ -26,7 +26,7 @@ typedef struct
 typedef Stack *StackHandle;
 
 NodeDataType pop_from_stack(void);
-void push_to_stack(StackHandle stack, NodeDataType data);
+int push_to_stack(StackHandle stack, NodeDataType data);
 void print_stack(void);
 int get_stack_size(void);
 StackHandle init_stack(void);
