@@ -27,7 +27,7 @@ NodeDataType pop_from_stack(void)
     NodeDataType  node_data; /* Solmun datan palauttamiseen tarvittava
                                  lyhytaikainen säilö */
     Node          *ptr;  /* Poistettavan solmun osoitin */
-#if defined(DEBUG)    
+#if defined(DEBUG)
     assert(stack_initialized);
 #endif
     if(my_stack.count == 0)
@@ -93,7 +93,7 @@ void push_to_stack(StackHandle stack, NodeDataType data)
  */
 void print_stack(void)
     {
-#if defined(DEBUG)        
+#if defined(DEBUG)
     assert(stack_initialized);
 #endif
 
@@ -101,6 +101,25 @@ void print_stack(void)
         {
         printf("%s", ptr->data);
         }
+    }
+
+/*   get_stack_size
+ *
+ *   Palauttaa pinon tallennettujen solmujen lukumäärän.
+ *
+ *   Parametrit:
+ *          Ei mitään
+ *
+ *   Paluuarvo:
+ *          solmujen lukumäärä
+ *
+ */
+int get_stack_size(void)
+    {
+#if defined(DEBUG)
+    assert(stack_initialized);
+#endif
+    return my_stack.count;
     }
 
 /*   clear_stack
@@ -143,7 +162,7 @@ StackHandle init_stack(void)
     my_stack.used_count = 0;
 #endif    
     my_stack.top = NULL;
-#if defined(DEBUG)    
+#if defined(DEBUG)
     stack_initialized = 1;
 #endif
     return &my_stack;

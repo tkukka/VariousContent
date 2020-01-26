@@ -229,6 +229,9 @@ class StackTestCase(unittest.TestCase):
         self.lib.close_stack.argtypes = None
         self.lib.close_stack.restype = None
 
+        self.lib.get_stack_size.argtypes = None
+        self.lib.get_stack_size.restype = ctypes.c_int
+
     def tearDown(self):
         self.lib.clear_stack()
         self.lib.close_stack()
@@ -269,6 +272,36 @@ class StackTestCase(unittest.TestCase):
         r = self.lib.pop_from_stack()
         r = self.lib.pop_from_stack()
         self.assertEqual(r, b'test 4')
+
+    def test_005(self):
+        self.assertEqual(0, self.lib.get_stack_size())
+        t = ctypes.c_char_p(b'test 5')
+        self.lib.push_to_stack(self.stack_handle, t)
+        self.assertEqual(1, self.lib.get_stack_size())
+
+    def test_006(self):
+        t = ctypes.c_char_p(b'test 6')
+        self.lib.push_to_stack(self.stack_handle, t)
+        self.lib.push_to_stack(self.stack_handle, t)
+        self.assertEqual(2, self.lib.get_stack_size())
+
+    def test_007(self):
+        t = ctypes.c_char_p(b'test 7')
+        self.lib.push_to_stack(self.stack_handle, t)
+        self.lib.push_to_stack(self.stack_handle, t)
+        self.lib.push_to_stack(self.stack_handle, t)
+        self.lib.push_to_stack(self.stack_handle, t)
+        self.lib.push_to_stack(self.stack_handle, t)
+        self.lib.push_to_stack(self.stack_handle, t)
+        self.lib.push_to_stack(self.stack_handle, t)
+        self.lib.push_to_stack(self.stack_handle, t)
+        self.assertEqual(8, self.lib.get_stack_size())
+        r = self.lib.pop_from_stack()
+        self.assertEqual(7, self.lib.get_stack_size())
+        r = self.lib.pop_from_stack()
+        r = self.lib.pop_from_stack()
+        r = self.lib.pop_from_stack()
+        self.assertEqual(4, self.lib.get_stack_size())
 
 # ----------------------------------------------------------------------
 if __name__ == "__main__":
