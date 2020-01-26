@@ -1,8 +1,26 @@
 #ifndef LS_STACK_H
 #define LS_STACK_H
 
+
+#undef LS_STACK_ARRAY
+
+#undef LS_STACK_USAGE
+
 /* solmun tieto; osoite vakiomerkkijonoon */
 typedef const char *NodeDataType;
+
+#ifdef LS_STACK_ARRAY /* Osoitintaulukko */
+
+typedef struct
+    {
+    int   count; /* alkioiden lukumäärä pinossa */
+#if defined(DEBUG) && defined(LS_STACK_USAGE)
+    int   used_count;  /* tilasto: pinon täyttöaste  */
+#endif
+    NodeDataType *stack_data; /* osoite pinon data-alueelle */
+    } Stack;
+
+#else   /* Linkitetty lista */
 
 /* Solmun tietotyyppi tulostettavaa tekstiä varten */
 typedef struct node
@@ -11,17 +29,16 @@ typedef struct node
     NodeDataType data; 
     } Node;
 
-#undef LS_STACK_USAGE
-
 /* Linkitetyn pinon tietotyyppi */
 typedef struct
     {
     int   count; /* solmujen lukumäärä pinossa */
 #if defined(DEBUG) && defined(LS_STACK_USAGE)
-    int   used_count;  /* tilasto: pinon täyttöaste solmuina */
+    int   used_count;  /* tilasto: pinon täyttöaste  */
 #endif    
     Node  *top;  /* linkki päällimmäiseen solmuun */
     } Stack;
+#endif
 
 typedef Stack *StackHandle;
 

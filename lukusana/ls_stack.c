@@ -5,7 +5,25 @@
 #include "ls_stack.h"
 
 
+#ifdef LS_STACK_ARRAY  /* Osoitintaulukko */
+
+#define ARRAY_MAX 25
+
+static NodeDataType stack_arr[ARRAY_MAX];
+
+static Stack my_stack = {
+                        .count = 0,
+#if defined(DEBUG) && defined(LS_STACK_USAGE)
+                        .used_count = 0,
+#endif
+                        .stack_data = stack_arr
+                        };
+
+#else /* Linkitetty lista */
 static Stack my_stack;
+#endif
+
+
 #if defined(DEBUG)
 static int stack_initialized = 0;
 #endif
@@ -22,6 +40,24 @@ static int stack_initialized = 0;
  *          osoite tekstivakioon tai NULL, jos
  *          pino oli tyhjä
  */
+#ifdef LS_STACK_ARRAY
+NodeDataType pop_from_stack(void)
+    {
+#if defined(DEBUG)
+    assert(stack_initialized);
+#endif
+
+    if(my_stack.count == 0)
+      { /* Pino on tyhjä, joten kutsuja saa NULL:in */
+      return NULL;
+      }
+    my_stack.count--;
+
+    return my_stack.stack_data[my_stack.count];
+    }
+
+#else
+
 NodeDataType pop_from_stack(void)
     {
     NodeDataType  node_data; /* Solmun datan palauttamiseen tarvittava
@@ -43,6 +79,7 @@ NodeDataType pop_from_stack(void)
     my_stack.count--;
     return node_data;
     }
+#endif
 
 /*   push_to_stack
  *
@@ -56,12 +93,39 @@ NodeDataType pop_from_stack(void)
  *          0            pinoon lisääminen epäonnistui
  *          1            pinoon lisääminen onnistui
  */
+#ifdef LS_STACK_ARRAY
+int push_to_stack(StackHandle stack, NodeDataType data)
+    {
+#if defined(DEBUG)
+    assert(stack_initialized);
+#endif
+    (void) stack;
+
+    if (my_stack.count < ARRAY_MAX)
+        {
+        my_stack.stack_data[my_stack.count] = data;
+        my_stack.count++;
+
+#if defined(DEBUG) && defined(LS_STACK_USAGE)
+        if (my_stack.count > my_stack.used_count)
+            {
+            my_stack.used_count = my_stack.count;
+            }
+#endif
+        return 1;
+        }
+
+    return 0;
+    }
+
+#else /* Linkitetty lista pinona */
+
 int push_to_stack(StackHandle stack, NodeDataType data)
     {
     Node  *new_node = NULL;
 #if defined(DEBUG)
     assert(stack_initialized);
-#endif    
+#endif
     assert(stack != NULL); /* Validi pinon osoitin? */
     /* Luodaan uusi solmu, alustetaan solmun tiedot ja
        asetetaan se sitten pinoon päällimmäiseksi */
@@ -83,6 +147,7 @@ int push_to_stack(StackHandle stack, NodeDataType data)
         }
     return 0;
     }
+#endif
 
 /*   print_stack
  *
@@ -96,6 +161,21 @@ int push_to_stack(StackHandle stack, NodeDataType data)
  *          Ei mitään
  *
  */
+#ifdef LS_STACK_ARRAY
+void print_stack(void)
+    {
+#if defined(DEBUG)
+    assert(stack_initialized);
+#endif
+
+    for(int i = (my_stack.count - 1); i >= 0; --i)
+        {
+        printf("%s", my_stack.stack_data[i]);
+        }
+    }
+
+#else
+
 void print_stack(void)
     {
 #if defined(DEBUG)
@@ -107,7 +187,7 @@ void print_stack(void)
         printf("%s", ptr->data);
         }
     }
-
+#endif
 /*   get_stack_size
  *
  *   Palauttaa pinon tallennettujen solmujen lukumäärän.
@@ -165,8 +245,12 @@ StackHandle init_stack(void)
     my_stack.count = 0;
 #if defined(DEBUG) && defined(LS_STACK_USAGE)
     my_stack.used_count = 0;
-#endif    
+#endif
+
+#ifndef LS_STACK_ARRAY
     my_stack.top = NULL;
+#endif
+
 #if defined(DEBUG)
     stack_initialized = 1;
 #endif
@@ -188,13 +272,16 @@ void close_stack(void)
     {
     assert(my_stack.count == 0); /* Pinon oltava tyhjä */
 #if defined(DEBUG) && defined(LS_STACK_USAGE)
-    printf("\nPinossa oli solmuja: %d\n", my_stack.used_count);
+    printf("\nPinossa oli alkioita: %d\n", my_stack.used_count);
 #endif
    
     my_stack.count = 0;
 #if defined(DEBUG) && defined(LS_STACK_USAGE)
     my_stack.used_count = 0;
-#endif        
-    my_stack.top = NULL;  
+#endif
+
+#ifndef LS_STACK_ARRAY
+    my_stack.top = NULL;
+#endif
     }
 
