@@ -5,7 +5,20 @@
 #include "ls_stack.h"
 
 
-#ifdef LS_STACK_ARRAY  /* Osoitintaulukko */
+
+
+
+#ifdef LS_STACK_ARRAY /* Osoitintaulukko */
+
+typedef struct
+    {
+    int   count; /* alkioiden lukumäärä pinossa */
+#if defined(DEBUG) && defined(LS_STACK_USAGE)
+    int   used_count;  /* tilasto: pinon täyttöaste  */
+#endif
+    NodeDataType *stack_data; /* osoite pinon data-alueelle */
+    } Stack;
+
 
 #define ARRAY_MAX 25
 
@@ -19,10 +32,28 @@ static Stack my_stack = {
                         .stack_data = stack_arr
                         };
 
-#else /* Linkitetty lista */
+#else   /* Linkitetty lista */
+
+/* Solmun tietotyyppi tulostettavaa tekstiä varten */
+typedef struct node
+    {
+    struct node *next; /* seuraavan solmun osoite */
+    NodeDataType data;
+    } Node;
+
+/* Linkitetyn pinon tietotyyppi */
+typedef struct
+    {
+    int   count; /* solmujen lukumäärä pinossa */
+#if defined(DEBUG) && defined(LS_STACK_USAGE)
+    int   used_count;  /* tilasto: pinon täyttöaste  */
+#endif
+    Node  *top;  /* linkki päällimmäiseen solmuun */
+    } Stack;
+
+
 static Stack my_stack;
 #endif
-
 
 #if defined(DEBUG)
 static int stack_initialized = 0;
@@ -56,7 +87,7 @@ NodeDataType pop_from_stack(void)
     return my_stack.stack_data[my_stack.count];
     }
 
-#else
+#else /* Linkitetty lista */
 
 NodeDataType pop_from_stack(void)
     {
@@ -86,7 +117,6 @@ NodeDataType pop_from_stack(void)
  *   Pistää pinoon osoitteen tekstivakioon.
  *
  *   Parametrit:
- *          stack        osoite pinoon, jolle operaatio tehdään
  *          data         teksti
  *
  *   Paluuarvo:
@@ -94,12 +124,11 @@ NodeDataType pop_from_stack(void)
  *          1            pinoon lisääminen onnistui
  */
 #ifdef LS_STACK_ARRAY
-int push_to_stack(StackHandle stack, NodeDataType data)
+int push_to_stack(NodeDataType data)
     {
 #if defined(DEBUG)
     assert(stack_initialized);
 #endif
-    (void) stack;
 
     if (my_stack.count < ARRAY_MAX)
         {
@@ -120,27 +149,27 @@ int push_to_stack(StackHandle stack, NodeDataType data)
 
 #else /* Linkitetty lista pinona */
 
-int push_to_stack(StackHandle stack, NodeDataType data)
+int push_to_stack(NodeDataType data)
     {
     Node  *new_node = NULL;
 #if defined(DEBUG)
     assert(stack_initialized);
 #endif
-    assert(stack != NULL); /* Validi pinon osoitin? */
+
     /* Luodaan uusi solmu, alustetaan solmun tiedot ja
        asetetaan se sitten pinoon päällimmäiseksi */
     new_node = (Node *) malloc( sizeof(Node) );
     assert(new_node != NULL); /* Muistinvaraus OK? */
     if (new_node)
         {
-        new_node->next = stack->top;
+        new_node->next = my_stack.top;
         new_node->data = data;
-        stack->top = new_node;
-        stack->count++;
+        my_stack.top = new_node;
+        my_stack.count++;
 #if defined(DEBUG) && defined(LS_STACK_USAGE)
-        if (stack->count > my_stack.used_count)
+        if (my_stack.count > my_stack.used_count)
             {
-            my_stack.used_count = stack->count;
+            my_stack.used_count = my_stack.count;
             }
 #endif
         return 1;
@@ -151,7 +180,7 @@ int push_to_stack(StackHandle stack, NodeDataType data)
 
 /*   print_stack
  *
- *   Tulostaa annetusta pinosta kaiken datan/tekstin peräkkäin.
+ *   Tulostaa pinosta kaiken datan/tekstin peräkkäin.
  *
  *
  *   Parametrit:
@@ -237,10 +266,10 @@ void clear_stack(void)
  *          Ei mitään
  *
  *   Paluuarvo:
- *          Osoite pinoon
+ *          Ei mitään
  *
  */
-StackHandle init_stack(void)
+void init_stack(void)
     {
     my_stack.count = 0;
 #if defined(DEBUG) && defined(LS_STACK_USAGE)
@@ -254,7 +283,6 @@ StackHandle init_stack(void)
 #if defined(DEBUG)
     stack_initialized = 1;
 #endif
-    return &my_stack;
     }
 
 /*   close_stack

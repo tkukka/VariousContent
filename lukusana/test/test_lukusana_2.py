@@ -16,26 +16,15 @@ def compose(pop_func):
         item = pop_func()
     return ret
 # ----------------------------------------------------------------------
-class Node(ctypes.Structure):
-    pass
-
-Node._fields_ = [('next', ctypes.POINTER(Node)),
-                 ('data', ctypes.c_char_p)]
-
-
-class Stack(ctypes.Structure):
-    _fields_ = [('count', ctypes.c_int),
-                ('top', ctypes.POINTER(Node))]
-
 
 class PresentationTestCase(unittest.TestCase):
     def setUp(self):
         self.lib = ctypes.CDLL(SO_FILE)
         self.lib.init_stack.argtypes = None
-        self.lib.init_stack.restype = ctypes.POINTER(Stack)
-        self.stack_handle = self.lib.init_stack()
+        self.lib.init_stack.restype = None
+        self.lib.init_stack()
 
-        self.lib.push_to_stack.argtypes = [ctypes.POINTER(Stack), ctypes.c_char_p]
+        self.lib.push_to_stack.argtypes = [ctypes.c_char_p]
         self.lib.push_to_stack.restype = ctypes.c_int
 
         self.lib.pop_from_stack.argtypes = None
@@ -50,7 +39,7 @@ class PresentationTestCase(unittest.TestCase):
         self.lib.close_stack.argtypes = None
         self.lib.close_stack.restype = None
         
-        self.lib.make_string_presentation.argtypes = [ctypes.c_ulong, ctypes.POINTER(Stack)]
+        self.lib.make_string_presentation.argtypes = [ctypes.c_ulong]
         self.lib.make_string_presentation.restype = None
 
     def tearDown(self):
@@ -58,7 +47,7 @@ class PresentationTestCase(unittest.TestCase):
         self.lib.close_stack()
         
     def common_func(self, n, ans):
-        self.lib.make_string_presentation(n, self.stack_handle)
+        self.lib.make_string_presentation(n)
         r = compose(self.lib.pop_from_stack)
         self.assertEqual(ans, r)
 

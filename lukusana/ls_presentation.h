@@ -4,7 +4,7 @@
 #include "ls_stack.h"
 
 
-void make_string_presentation(unsigned long number, StackHandle stack);
+void make_string_presentation(unsigned long number);
 
 #endif
 

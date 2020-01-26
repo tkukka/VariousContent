@@ -76,19 +76,17 @@ static const char SPACE[] = u8" ";
  *
  *   Parametrit:
  *          number       lukuarvo, joka muunnetaan
- *          stack        pino, johon muunnoksen tekstit tallennetaan
  *
  *   Paluuarvo:
  *          Ei mitään
  *
  */
-void make_string_presentation(unsigned long number, StackHandle stack)
+void make_string_presentation(unsigned long number)
     {
-    assert(stack != NULL); /* Validi pinon osoitin? */
 
     if (number == 0 )  /* Nollan muunnos on erikoistapaus */
         {
-        push_to_stack(stack, NUMBERS_0_19[0]);
+        push_to_stack(NUMBERS_0_19[0]);
         return;
         }
 
@@ -146,7 +144,7 @@ void make_string_presentation(unsigned long number, StackHandle stack)
                     /* Erotetaan edellisen ryhmän teksti välilyönnillä */
                     if (prev_group_val || earlier_nonzero_group)
                         {
-                        push_to_stack(stack, SPACE);
+                        push_to_stack(SPACE);
                         }
                     assert(t <= 3); /* Varmistusta. Toteutus riittää
                                      * miljardeihin asti eli
@@ -157,7 +155,7 @@ void make_string_presentation(unsigned long number, StackHandle stack)
                         { /* Tuhatluvun kerroin on yksi.
                            * Teksti: "tuhat", "miljoona", "miljardi"
                            */
-                        push_to_stack(stack, THOUSAND_BY_EXP[t]);
+                        push_to_stack(THOUSAND_BY_EXP[t]);
                         prev_group_val = number % 1000;
 
                         if (prev_group_val)
@@ -177,7 +175,7 @@ void make_string_presentation(unsigned long number, StackHandle stack)
                         /* Tuhatluvun kerroin on 2...999
                          * Teksti: "tuhatta", "miljoonaa", "miljardia"
                          */
-                        push_to_stack(stack, THOUSANDS_BY_EXP[t]);
+                        push_to_stack(THOUSANDS_BY_EXP[t]);
                         }
                     } /* t > 0 */
 
@@ -187,7 +185,7 @@ void make_string_presentation(unsigned long number, StackHandle stack)
                     {
                     if(last_2 != 0) /* Estetään "nolla"-teksti */
                         { /* Teksti: "yksi" ... "yhdeksäntoista" */
-                        push_to_stack(stack, NUMBERS_0_19[last_2]);
+                        push_to_stack(NUMBERS_0_19[last_2]);
                         }
                     /* Seuraavana satojen kerroin */
                     group_val /= 100;
@@ -201,14 +199,14 @@ void make_string_presentation(unsigned long number, StackHandle stack)
                     if (group_val % 10 != 0 )
                         {
                         /* Teksti: "yksi" ... "yhdeksän" */
-                        push_to_stack(stack, NUMBERS_0_19[group_val % 10]);
+                        push_to_stack(NUMBERS_0_19[group_val % 10]);
                         }
                     /* Käsitellään (monikolliset) kymmenet */
                     group_val /= 10;
                     /* Teksti: "kymmentä" */
-                    push_to_stack(stack, TENS);
+                    push_to_stack(TENS);
                     /* Kymmenien kerrointeksti "kaksi"..."yhdeksän" */
-                    push_to_stack(stack, NUMBERS_0_19[group_val % 10]);
+                    push_to_stack(NUMBERS_0_19[group_val % 10]);
                     /* Seuraavana satojen kerroin */
                     group_val /= 10;
                      } /* 2 viimeisen numeron käsittelyn loppu */
@@ -216,13 +214,13 @@ void make_string_presentation(unsigned long number, StackHandle stack)
                 /* Lopuksi käsitellään sadat */
                 if (group_val == 1) /* Tasan yksi sata? */
                     {  /* Teksti: "sata" */
-                    push_to_stack(stack, ONE_HUNDRED);
+                    push_to_stack(ONE_HUNDRED);
                     }
                 else if (group_val > 1)   /* Muut satalukemat */
                     { /* Teksti: "sataa" */
-                    push_to_stack(stack, HUNDREDS);
+                    push_to_stack(HUNDREDS);
                     /* Satojen kerrointeksti "kaksi"..."yhdeksän" */
-                    push_to_stack(stack, NUMBERS_0_19[group_val]);
+                    push_to_stack(NUMBERS_0_19[group_val]);
                     }
 
                 } /* if (group_val != 0) */
