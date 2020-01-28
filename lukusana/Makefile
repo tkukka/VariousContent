@@ -24,6 +24,7 @@ CPP = $(CXX) -E
 SIZE = size -B
 CPPFLAGS =
 WARNINGS = -pedantic -Wall -Wextra -Wformat-security -Werror=format-security
+#USE_CXX_SOURCES := 1
 
 ifeq ($(findstring clang,$(CC)),clang)
   USE_CLANG := 1
@@ -51,10 +52,11 @@ ifeq ($(strip $(BUILD)),Debug)
   LDFLAGS += $(DEBUG_INFO) $(WARNINGS)
 endif
 
-#ifdef USE_CLANG
+ifdef USE_CLANG
 #  $(BUILD_DIR_DEBUG)/%.o: CFLAGS += -fsanitize=safe-stack
 #  $(BUILD_DIR_DEBUG)/%.o: CXXFLAGS += -fsanitize=safe-stack
-#endif
+  $(BUILD_DIR_DEBUG)/%.o: CXXFLAGS += -stdlib=libstdc++
+endif
  
 ifeq ($(strip $(SANITIZER)),asan)
   $(BUILD_DIR_DEBUG)/%.o: DEFS += -U_FORTIFY_SOURCE
@@ -81,7 +83,9 @@ endif
 
 $(LIB_DIR_DEBUG)/%.o: CFLAGS += $(DEFS) $(DEBUG_INFO) $(WARNINGS) -std=c11 -fPIC -fno-omit-frame-pointer -fstack-protector-strong
 $(LIB_DIR_DEBUG)/%.o: CXXFLAGS += $(DEFS) $(DEBUG_INFO) $(WARNINGS) -std=c++17 -fPIC -fno-omit-frame-pointer -fstack-protector-strong 
-
+ifdef USE_CLANG
+  $(LIB_DIR_DEBUG)/%.o: CXXFLAGS += -stdlib=libstdc++
+endif
 $(LIB_DIR_DEBUG)/$(LIB_NAME): LDFLAGS += -shared -fPIC -Wl,-soname,$(LIB_NAME) -Wl,-z,defs,-z,relro,-z,now,-z,noexecstack,-z,notext
 
 # ========================      Release    ===================================
@@ -96,7 +100,7 @@ $(BUILD_DIR_RELEASE)/$(TARGET_NAME): LDFLAGS += -O2 $(WARNINGS) -pie -Wl,-pie -W
 
 ifdef USE_CLANG
   $(BUILD_DIR_RELEASE)/%.o: CFLAGS += -flto=thin -fsanitize=cfi -fvisibility=hidden #-fsanitize=safe-stack
-  $(BUILD_DIR_RELEASE)/%.o: CXXFLAGS += -flto=thin -fsanitize=cfi -fvisibility=hidden #-fsanitize=safe-stack
+  $(BUILD_DIR_RELEASE)/%.o: CXXFLAGS += -stdlib=libstdc++ -flto=thin -fsanitize=cfi -fvisibility=hidden #-fsanitize=safe-stack
   $(BUILD_DIR_RELEASE)/$(TARGET_NAME): LDFLAGS += -flto=thin -fsanitize=cfi -fvisibility=hidden #-fsanitize=safe-stack
 else
   $(BUILD_DIR_RELEASE)/%.o: CFLAGS += -flto -fuse-linker-plugin -fstack-clash-protection
@@ -112,7 +116,7 @@ $(LIB_DIR_RELEASE)/$(LIB_NAME): LDFLAGS += -O2 $(WARNINGS) -shared -fPIC -Wl,-so
 
 ifdef USE_CLANG
   $(LIB_DIR_RELEASE)/%.o: CFLAGS += -flto=thin #-fsanitize=cfi -fvisibility=hidden
-  $(LIB_DIR_RELEASE)/%.o: CXXFLAGS += -flto=thin #-fsanitize=cfi -fvisibility=hidden
+  $(LIB_DIR_RELEASE)/%.o: CXXFLAGS += -stdlib=libstdc++ -flto=thin #-fsanitize=cfi -fvisibility=hidden
   $(LIB_DIR_RELEASE)/$(LIB_NAME): LDFLAGS += -flto=thin #-fsanitize=cfi -fvisibility=hidden
 else
   $(LIB_DIR_RELEASE)/%.o: CFLAGS += -flto -fuse-linker-plugin -fstack-clash-protection
@@ -122,10 +126,19 @@ endif
 
 
 # Source .c and .cpp files 
-LIB_SRCS_C = ls_input.c ls_stack.c ls_presentation.c
-SRCS_C = lukusana_main.c $(LIB_SRCS_C) 
-LIB_SRCS_CXX =
-SRCS_CXX = $(LIB_SRCS_CXX)
+ifdef USE_CXX_SOURCES
+  CXX_SRC_DIR := ./cplusplus
+  LIB_SRCS_CXX = ls_input.cpp ls_stack.cpp ls_presentation.cpp
+  SRCS_CXX = lukusana_main.cpp $(LIB_SRCS_CXX)
+  LIB_SRCS_C =
+  SRCS_C = $(LIB_SRCS_C)
+else
+  LIB_SRCS_C = ls_input.c ls_stack.c ls_presentation.c
+  SRCS_C = lukusana_main.c $(LIB_SRCS_C)
+  LIB_SRCS_CXX =
+  SRCS_CXX = $(LIB_SRCS_CXX)
+endif
+
 LIB_SRCS = $(LIB_SRCS_CXX) $(LIB_SRCS_C)
 SRCS = $(SRCS_CXX) $(SRCS_C)
 
@@ -137,16 +150,35 @@ LIB_OBJS_CXX = $(LIB_SRCS_CXX:.cpp=.o)
 LIB_OBJS_C = $(LIB_SRCS_C:.c=.o)
 LIB_OBJS := $(addprefix $(LIB_DIR)/,$(LIB_OBJS_CXX)) $(addprefix $(LIB_DIR)/,$(LIB_OBJS_C))
 
-
+ifdef USE_CXX_SOURCES
+  SRCS := $(addprefix $(CXX_SRC_DIR)/,$(SRCS_CXX))
+  LIB_SRCS := $(addprefix $(CXX_SRC_DIR)/,$(LIB_SRCS_CXX))
+endif
 
 
 ifeq ($(strip $(OBJS_CXX)),)
    LINKER := $(CC)
 else
    LINKER := $(CXX)
+
+ifdef USE_CLANG
+   LDLIBS += -lstdc++
+endif
+
 endif
 
 .PHONY: all clean distclean depend memsize
+ifdef USE_CXX_SOURCES
+
+$(BUILD_DIR)/%.o: $(CXX_SRC_DIR)/%.cpp
+	@echo --- C++ compiling [$(BUILD)] ---
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(LIB_DIR)/%.o: $(CXX_SRC_DIR)/%.cpp
+	@echo --- Library C++ compiling [$(BUILD)] ---
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+else
 
 $(BUILD_DIR)/%.o: %.c
 	@echo --- C compiling [$(BUILD)] ---
@@ -164,6 +196,7 @@ $(LIB_DIR)/%.o: %.cpp
 	@echo --- Library C++ compiling [$(BUILD)] ---
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
+endif
 
 all: $(TARGET) $(LIB_TARGET)
 
