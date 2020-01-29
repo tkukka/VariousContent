@@ -55,7 +55,7 @@ endif
 ifdef USE_CLANG
 #  $(BUILD_DIR_DEBUG)/%.o: CFLAGS += -fsanitize=safe-stack
 #  $(BUILD_DIR_DEBUG)/%.o: CXXFLAGS += -fsanitize=safe-stack
-  $(BUILD_DIR_DEBUG)/%.o: CXXFLAGS += -stdlib=libstdc++
+  $(BUILD_DIR_DEBUG)/%.o: CXXFLAGS += -stdlib=libc++
 endif
  
 ifeq ($(strip $(SANITIZER)),asan)
@@ -84,7 +84,7 @@ endif
 $(LIB_DIR_DEBUG)/%.o: CFLAGS += $(DEFS) $(DEBUG_INFO) $(WARNINGS) -std=c11 -fPIC -fno-omit-frame-pointer -fstack-protector-strong
 $(LIB_DIR_DEBUG)/%.o: CXXFLAGS += $(DEFS) $(DEBUG_INFO) $(WARNINGS) -std=c++17 -fPIC -fno-omit-frame-pointer -fstack-protector-strong 
 ifdef USE_CLANG
-  $(LIB_DIR_DEBUG)/%.o: CXXFLAGS += -stdlib=libstdc++
+  $(LIB_DIR_DEBUG)/%.o: CXXFLAGS += -stdlib=libc++
 endif
 $(LIB_DIR_DEBUG)/$(LIB_NAME): LDFLAGS += -shared -fPIC -Wl,-soname,$(LIB_NAME) -Wl,-z,defs,-z,relro,-z,now,-z,noexecstack,-z,notext
 
@@ -100,7 +100,7 @@ $(BUILD_DIR_RELEASE)/$(TARGET_NAME): LDFLAGS += -O2 $(WARNINGS) -pie -Wl,-pie -W
 
 ifdef USE_CLANG
   $(BUILD_DIR_RELEASE)/%.o: CFLAGS += -flto=thin -fsanitize=cfi -fvisibility=hidden #-fsanitize=safe-stack
-  $(BUILD_DIR_RELEASE)/%.o: CXXFLAGS += -stdlib=libstdc++ -flto=thin -fsanitize=cfi -fvisibility=hidden #-fsanitize=safe-stack
+  $(BUILD_DIR_RELEASE)/%.o: CXXFLAGS += -stdlib=libc++ -flto=thin -fsanitize=cfi -fvisibility=hidden #-fsanitize=safe-stack
   $(BUILD_DIR_RELEASE)/$(TARGET_NAME): LDFLAGS += -flto=thin -fsanitize=cfi -fvisibility=hidden #-fsanitize=safe-stack
 else
   $(BUILD_DIR_RELEASE)/%.o: CFLAGS += -flto -fuse-linker-plugin -fstack-clash-protection
@@ -116,7 +116,7 @@ $(LIB_DIR_RELEASE)/$(LIB_NAME): LDFLAGS += -O2 $(WARNINGS) -shared -fPIC -Wl,-so
 
 ifdef USE_CLANG
   $(LIB_DIR_RELEASE)/%.o: CFLAGS += -flto=thin #-fsanitize=cfi -fvisibility=hidden
-  $(LIB_DIR_RELEASE)/%.o: CXXFLAGS += -stdlib=libstdc++ -flto=thin #-fsanitize=cfi -fvisibility=hidden
+  $(LIB_DIR_RELEASE)/%.o: CXXFLAGS += -stdlib=libc++ -flto=thin #-fsanitize=cfi -fvisibility=hidden
   $(LIB_DIR_RELEASE)/$(LIB_NAME): LDFLAGS += -flto=thin #-fsanitize=cfi -fvisibility=hidden
 else
   $(LIB_DIR_RELEASE)/%.o: CFLAGS += -flto -fuse-linker-plugin -fstack-clash-protection
@@ -162,7 +162,7 @@ else
    LINKER := $(CXX)
 
 ifdef USE_CLANG
-   LDLIBS += -lstdc++
+   LDLIBS += -lc++
 endif
 
 endif

@@ -155,33 +155,34 @@ g++-8 -fuse-ld=gold -Wl,-rpath="../${lib_path_debug_gcc}" "${flags_debug[@]}" -s
 g++-8 -fuse-ld=gold -Wl,-rpath="../${lib_path_release_gcc}"  "${flags_release[@]}" -std=c++17 -o "${link_dir}/test-10" "${cxx_main}" -L"./${lib_path_release_gcc}" -llukusana
 echo
 cd ${link_dir} || exit 1
-./test-9 946909 && echo '[17] [test-9] link g++ - gcc-lib debug OK' >> "../${outfile}"
-./test-10 946909 && echo '[18] [test-10] link g++ - gcc-lib release OK' >> "../${outfile}"
+./test-9 946909 && echo '[17] [test-9] link g++ - g++-lib debug OK' >> "../${outfile}"
+./test-10 946909 && echo '[18] [test-10] link g++ - g++-lib release OK' >> "../${outfile}"
 cd ..
 echo
-clang++-8 -fuse-ld=lld-8 -Wl,-rpath="../${lib_path_debug_clang}" "${flags_debug[@]}" -std=c++17 -stdlib=libstdc++ -o "${link_dir}/test-11" "${cxx_main}" -L"./${lib_path_debug_clang}" -llukusana -lstdc++
-clang++-8 -fuse-ld=lld-8 -Wl,-rpath="../${lib_path_release_clang}" "${flags_release[@]}" -std=c++17 -stdlib=libstdc++ -o "${link_dir}/test-12" "${cxx_main}" -L"./${lib_path_release_clang}" -llukusana -lstdc++
+clang++-8 -fuse-ld=lld-8 -Wl,-rpath="../${lib_path_debug_clang}" "${flags_debug[@]}" -std=c++17 -stdlib=libc++ -o "${link_dir}/test-11" "${cxx_main}" -L"./${lib_path_debug_clang}" -llukusana -lc++
+clang++-8 -fuse-ld=lld-8 -Wl,-rpath="../${lib_path_release_clang}" "${flags_release[@]}" -std=c++17 -stdlib=libc++ -o "${link_dir}/test-12" "${cxx_main}" -L"./${lib_path_release_clang}" -llukusana -lc++
 cd ${link_dir}
-./test-11 946909 && echo '[19] [test-11] link clang++ - clang-lib debug OK' >> "../${outfile}"
-./test-12 946909 && echo '[20] [test-12] link clang++ - clang-lib release OK' >> "../${outfile}"
-cd ..
-echo 'C++ Cross linkings:'
-g++-8 -fuse-ld=gold -Wl,-rpath="../${lib_path_debug_clang}" "${flags_debug[@]}" -std=c++17 -o "${link_dir}/test-13" "${cxx_main}" -L"./${lib_path_debug_clang}" -llukusana
-g++-8 -fuse-ld=gold -Wl,-rpath="../${lib_path_release_clang}" "${flags_release[@]}" -std=c++17 -o "${link_dir}/test-14" "${cxx_main}" -L"./${lib_path_release_clang}" -llukusana
-echo
-clang++-8 -fuse-ld=lld-8 -Wl,-rpath="../${lib_path_debug_gcc}" "${flags_debug[@]}" -std=c++17 -stdlib=libstdc++ -o "${link_dir}/test-15" "${cxx_main}" -L"./${lib_path_debug_gcc}" -llukusana -lstdc++
-clang++-8 -fuse-ld=lld-8 -Wl,-rpath="../${lib_path_release_gcc}" "${flags_release[@]}" -std=c++17 -stdlib=libstdc++ -o "${link_dir}/test-16" "${cxx_main}" -L"./${lib_path_release_gcc}" -llukusana -lstdc++
-cd ${link_dir}
-./test-13 946909 && echo '[21] [test-13] link g++ - clang-lib debug OK' >> "../${outfile}"
-./test-14 946909 && echo '[22] [test-14] link g++ - clang-lib release OK' >> "../${outfile}"
-echo
-./test-15 946909 && echo '[23] [test-15] link clang++ - gcc-lib debug OK' >> "../${outfile}"
-./test-16 946909 && echo '[24] [test-16] link clang++ - gcc-lib release OK' >> "../${outfile}"
+./test-11 946909 && echo '[19] [test-11] link clang++ - clang++-lib debug OK' >> "../${outfile}"
+./test-12 946909 && echo '[20] [test-12] link clang++ - clang++-lib release OK' >> "../${outfile}"
 cd ..
 set +v
+# Mixing does not work in C++
+#echo 'C++ Cross linkings:'
+#g++-8 -fuse-ld=gold -Wl,-rpath="../${lib_path_debug_clang}" "${flags_debug[@]}" -std=c++17 -o "${link_dir}/test-13" "${cxx_main}" -L"./${lib_path_debug_clang}" -llukusana
+#g++-8 -fuse-ld=gold -Wl,-rpath="../${lib_path_release_clang}" "${flags_release[@]}" -std=c++17 -o "${link_dir}/test-14" "${cxx_main}" -L"./${lib_path_release_clang}" -llukusana
+#echo
+#clang++-8 -fuse-ld=lld-8 -Wl,-rpath="../${lib_path_debug_gcc}" "${flags_debug[@]}" -std=c++17 -stdlib=libc++ -o "${link_dir}/test-15" "${cxx_main}" -L"./${lib_path_debug_gcc}" -llukusana -lc++
+#clang++-8 -fuse-ld=lld-8 -Wl,-rpath="../${lib_path_release_gcc}" "${flags_release[@]}" -std=c++17 -stdlib=libc++ -o "${link_dir}/test-16" "${cxx_main}" -L"./${lib_path_release_gcc}" -llukusana -lc++
+#cd ${link_dir}
+#./test-13 946909 && echo '[21] [test-13] link g++ - clang++-lib debug OK' >> "../${outfile}"
+#./test-14 946909 && echo '[22] [test-14] link g++ - clang++-lib release OK' >> "../${outfile}"
+#echo
+#./test-15 946909 && echo '[23] [test-15] link clang++ - g++-lib debug OK' >> "../${outfile}"
+#./test-16 946909 && echo '[24] [test-16] link clang++ - g++-lib release OK' >> "../${outfile}"
+#cd ..
 echo
 echo
-if (( $(cat ${outfile}|wc -l) == 24 )); then
+if (( $(cat ${outfile}|wc -l) == 20 )); then
   echo 'All tests OK.'
 else
   echo '**** One or more tests failed.  ****'
