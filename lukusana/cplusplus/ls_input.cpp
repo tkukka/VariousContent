@@ -2,6 +2,7 @@
 #include <iostream>
 #include <limits>
 #include <string>
+#include <stdexcept>
 
 #include "ls_input.h"
 
