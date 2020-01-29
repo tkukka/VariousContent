@@ -20,7 +20,7 @@ SANITIZER_TYPE := leak
 .SUFFIXES: .c .h .cpp .o .a
 CC = clang-8 # gcc-8
 CXX = clang-8 # g++-8
-CPP = $(CXX) -E
+CPP = $(CC) -E
 SIZE = size -B
 CPPFLAGS =
 WARNINGS = -pedantic -Wall -Wextra -Wformat-security -Werror=format-security
@@ -160,6 +160,7 @@ ifeq ($(strip $(OBJS_CXX)),)
    LINKER := $(CC)
 else
    LINKER := $(CXX)
+   CPP := $(CXX) -E
 
 ifdef USE_CLANG
    LDLIBS += -lc++

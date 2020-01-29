@@ -1,7 +1,15 @@
+
+#ifdef __cplusplus
+
+#include <cassert>
+#include "cplusplus/ls_presentation.h"
+
+#else // C käännös
+
 #include <stdlib.h>
 #include <assert.h>    /* assert-makro/funktio */
 #include "ls_presentation.h"
-
+#endif
 
 /*        Tulosteisiin tarvittavat tekstivakiot     */
 
@@ -9,6 +17,15 @@
  *  (Numerot 10 - 19 ovat luonteeltaan epäsäännöllisiä,
  *  joten ne on helpointa määritellä tässä.)
  */
+#ifdef __cplusplus
+namespace LS {
+
+using namespace std;
+
+template <typename T = LS::NodeDataType>
+int push_to_stack(T data) { return LS::FooStack::push_to_stack(data); }
+
+#endif
 
 static const char NUMBERS_0_19[][17] =
     {
@@ -238,4 +255,7 @@ void make_string_presentation(unsigned long number)
             }  /* while (number != 0) */
         }
     }
+#ifdef __cplusplus
+} // nimiavaruus
+#endif
 
