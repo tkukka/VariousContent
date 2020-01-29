@@ -17,7 +17,7 @@ Sisältö
 
 
 Contents
-* Program to spell out a given number
+* Program to spell out a given number in Finnish
 * An old C-programming assignment revisited
 * Added Makefile, source code split
 * Debug & Release builds (GCC 8.30, Clang 8.0)
