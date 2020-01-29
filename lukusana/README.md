@@ -1,3 +1,6 @@
+# Source C/C++ Dialect
+* **C**: C11 (compiler: -std=c11)
+* **C++**: C++17 (compiler: -std=c++17)
 # Build Platform
 - Ubuntu 18.04 LTS
 - GNU Make 4.1
@@ -8,19 +11,19 @@
 
 # Build Flags for Makefile
 
-Flag |Compile C Sources | Compile C++ Sources   
+Flag |Compile C Sources | Compile C++ Sources
 ----|----|----
-**USE_CXX_SOURCES**  |  < undefined >  |  1  
+**USE_CXX_SOURCES**  |  < undefined >  |  1 
 
 
-Flag |Use Clang | Use GCC   
+Flag |Use Clang | Use GCC
 ----|----|----
-**CC**  |  < undefined > or **clang** |  gcc  
+**CC**  |  < undefined > or **clang** |  gcc
 **CXX**  |  < undefined > or **clang** |  g++ 
 
-Flag | Debug Build | Release Build    
+Flag | Debug Build | Release Build
 ----|----|----
-**BUILD**  |  < undefined > or **Debug** |  Release  
+**BUILD**  |  < undefined > or **Debug** |  Release
 
 #### Examples
 1. Build with C sources, targeting Debug, use Clang
