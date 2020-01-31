@@ -11,8 +11,10 @@ MAPFILE := $(TARGET).map
 LIB_DIR := ./lib-$(BUILD)
 LIB_DIR_DEBUG := ./lib-$(DEBUG_STR)
 LIB_DIR_RELEASE := ./lib-$(RELEASE_STR)
-LIB_NAME := liblukusana.so
-LIB_TARGET := $(LIB_DIR)/$(LIB_NAME)
+LIB_SO_NAME := liblukusana.so
+LIB_SO_TARGET := $(LIB_DIR)/$(LIB_SO_NAME)
+LIB_A_NAME := liblukusana.a
+LIB_A_TARGET := $(BUILD_DIR)/$(LIB_A_NAME)
 DEPENDFILE := ./.depend.$(BUILD)
 SANITIZER := 
 SANITIZER_TYPE := leak
@@ -22,6 +24,7 @@ CC = clang-8 # gcc-8
 CXX = clang-8 # g++-8
 CPP = $(CC) -E
 SIZE = size -B
+ARFLAGS = rcs
 CPPFLAGS =
 WARNINGS = -pedantic -Wall -Wextra -Wformat-security -Werror=format-security
 #USE_CXX_SOURCES := 1
@@ -38,9 +41,11 @@ ifdef USE_CLANG
   WARNINGS += -Wtautological-compare -Wtautological-constant-in-range-compare -Wgnu
   DEBUG_INFO := -g3 -glldb -O0
   LDFLAGS += -fuse-ld=lld-8
+  AR := llvm-ar-8
 else
   DEBUG_INFO := -g3 -ggdb -O0
   LDFLAGS += -fuse-ld=gold
+  AR = ar
 endif
 
 
@@ -86,11 +91,14 @@ $(LIB_DIR_DEBUG)/%.o: CXXFLAGS += $(DEFS) $(DEBUG_INFO) $(WARNINGS) -std=c++17 -
 ifdef USE_CLANG
   $(LIB_DIR_DEBUG)/%.o: CXXFLAGS += -stdlib=libc++
 endif
-$(LIB_DIR_DEBUG)/$(LIB_NAME): LDFLAGS += -shared -fPIC -Wl,-soname,$(LIB_NAME) -Wl,-z,defs,-z,relro,-z,now,-z,noexecstack,-z,notext
+$(LIB_DIR_DEBUG)/$(LIB_SO_NAME): LDFLAGS += -shared -fPIC -Wl,-soname,$(LIB_SO_NAME) -Wl,-z,defs,-z,relro,-z,now,-z,noexecstack,-z,notext
 
 # ========================      Release    ===================================
 ifeq ($(strip $(BUILD)),Release)
   DEFS += -DNDEBUG -UDEBUG
+  ifndef USE_CLANG
+    AR := gcc-ar-8
+  endif
 endif
 
 $(BUILD_DIR_RELEASE)/%.o: CFLAGS += $(DEFS) -O2 $(WARNINGS) -std=c11 -march=native -fPIE -fstack-protector-strong
@@ -112,16 +120,16 @@ endif
 
 $(LIB_DIR_RELEASE)/%.o: CFLAGS += $(DEFS) -O2 $(WARNINGS) -std=c11 -march=native -fPIC -fstack-protector-strong
 $(LIB_DIR_RELEASE)/%.o: CXXFLAGS += $(DEFS) -O2 $(WARNINGS) -std=c++17 -march=native -fPIC -fstack-protector-strong
-$(LIB_DIR_RELEASE)/$(LIB_NAME): LDFLAGS += -O2 $(WARNINGS) -shared -fPIC -Wl,-soname,$(LIB_NAME) -Wl,-z,defs,-z,relro,-z,now,-z,notext,-z,noexecstack -Wl,-s
+$(LIB_DIR_RELEASE)/$(LIB_SO_NAME): LDFLAGS += -O2 $(WARNINGS) -shared -fPIC -Wl,-soname,$(LIB_SO_NAME) -Wl,-z,defs,-z,relro,-z,now,-z,notext,-z,noexecstack -Wl,-s
 
 ifdef USE_CLANG
   $(LIB_DIR_RELEASE)/%.o: CFLAGS += -flto=thin #-fsanitize=cfi -fvisibility=hidden
   $(LIB_DIR_RELEASE)/%.o: CXXFLAGS += -stdlib=libc++ -flto=thin #-fsanitize=cfi -fvisibility=hidden
-  $(LIB_DIR_RELEASE)/$(LIB_NAME): LDFLAGS += -flto=thin #-fsanitize=cfi -fvisibility=hidden
+  $(LIB_DIR_RELEASE)/$(LIB_SO_NAME): LDFLAGS += -flto=thin #-fsanitize=cfi -fvisibility=hidden
 else
   $(LIB_DIR_RELEASE)/%.o: CFLAGS += -flto -fuse-linker-plugin -fstack-clash-protection
   $(LIB_DIR_RELEASE)/%.o: CXXFLAGS += -flto -fuse-linker-plugin -fstack-clash-protection
-  $(LIB_DIR_RELEASE)/$(LIB_NAME): LDFLAGS += -flto -fuse-linker-plugin -fstack-clash-protection
+  $(LIB_DIR_RELEASE)/$(LIB_SO_NAME): LDFLAGS += -flto -fuse-linker-plugin -fstack-clash-protection
 endif
 
 
@@ -148,6 +156,7 @@ OBJS := $(addprefix $(BUILD_DIR)/,$(OBJS_CXX)) $(addprefix $(BUILD_DIR)/,$(OBJS_
 
 LIB_OBJS_CXX = $(LIB_SRCS_CXX:.cpp=.o)
 LIB_OBJS_C = $(LIB_SRCS_C:.c=.o)
+LIB_A_OBJS := $(addprefix $(BUILD_DIR)/,$(LIB_OBJS_CXX)) $(addprefix $(BUILD_DIR)/,$(LIB_OBJS_C))
 LIB_OBJS := $(addprefix $(LIB_DIR)/,$(LIB_OBJS_CXX)) $(addprefix $(LIB_DIR)/,$(LIB_OBJS_C))
 
 ifdef USE_CXX_SOURCES
@@ -199,7 +208,7 @@ $(LIB_DIR)/%.o: %.cpp
 
 endif
 
-all: $(TARGET) $(LIB_TARGET)
+all: $(TARGET) $(LIB_SO_TARGET)
 
 $(OBJS): | $(BUILD_DIR)
 
@@ -209,13 +218,15 @@ $(BUILD_DIR):
 $(TARGET): $(OBJS)
 	@echo --- Linking [$(BUILD)] ---
 	$(LINKER) $(LDFLAGS) $(OBJS) -o $@ $(LDLIBS)
+	@echo --- Creating archive [$(BUILD)] ---
+	$(AR) $(ARFLAGS) $(LIB_A_TARGET) $(LIB_A_OBJS)
 
 $(LIB_OBJS): | $(LIB_DIR)
 
 $(LIB_DIR):
 	-test -d $(LIB_DIR) || mkdir $(LIB_DIR)
 
-$(LIB_TARGET): $(LIB_OBJS)
+$(LIB_SO_TARGET): $(LIB_OBJS)
 	@echo --- Library linking [$(BUILD)] ---
 	$(LINKER) $(LDFLAGS) $(LIB_OBJS) -o $@ $(LDLIBS)
 
@@ -237,8 +248,8 @@ $(DEPENDFILE): $(SRCS)
 
 clean:
 	@echo --- Clean [$(BUILD)]  ---
-	$(RM) $(OBJS) $(TARGET) $(MAPFILE)
-	$(RM) $(LIB_OBJS) $(LIB_TARGET)
+	$(RM) $(OBJS) $(TARGET) $(LIB_A_TARGET) $(MAPFILE)
+	$(RM) $(LIB_OBJS) $(LIB_SO_TARGET)
 
 distclean: clean
 	@echo --- Distclean [$(BUILD)] ---
