@@ -1,8 +1,10 @@
 lukusana/.codelite/
 *.txt
+!LICENSE_1_0.txt
 lukusana/Debug/
 lukusana/Release/
 lukusana/.depend*
 lukusana/lib-Debug/
 lukusana/lib-Release/
+__pycache__
 
