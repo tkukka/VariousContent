@@ -100,7 +100,7 @@ endif
 
 
 # Source .c and .cpp files
-SRCS_CXX = test_main.cpp test_input.cpp test_stack.cpp
+SRCS_CXX = test_main.cpp test_input.cpp test_stack.cpp test_presentation.cpp
 SRCS_C =
 SRCS = $(SRCS_CXX) $(SRCS_C)
 

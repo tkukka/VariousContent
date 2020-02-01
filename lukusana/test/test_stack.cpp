@@ -12,7 +12,7 @@ TEST_CASE( "stack operation 1", "[stack]" ) {
    INFO("Stack Test case 1");
    FooStack::init_stack();
    FooStack::clear_stack();
-
+   REQUIRE(FooStack::get_stack_size() == 0);
    SECTION( "push" ) {
         NodeDataType t = " - 1. test\n";
         REQUIRE(FooStack::push_to_stack(t) == 1);
@@ -27,7 +27,7 @@ TEST_CASE( "stack operation 2", "[stack]" ) {
    INFO("Stack Test case 2");
    FooStack::init_stack();
    FooStack::clear_stack();
-
+   REQUIRE(FooStack::get_stack_size() == 0);
    SECTION( "push pop 1" ) {
         NodeDataType t = "2. test";
         REQUIRE(FooStack::push_to_stack(t) == 1);
@@ -64,7 +64,7 @@ TEST_CASE( "stack operation 3", "[stack]" ) {
    INFO("Stack Test case 3");
    FooStack::init_stack();
    FooStack::clear_stack();
-
+   REQUIRE(FooStack::get_stack_size() == 0);
    SECTION( "push pop" ) {
         NodeDataType t = "test 4";
         NodeDataType t2 = "test -";
@@ -115,7 +115,7 @@ TEST_CASE( "stack operation 1" ) {
    INFO("Stack Test case 1");
    FooStack::init_stack();
    FooStack::clear_stack();
-
+   REQUIRE(FooStack::get_stack_size() == 0);
    SUBCASE( "push" ) {
         NodeDataType t = " - 1. test\n";
         REQUIRE(FooStack::push_to_stack(t) == 1);
@@ -130,7 +130,7 @@ TEST_CASE( "stack operation 2") {
    INFO("Stack Test case 2");
    FooStack::init_stack();
    FooStack::clear_stack();
-
+   REQUIRE(FooStack::get_stack_size() == 0);
    SUBCASE( "push pop 1" ) {
         NodeDataType t = "2. test";
         REQUIRE(FooStack::push_to_stack(t) == 1);
@@ -167,7 +167,7 @@ TEST_CASE( "stack operation 3" ) {
    INFO("Stack Test case 3");
    FooStack::init_stack();
    FooStack::clear_stack();
-
+   REQUIRE(FooStack::get_stack_size() == 0);
    SUBCASE( "push pop" ) {
         NodeDataType t = "test 4";
         NodeDataType t2 = "test -";
