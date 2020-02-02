@@ -5,7 +5,7 @@ n=0
 while IFS= read -r line
 do
   #echo "$line"
-  n=$(expr ${n} + 1)
+  n=$((${n} + 1))
 done < "${filename}"
 echo "Lines: ${n}"
 
