@@ -486,6 +486,665 @@ TEST_CASE( "number spell out 21" ) {
 
 }
 
+TEST_CASE( "number spell out 22" ) {
+   using namespace std;
+   using namespace LS;
+
+   FooStack::init_stack();
+   FooStack::clear_stack();
+   REQUIRE(FooStack::get_stack_size() == 0);
+
+
+   string s;
+   unsigned long n = 22;
+   make_string_presentation(n);
+
+   {
+     auto ret = compose(s);
+     REQUIRE(ret == u8"kaksikymmentäkaksi");
+   }
+
+}
+
+TEST_CASE( "number spell out 23" ) {
+   using namespace std;
+   using namespace LS;
+
+   FooStack::init_stack();
+   FooStack::clear_stack();
+   REQUIRE(FooStack::get_stack_size() == 0);
+
+
+   string s;
+   unsigned long n = 23;
+   make_string_presentation(n);
+
+   {
+     auto ret = compose(s);
+     REQUIRE(ret == u8"kaksikymmentäkolme");
+   }
+
+}
+
+TEST_CASE( "number spell out 24" ) {
+   using namespace std;
+   using namespace LS;
+
+   FooStack::init_stack();
+   FooStack::clear_stack();
+   REQUIRE(FooStack::get_stack_size() == 0);
+
+
+   string s;
+   unsigned long n = 24;
+   make_string_presentation(n);
+
+   {
+     auto ret = compose(s);
+     REQUIRE(ret == u8"kaksikymmentäneljä");
+   }
+
+}
+
+TEST_CASE( "number spell out 25" ) {
+   using namespace std;
+   using namespace LS;
+
+   FooStack::init_stack();
+   FooStack::clear_stack();
+   REQUIRE(FooStack::get_stack_size() == 0);
+
+
+   string s;
+   unsigned long n = 25;
+   make_string_presentation(n);
+
+   {
+     auto ret = compose(s);
+     REQUIRE(ret == u8"kaksikymmentäviisi");
+   }
+
+}
+
+TEST_CASE( "number spell out 29" ) {
+   using namespace std;
+   using namespace LS;
+
+   FooStack::init_stack();
+   FooStack::clear_stack();
+   REQUIRE(FooStack::get_stack_size() == 0);
+
+
+   string s;
+   unsigned long n = 29;
+   make_string_presentation(n);
+
+   {
+     auto ret = compose(s);
+     REQUIRE(ret == u8"kaksikymmentäyhdeksän");
+   }
+
+}
+
+TEST_CASE( "number spell out 30" ) {
+   using namespace std;
+   using namespace LS;
+
+   FooStack::init_stack();
+   FooStack::clear_stack();
+   REQUIRE(FooStack::get_stack_size() == 0);
+
+
+   string s;
+   unsigned long n = 30;
+   make_string_presentation(n);
+
+   {
+     auto ret = compose(s);
+     REQUIRE(ret == u8"kolmekymmentä");
+   }
+
+}
+
+TEST_CASE( "number spell out 31" ) {
+   using namespace std;
+   using namespace LS;
+
+   FooStack::init_stack();
+   FooStack::clear_stack();
+   REQUIRE(FooStack::get_stack_size() == 0);
+
+
+   string s;
+   unsigned long n = 31;
+   make_string_presentation(n);
+
+   {
+     auto ret = compose(s);
+     REQUIRE(ret == u8"kolmekymmentäyksi");
+   }
+
+}
+
+TEST_CASE( "number spell out 32" ) {
+   using namespace std;
+   using namespace LS;
+
+   FooStack::init_stack();
+   FooStack::clear_stack();
+   REQUIRE(FooStack::get_stack_size() == 0);
+
+
+   string s;
+   unsigned long n = 32;
+   make_string_presentation(n);
+
+   {
+     auto ret = compose(s);
+     REQUIRE(ret == u8"kolmekymmentäkaksi");
+   }
+
+}
+
+TEST_CASE( "number spell out 39" ) {
+   using namespace std;
+   using namespace LS;
+
+   FooStack::init_stack();
+   FooStack::clear_stack();
+   REQUIRE(FooStack::get_stack_size() == 0);
+
+
+   string s;
+   unsigned long n = 39;
+   make_string_presentation(n);
+
+   {
+     auto ret = compose(s);
+     REQUIRE(ret == u8"kolmekymmentäyhdeksän");
+   }
+
+}
+
+TEST_CASE( "number spell out 40" ) {
+   using namespace std;
+   using namespace LS;
+
+   FooStack::init_stack();
+   FooStack::clear_stack();
+   REQUIRE(FooStack::get_stack_size() == 0);
+
+
+   string s;
+   unsigned long n = 40;
+   make_string_presentation(n);
+
+   {
+     auto ret = compose(s);
+     REQUIRE(ret == u8"neljäkymmentä");
+   }
+
+}
+
+TEST_CASE( "number spell out 41" ) {
+   using namespace std;
+   using namespace LS;
+
+   FooStack::init_stack();
+   FooStack::clear_stack();
+   REQUIRE(FooStack::get_stack_size() == 0);
+
+
+   string s;
+   unsigned long n = 41;
+   make_string_presentation(n);
+
+   {
+     auto ret = compose(s);
+     REQUIRE(ret == u8"neljäkymmentäyksi");
+   }
+
+}
+
+TEST_CASE( "number spell out 49" ) {
+   using namespace std;
+   using namespace LS;
+
+   FooStack::init_stack();
+   FooStack::clear_stack();
+   REQUIRE(FooStack::get_stack_size() == 0);
+
+
+   string s;
+   unsigned long n = 49;
+   make_string_presentation(n);
+
+   {
+     auto ret = compose(s);
+     REQUIRE(ret == u8"neljäkymmentäyhdeksän");
+   }
+
+}
+
+TEST_CASE( "number spell out 50" ) {
+   using namespace std;
+   using namespace LS;
+
+   FooStack::init_stack();
+   FooStack::clear_stack();
+   REQUIRE(FooStack::get_stack_size() == 0);
+
+
+   string s;
+   unsigned long n = 50;
+   make_string_presentation(n);
+
+   {
+     auto ret = compose(s);
+     REQUIRE(ret == u8"viisikymmentä");
+   }
+
+}
+
+TEST_CASE( "number spell out 55" ) {
+   using namespace std;
+   using namespace LS;
+
+   FooStack::init_stack();
+   FooStack::clear_stack();
+   REQUIRE(FooStack::get_stack_size() == 0);
+
+
+   string s;
+   unsigned long n = 55;
+   make_string_presentation(n);
+
+   {
+     auto ret = compose(s);
+     REQUIRE(ret == u8"viisikymmentäviisi");
+   }
+
+}
+
+TEST_CASE( "number spell out 60" ) {
+   using namespace std;
+   using namespace LS;
+
+   FooStack::init_stack();
+   FooStack::clear_stack();
+   REQUIRE(FooStack::get_stack_size() == 0);
+
+
+   string s;
+   unsigned long n = 60;
+   make_string_presentation(n);
+
+   {
+     auto ret = compose(s);
+     REQUIRE(ret == u8"kuusikymmentä");
+   }
+
+}
+
+TEST_CASE( "number spell out 70" ) {
+   using namespace std;
+   using namespace LS;
+
+   FooStack::init_stack();
+   FooStack::clear_stack();
+   REQUIRE(FooStack::get_stack_size() == 0);
+
+
+   string s;
+   unsigned long n = 70;
+   make_string_presentation(n);
+
+   {
+     auto ret = compose(s);
+     REQUIRE(ret == u8"seitsemänkymmentä");
+   }
+
+}
+
+TEST_CASE( "number spell out 80" ) {
+   using namespace std;
+   using namespace LS;
+
+   FooStack::init_stack();
+   FooStack::clear_stack();
+   REQUIRE(FooStack::get_stack_size() == 0);
+
+
+   string s;
+   unsigned long n = 80;
+   make_string_presentation(n);
+
+   {
+     auto ret = compose(s);
+     REQUIRE(ret == u8"kahdeksankymmentä");
+   }
+
+}
+
+TEST_CASE( "number spell out 90" ) {
+   using namespace std;
+   using namespace LS;
+
+   FooStack::init_stack();
+   FooStack::clear_stack();
+   REQUIRE(FooStack::get_stack_size() == 0);
+
+
+   string s;
+   unsigned long n = 90;
+   make_string_presentation(n);
+
+   {
+     auto ret = compose(s);
+     REQUIRE(ret == u8"yhdeksänkymmentä");
+   }
+
+}
+
+TEST_CASE( "number spell out 99" ) {
+   using namespace std;
+   using namespace LS;
+
+   FooStack::init_stack();
+   FooStack::clear_stack();
+   REQUIRE(FooStack::get_stack_size() == 0);
+
+
+   string s;
+   unsigned long n = 99;
+   make_string_presentation(n);
+
+   {
+     auto ret = compose(s);
+     REQUIRE(ret == u8"yhdeksänkymmentäyhdeksän");
+   }
+
+}
+
+TEST_CASE( "number spell out 100" ) {
+   using namespace std;
+   using namespace LS;
+
+   FooStack::init_stack();
+   FooStack::clear_stack();
+   REQUIRE(FooStack::get_stack_size() == 0);
+
+
+   string s;
+   unsigned long n = 100;
+   make_string_presentation(n);
+
+   {
+     auto ret = compose(s);
+     REQUIRE(ret == u8"sata");
+   }
+
+}
+
+TEST_CASE( "number spell out 101" ) {
+   using namespace std;
+   using namespace LS;
+
+   FooStack::init_stack();
+   FooStack::clear_stack();
+   REQUIRE(FooStack::get_stack_size() == 0);
+
+
+   string s;
+   unsigned long n = 101;
+   make_string_presentation(n);
+
+   {
+     auto ret = compose(s);
+     REQUIRE(ret == u8"satayksi");
+   }
+
+}
+
+TEST_CASE( "number spell out 119" ) {
+   using namespace std;
+   using namespace LS;
+
+   FooStack::init_stack();
+   FooStack::clear_stack();
+   REQUIRE(FooStack::get_stack_size() == 0);
+
+
+   string s;
+   unsigned long n = 119;
+   make_string_presentation(n);
+
+   {
+     auto ret = compose(s);
+     REQUIRE(ret == u8"satayhdeksäntoista");
+   }
+
+}
+
+TEST_CASE( "number spell out 120" ) {
+   using namespace std;
+   using namespace LS;
+
+   FooStack::init_stack();
+   FooStack::clear_stack();
+   REQUIRE(FooStack::get_stack_size() == 0);
+
+
+   string s;
+   unsigned long n = 120;
+   make_string_presentation(n);
+
+   {
+     auto ret = compose(s);
+     REQUIRE(ret == u8"satakaksikymmentä");
+   }
+
+}
+
+TEST_CASE( "number spell out 121" ) {
+   using namespace std;
+   using namespace LS;
+
+   FooStack::init_stack();
+   FooStack::clear_stack();
+   REQUIRE(FooStack::get_stack_size() == 0);
+
+
+   string s;
+   unsigned long n = 121;
+   make_string_presentation(n);
+
+   {
+     auto ret = compose(s);
+     REQUIRE(ret == u8"satakaksikymmentäyksi");
+   }
+
+}
+
+TEST_CASE( "number spell out 159" ) {
+   using namespace std;
+   using namespace LS;
+
+   FooStack::init_stack();
+   FooStack::clear_stack();
+   REQUIRE(FooStack::get_stack_size() == 0);
+
+
+   string s;
+   unsigned long n = 159;
+   make_string_presentation(n);
+
+   {
+     auto ret = compose(s);
+     REQUIRE(ret == u8"sataviisikymmentäyhdeksän");
+   }
+
+}
+
+TEST_CASE( "number spell out 199" ) {
+   using namespace std;
+   using namespace LS;
+
+   FooStack::init_stack();
+   FooStack::clear_stack();
+   REQUIRE(FooStack::get_stack_size() == 0);
+
+
+   string s;
+   unsigned long n = 199;
+   make_string_presentation(n);
+
+   {
+     auto ret = compose(s);
+     REQUIRE(ret == u8"satayhdeksänkymmentäyhdeksän");
+   }
+
+}
+
+TEST_CASE( "number spell out 200" ) {
+   using namespace std;
+   using namespace LS;
+
+   FooStack::init_stack();
+   FooStack::clear_stack();
+   REQUIRE(FooStack::get_stack_size() == 0);
+
+
+   string s;
+   unsigned long n = 200;
+   make_string_presentation(n);
+
+   {
+     auto ret = compose(s);
+     REQUIRE(ret == u8"kaksisataa");
+   }
+
+}
+
+TEST_CASE( "number spell out 218" ) {
+   using namespace std;
+   using namespace LS;
+
+   FooStack::init_stack();
+   FooStack::clear_stack();
+   REQUIRE(FooStack::get_stack_size() == 0);
+
+
+   string s;
+   unsigned long n = 218;
+   make_string_presentation(n);
+
+   {
+     auto ret = compose(s);
+     REQUIRE(ret == u8"kaksisataakahdeksantoista");
+   }
+
+}
+
+TEST_CASE( "number spell out 318" ) {
+   using namespace std;
+   using namespace LS;
+
+   FooStack::init_stack();
+   FooStack::clear_stack();
+   REQUIRE(FooStack::get_stack_size() == 0);
+
+
+   string s;
+   unsigned long n = 318;
+   make_string_presentation(n);
+
+   {
+     auto ret = compose(s);
+     REQUIRE(ret == u8"kolmesataakahdeksantoista");
+   }
+
+}
+
+TEST_CASE( "number spell out 569" ) {
+   using namespace std;
+   using namespace LS;
+
+   FooStack::init_stack();
+   FooStack::clear_stack();
+   REQUIRE(FooStack::get_stack_size() == 0);
+
+
+   string s;
+   unsigned long n = 569;
+   make_string_presentation(n);
+
+   {
+     auto ret = compose(s);
+     REQUIRE(ret == u8"viisisataakuusikymmentäyhdeksän");
+   }
+
+}
+
+TEST_CASE( "number spell out 999" ) {
+   using namespace std;
+   using namespace LS;
+
+   FooStack::init_stack();
+   FooStack::clear_stack();
+   REQUIRE(FooStack::get_stack_size() == 0);
+
+
+   string s;
+   unsigned long n = 999;
+   make_string_presentation(n);
+
+   {
+     auto ret = compose(s);
+     REQUIRE(ret == u8"yhdeksänsataayhdeksänkymmentäyhdeksän");
+   }
+
+}
+
+TEST_CASE( "number spell out 1000" ) {
+   using namespace std;
+   using namespace LS;
+
+   FooStack::init_stack();
+   FooStack::clear_stack();
+   REQUIRE(FooStack::get_stack_size() == 0);
+
+
+   string s;
+   unsigned long n = 1000;
+   make_string_presentation(n);
+
+   {
+     auto ret = compose(s);
+     REQUIRE(ret == u8"tuhat");
+   }
+
+}
+
+TEST_CASE( "number spell out 1001" ) {
+   using namespace std;
+   using namespace LS;
+
+   FooStack::init_stack();
+   FooStack::clear_stack();
+   REQUIRE(FooStack::get_stack_size() == 0);
+
+
+   string s;
+   unsigned long n = 1001;
+   make_string_presentation(n);
+
+   {
+     auto ret = compose(s);
+     REQUIRE(ret == u8"tuhat yksi");
+   }
+
+}
 #endif
 
 
