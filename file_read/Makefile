@@ -42,6 +42,21 @@ else
   LDFLAGS += -fuse-ld=gold
 endif
 
+ifneq ($(MAKECMDGOALS),clean)
+  ifeq ($(strip $(BUILD)),)
+    $(error Build [Debug | Release] not specified.)
+  endif
+  ifeq ($(strip $(BUILD)),Debug)
+    BUILD_SPECIFIED := 1
+  endif
+  ifeq ($(strip $(BUILD)),Release)
+    BUILD_SPECIFIED := 1
+  endif
+  ifndef BUILD_SPECIFIED
+    $(error Build "$(BUILD)" is not a proper build [Debug | Release].)
+  endif
+endif
+
 # ========================      Debug    ===================================
 ifeq ($(strip $(BUILD)),Debug)
   DEFS += -DDEBUG -UNDEBUG -D_GLIBCXX_ASSERTIONS
@@ -85,11 +100,7 @@ ifeq ($(strip $(BUILD)),Release)
   endif
 
 endif # Release
-ifneq ($(MAKECMDGOALS),clean)
-ifeq ($(strip $(BUILD)),)
-  $(error Build not specified.)
-endif
-endif
+
 # ========================   Pattern rules   ================================
 %.class: %.java
 	@echo --- Java compiling ---
