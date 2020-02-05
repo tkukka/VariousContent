@@ -49,89 +49,100 @@ else
 endif
 
 
+ifeq ($(strip $(BUILD)),)
+  $(error Build [Debug | Release] not specified.)
+endif
+ifeq ($(strip $(BUILD)),$(DEBUG_STR))
+  BUILD_SPECIFIED := 1
+endif
+ifeq ($(strip $(BUILD)),$(RELEASE_STR))
+  BUILD_SPECIFIED := 1
+endif
+ifndef BUILD_SPECIFIED
+  $(error Build "$(BUILD)" is not a proper build [Debug | Release].)
+endif
+
 # ========================      Debug    ===================================
-ifeq ($(strip $(BUILD)),Debug)
+ifeq ($(strip $(BUILD)),$(DEBUG_STR))
   DEFS += -DDEBUG -UNDEBUG -D_GLIBCXX_ASSERTIONS
   CFLAGS += -fdebug-prefix-map=$$(pwd)=..
   CXXFLAGS += -fdebug-prefix-map=$$(pwd)=..
   LDFLAGS += $(DEBUG_INFO) $(WARNINGS)
-endif
 
-ifdef USE_CLANG
-#  $(BUILD_DIR_DEBUG)/%.o: CFLAGS += -fsanitize=safe-stack
-#  $(BUILD_DIR_DEBUG)/%.o: CXXFLAGS += -fsanitize=safe-stack
-  $(BUILD_DIR_DEBUG)/%.o: CXXFLAGS += -stdlib=libc++
-endif
+
+  ifdef USE_CLANG
+  #  $(BUILD_DIR_DEBUG)/%.o: CFLAGS += -fsanitize=safe-stack
+  #  $(BUILD_DIR_DEBUG)/%.o: CXXFLAGS += -fsanitize=safe-stack
+    $(BUILD_DIR_DEBUG)/%.o: CXXFLAGS += -stdlib=libc++
+  endif
  
-ifeq ($(strip $(SANITIZER)),asan)
-  $(BUILD_DIR_DEBUG)/%.o: DEFS += -U_FORTIFY_SOURCE
-  $(BUILD_DIR_DEBUG)/%.o: CFLAGS += -fsanitize=$(SANITIZER_TYPE)
-  $(BUILD_DIR_DEBUG)/%.o: CXXFLAGS += -fsanitize=$(SANITIZER_TYPE)
+  ifeq ($(strip $(SANITIZER)),asan)
+    $(BUILD_DIR_DEBUG)/%.o: DEFS += -U_FORTIFY_SOURCE
+    $(BUILD_DIR_DEBUG)/%.o: CFLAGS += -fsanitize=$(SANITIZER_TYPE)
+    $(BUILD_DIR_DEBUG)/%.o: CXXFLAGS += -fsanitize=$(SANITIZER_TYPE)
+  endif
+  ifeq ($(strip $(SANITIZER)),valgrind)
+    $(BUILD_DIR_DEBUG)/%.o: DEFS += -U_FORTIFY_SOURCE
+  endif
+
+  $(BUILD_DIR_DEBUG)/%.o: CFLAGS += $(DEFS) $(DEBUG_INFO) $(WARNINGS) -std=c11 -fno-omit-frame-pointer -fstack-protector-strong
+  $(BUILD_DIR_DEBUG)/%.o: CXXFLAGS += $(DEFS) $(DEBUG_INFO) $(WARNINGS) -std=c++17 -fno-omit-frame-pointer -fstack-protector-strong
+
+  #ifdef USE_CLANG
+  #  $(BUILD_DIR_DEBUG)/$(TARGET_NAME): LDFLAGS += -fsanitize=safe-stack
+  #endif
+
+  $(BUILD_DIR_DEBUG)/$(TARGET_NAME): LDFLAGS += -Wl,-z,relro,-z,now,-z,noexecstack -Wl,--Map,$(MAPFILE)
+  ifeq ($(strip $(SANITIZER)),asan)
+    $(BUILD_DIR_DEBUG)/$(TARGET_NAME): LDFLAGS += -fsanitize=$(SANITIZER_TYPE)
+  else
+    $(BUILD_DIR_DEBUG)/$(TARGET_NAME): LDFLAGS += -Wl,-z,defs
+  endif
+
+  $(LIB_DIR_DEBUG)/%.o: CFLAGS += $(DEFS) $(DEBUG_INFO) $(WARNINGS) -std=c11 -fPIC -fno-omit-frame-pointer -fstack-protector-strong
+  $(LIB_DIR_DEBUG)/%.o: CXXFLAGS += $(DEFS) $(DEBUG_INFO) $(WARNINGS) -std=c++17 -fPIC -fno-omit-frame-pointer -fstack-protector-strong
+  ifdef USE_CLANG
+    $(LIB_DIR_DEBUG)/%.o: CXXFLAGS += -stdlib=libc++
+  endif
+  $(LIB_DIR_DEBUG)/$(LIB_SO_NAME): LDFLAGS += -shared -fPIC -Wl,-soname,$(LIB_SO_NAME) -Wl,-z,defs,-z,relro,-z,now,-z,noexecstack,-z,notext
 endif
-ifeq ($(strip $(SANITIZER)),valgrind)
-  $(BUILD_DIR_DEBUG)/%.o: DEFS += -U_FORTIFY_SOURCE
-endif
-
-$(BUILD_DIR_DEBUG)/%.o: CFLAGS += $(DEFS) $(DEBUG_INFO) $(WARNINGS) -std=c11 -fno-omit-frame-pointer -fstack-protector-strong
-$(BUILD_DIR_DEBUG)/%.o: CXXFLAGS += $(DEFS) $(DEBUG_INFO) $(WARNINGS) -std=c++17 -fno-omit-frame-pointer -fstack-protector-strong 
-
-#ifdef USE_CLANG
-#  $(BUILD_DIR_DEBUG)/$(TARGET_NAME): LDFLAGS += -fsanitize=safe-stack
-#endif
-
-$(BUILD_DIR_DEBUG)/$(TARGET_NAME): LDFLAGS += -Wl,-z,relro,-z,now,-z,noexecstack -Wl,--Map,$(MAPFILE)
-ifeq ($(strip $(SANITIZER)),asan)
-  $(BUILD_DIR_DEBUG)/$(TARGET_NAME): LDFLAGS += -fsanitize=$(SANITIZER_TYPE)
-else
-  $(BUILD_DIR_DEBUG)/$(TARGET_NAME): LDFLAGS += -Wl,-z,defs
-endif
-
-$(LIB_DIR_DEBUG)/%.o: CFLAGS += $(DEFS) $(DEBUG_INFO) $(WARNINGS) -std=c11 -fPIC -fno-omit-frame-pointer -fstack-protector-strong
-$(LIB_DIR_DEBUG)/%.o: CXXFLAGS += $(DEFS) $(DEBUG_INFO) $(WARNINGS) -std=c++17 -fPIC -fno-omit-frame-pointer -fstack-protector-strong 
-ifdef USE_CLANG
-  $(LIB_DIR_DEBUG)/%.o: CXXFLAGS += -stdlib=libc++
-endif
-$(LIB_DIR_DEBUG)/$(LIB_SO_NAME): LDFLAGS += -shared -fPIC -Wl,-soname,$(LIB_SO_NAME) -Wl,-z,defs,-z,relro,-z,now,-z,noexecstack,-z,notext
-
 # ========================      Release    ===================================
-ifeq ($(strip $(BUILD)),Release)
+ifeq ($(strip $(BUILD)),$(RELEASE_STR))
   DEFS += -DNDEBUG -UDEBUG
   ifndef USE_CLANG
     AR := gcc-ar-8
   endif
+
+
+  $(BUILD_DIR_RELEASE)/%.o: CFLAGS += $(DEFS) -O2 $(WARNINGS) -std=c11 -march=native -fPIE -fstack-protector-strong
+  $(BUILD_DIR_RELEASE)/%.o: CXXFLAGS += $(DEFS) -O2 $(WARNINGS) -std=c++17 -march=native -fPIE -fstack-protector-strong
+
+  $(BUILD_DIR_RELEASE)/$(TARGET_NAME): LDFLAGS += -O2 $(WARNINGS) -pie -Wl,-pie -Wl,-z,defs,-z,relro,-z,now,-z,notext,-z,noexecstack -Wl,--Map,$(MAPFILE) -Wl,-s
+
+  ifdef USE_CLANG
+    $(BUILD_DIR_RELEASE)/%.o: CFLAGS += -flto=thin -fsanitize=cfi -fvisibility=hidden #-fsanitize=safe-stack
+    $(BUILD_DIR_RELEASE)/%.o: CXXFLAGS += -stdlib=libc++ -flto=thin -fsanitize=cfi -fvisibility=hidden #-fsanitize=safe-stack
+    $(BUILD_DIR_RELEASE)/$(TARGET_NAME): LDFLAGS += -flto=thin -fsanitize=cfi -fvisibility=hidden #-fsanitize=safe-stack
+  else
+    $(BUILD_DIR_RELEASE)/%.o: CFLAGS += -flto -fuse-linker-plugin -fstack-clash-protection
+    $(BUILD_DIR_RELEASE)/%.o: CXXFLAGS += -flto -fuse-linker-plugin -fstack-clash-protection
+    $(BUILD_DIR_RELEASE)/$(TARGET_NAME): LDFLAGS += -flto -fuse-linker-plugin -fPIE -fstack-clash-protection
+  endif
+
+  $(LIB_DIR_RELEASE)/%.o: CFLAGS += $(DEFS) -O2 $(WARNINGS) -std=c11 -march=native -fPIC -fstack-protector-strong
+  $(LIB_DIR_RELEASE)/%.o: CXXFLAGS += $(DEFS) -O2 $(WARNINGS) -std=c++17 -march=native -fPIC -fstack-protector-strong
+  $(LIB_DIR_RELEASE)/$(LIB_SO_NAME): LDFLAGS += -O2 $(WARNINGS) -shared -fPIC -Wl,-soname,$(LIB_SO_NAME) -Wl,-z,defs,-z,relro,-z,now,-z,notext,-z,noexecstack -Wl,-s
+
+  ifdef USE_CLANG
+    $(LIB_DIR_RELEASE)/%.o: CFLAGS += -flto=thin #-fsanitize=cfi -fvisibility=hidden
+    $(LIB_DIR_RELEASE)/%.o: CXXFLAGS += -stdlib=libc++ -flto=thin #-fsanitize=cfi -fvisibility=hidden
+    $(LIB_DIR_RELEASE)/$(LIB_SO_NAME): LDFLAGS += -flto=thin #-fsanitize=cfi -fvisibility=hidden
+  else
+    $(LIB_DIR_RELEASE)/%.o: CFLAGS += -flto -fuse-linker-plugin -fstack-clash-protection
+    $(LIB_DIR_RELEASE)/%.o: CXXFLAGS += -flto -fuse-linker-plugin -fstack-clash-protection
+    $(LIB_DIR_RELEASE)/$(LIB_SO_NAME): LDFLAGS += -flto -fuse-linker-plugin -fstack-clash-protection
+  endif
 endif
-
-$(BUILD_DIR_RELEASE)/%.o: CFLAGS += $(DEFS) -O2 $(WARNINGS) -std=c11 -march=native -fPIE -fstack-protector-strong
-$(BUILD_DIR_RELEASE)/%.o: CXXFLAGS += $(DEFS) -O2 $(WARNINGS) -std=c++17 -march=native -fPIE -fstack-protector-strong
-
-$(BUILD_DIR_RELEASE)/$(TARGET_NAME): LDFLAGS += -O2 $(WARNINGS) -pie -Wl,-pie -Wl,-z,defs,-z,relro,-z,now,-z,notext,-z,noexecstack -Wl,--Map,$(MAPFILE) -Wl,-s
-
-ifdef USE_CLANG
-  $(BUILD_DIR_RELEASE)/%.o: CFLAGS += -flto=thin -fsanitize=cfi -fvisibility=hidden #-fsanitize=safe-stack
-  $(BUILD_DIR_RELEASE)/%.o: CXXFLAGS += -stdlib=libc++ -flto=thin -fsanitize=cfi -fvisibility=hidden #-fsanitize=safe-stack
-  $(BUILD_DIR_RELEASE)/$(TARGET_NAME): LDFLAGS += -flto=thin -fsanitize=cfi -fvisibility=hidden #-fsanitize=safe-stack
-else
-  $(BUILD_DIR_RELEASE)/%.o: CFLAGS += -flto -fuse-linker-plugin -fstack-clash-protection
-  $(BUILD_DIR_RELEASE)/%.o: CXXFLAGS += -flto -fuse-linker-plugin -fstack-clash-protection
-  $(BUILD_DIR_RELEASE)/$(TARGET_NAME): LDFLAGS += -flto -fuse-linker-plugin -fPIE -fstack-clash-protection
-endif
-
-
-
-$(LIB_DIR_RELEASE)/%.o: CFLAGS += $(DEFS) -O2 $(WARNINGS) -std=c11 -march=native -fPIC -fstack-protector-strong
-$(LIB_DIR_RELEASE)/%.o: CXXFLAGS += $(DEFS) -O2 $(WARNINGS) -std=c++17 -march=native -fPIC -fstack-protector-strong
-$(LIB_DIR_RELEASE)/$(LIB_SO_NAME): LDFLAGS += -O2 $(WARNINGS) -shared -fPIC -Wl,-soname,$(LIB_SO_NAME) -Wl,-z,defs,-z,relro,-z,now,-z,notext,-z,noexecstack -Wl,-s
-
-ifdef USE_CLANG
-  $(LIB_DIR_RELEASE)/%.o: CFLAGS += -flto=thin #-fsanitize=cfi -fvisibility=hidden
-  $(LIB_DIR_RELEASE)/%.o: CXXFLAGS += -stdlib=libc++ -flto=thin #-fsanitize=cfi -fvisibility=hidden
-  $(LIB_DIR_RELEASE)/$(LIB_SO_NAME): LDFLAGS += -flto=thin #-fsanitize=cfi -fvisibility=hidden
-else
-  $(LIB_DIR_RELEASE)/%.o: CFLAGS += -flto -fuse-linker-plugin -fstack-clash-protection
-  $(LIB_DIR_RELEASE)/%.o: CXXFLAGS += -flto -fuse-linker-plugin -fstack-clash-protection
-  $(LIB_DIR_RELEASE)/$(LIB_SO_NAME): LDFLAGS += -flto -fuse-linker-plugin -fstack-clash-protection
-endif
-
 
 # Source .c and .cpp files 
 ifdef USE_CXX_SOURCES
