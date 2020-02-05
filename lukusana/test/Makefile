@@ -39,8 +39,22 @@ else
 endif
 
 
+ifeq ($(strip $(BUILD)),)
+  $(error Build [$(DEBUG_STR) | $(RELEASE_STR)] not specified.)
+endif
+ifeq ($(strip $(BUILD)),$(DEBUG_STR))
+  BUILD_SPECIFIED := 1
+endif
+ifeq ($(strip $(BUILD)),$(RELEASE_STR))
+  BUILD_SPECIFIED := 1
+endif
+ifndef BUILD_SPECIFIED
+  $(error Build "$(BUILD)" is not a proper build [$(DEBUG_STR) | $(RELEASE_STR)].)
+endif
+
+
 # ========================      Debug    ===================================
-ifeq ($(strip $(BUILD)),Debug)
+ifeq ($(strip $(BUILD)),$(DEBUG_STR))
   DEFS += -DDEBUG -UNDEBUG -D_GLIBCXX_ASSERTIONS -UCATCH2
   CFLAGS += -fdebug-prefix-map=$$(pwd)=..
   CXXFLAGS += -fdebug-prefix-map=$$(pwd)=..
@@ -63,7 +77,7 @@ ifeq ($(strip $(BUILD)),Debug)
   endif
 
   $(BUILD_DIR_DEBUG)/%.o: CFLAGS += $(DEFS) $(DEBUG_INFO) $(WARNINGS) -std=c11 -fno-omit-frame-pointer -fstack-protector-strong
-  $(BUILD_DIR_DEBUG)/%.o: CXXFLAGS += $(DEFS) $(DEBUG_INFO) $(WARNINGS) -std=c++17 -fno-omit-frame-pointer -fstack-protector-strong 
+  $(BUILD_DIR_DEBUG)/%.o: CXXFLAGS += $(DEFS) $(DEBUG_INFO) $(WARNINGS) -std=c++17 -fno-omit-frame-pointer -fstack-protector-strong
 
   #ifdef USE_CLANG
   #  $(BUILD_DIR_DEBUG)/$(TARGET_NAME): LDFLAGS += -fsanitize=safe-stack
@@ -78,7 +92,7 @@ ifeq ($(strip $(BUILD)),Debug)
 
 endif
 # ========================      Release    ===================================
-ifeq ($(strip $(BUILD)),Release)
+ifeq ($(strip $(BUILD)),$(RELEASE_STR))
   DEFS += -DNDEBUG -UDEBUG -UCATCH2
 
 
@@ -98,20 +112,6 @@ ifeq ($(strip $(BUILD)),Release)
   endif
 endif
 
-ifneq ($(MAKECMDGOALS),clean)
-  ifeq ($(strip $(BUILD)),)
-    $(error Build [Debug | Release] not specified.)
-  endif
-  ifeq ($(strip $(BUILD)),$(DEBUG_STR))
-    BUILD_SPECIFIED := 1
-  endif
-  ifeq ($(strip $(BUILD)),$(RELEASE_STR))
-    BUILD_SPECIFIED := 1
-  endif
-  ifndef BUILD_SPECIFIED
-    $(error Build "$(BUILD)" is a proper build [Debug | Release].)
-  endif
-endif
 
 # Source .c and .cpp files
 SRCS_CXX = test_main.cpp test_input.cpp test_stack.cpp test_presentation.cpp
