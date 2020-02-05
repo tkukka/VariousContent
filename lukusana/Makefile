@@ -50,7 +50,7 @@ endif
 
 
 ifeq ($(strip $(BUILD)),)
-  $(error Build [Debug | Release] not specified.)
+  $(error Build [$(DEBUG_STR) | $(RELEASE_STR)] not specified.)
 endif
 ifeq ($(strip $(BUILD)),$(DEBUG_STR))
   BUILD_SPECIFIED := 1
@@ -59,7 +59,7 @@ ifeq ($(strip $(BUILD)),$(RELEASE_STR))
   BUILD_SPECIFIED := 1
 endif
 ifndef BUILD_SPECIFIED
-  $(error Build "$(BUILD)" is not a proper build [Debug | Release].)
+  $(error Build "$(BUILD)" is not a proper build [$(DEBUG_STR) | $(RELEASE_STR)].)
 endif
 
 # ========================      Debug    ===================================
@@ -182,13 +182,15 @@ else
    LINKER := $(CXX)
    CPP := $(CXX) -E
 
-ifdef USE_CLANG
-   LDLIBS += -lc++
-endif
+  ifdef USE_CLANG
+     LDLIBS += -lc++
+  endif
 
 endif
 
 .PHONY: all clean distclean depend memsize
+
+# ========================   Pattern rules   ================================
 ifdef USE_CXX_SOURCES
 
 $(BUILD_DIR)/%.o: $(CXX_SRC_DIR)/%.cpp
