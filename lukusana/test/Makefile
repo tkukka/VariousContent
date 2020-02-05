@@ -45,59 +45,73 @@ ifeq ($(strip $(BUILD)),Debug)
   CFLAGS += -fdebug-prefix-map=$$(pwd)=..
   CXXFLAGS += -fdebug-prefix-map=$$(pwd)=..
   LDFLAGS += $(DEBUG_INFO) $(WARNINGS)
+
+
+  ifdef USE_CLANG
+  #  $(BUILD_DIR_DEBUG)/%.o: CFLAGS += -fsanitize=safe-stack
+  #  $(BUILD_DIR_DEBUG)/%.o: CXXFLAGS += -fsanitize=safe-stack
+    $(BUILD_DIR_DEBUG)/%.o: CXXFLAGS += -stdlib=libc++
+  endif
+
+  ifeq ($(strip $(SANITIZER)),asan)
+    $(BUILD_DIR_DEBUG)/%.o: DEFS += -U_FORTIFY_SOURCE
+    $(BUILD_DIR_DEBUG)/%.o: CFLAGS += -fsanitize=$(SANITIZER_TYPE)
+    $(BUILD_DIR_DEBUG)/%.o: CXXFLAGS += -fsanitize=$(SANITIZER_TYPE)
+  endif
+  ifeq ($(strip $(SANITIZER)),valgrind)
+    $(BUILD_DIR_DEBUG)/%.o: DEFS += -U_FORTIFY_SOURCE
+  endif
+
+  $(BUILD_DIR_DEBUG)/%.o: CFLAGS += $(DEFS) $(DEBUG_INFO) $(WARNINGS) -std=c11 -fno-omit-frame-pointer -fstack-protector-strong
+  $(BUILD_DIR_DEBUG)/%.o: CXXFLAGS += $(DEFS) $(DEBUG_INFO) $(WARNINGS) -std=c++17 -fno-omit-frame-pointer -fstack-protector-strong 
+
+  #ifdef USE_CLANG
+  #  $(BUILD_DIR_DEBUG)/$(TARGET_NAME): LDFLAGS += -fsanitize=safe-stack
+  #endif
+
+  $(BUILD_DIR_DEBUG)/$(TARGET_NAME): LDFLAGS += -Wl,-z,relro,-z,now,-z,noexecstack -Wl,--Map,$(MAPFILE)
+  ifeq ($(strip $(SANITIZER)),asan)
+    $(BUILD_DIR_DEBUG)/$(TARGET_NAME): LDFLAGS += -fsanitize=$(SANITIZER_TYPE)
+  else
+    $(BUILD_DIR_DEBUG)/$(TARGET_NAME): LDFLAGS += -Wl,-z,defs
+  endif
+
 endif
-
-ifdef USE_CLANG
-#  $(BUILD_DIR_DEBUG)/%.o: CFLAGS += -fsanitize=safe-stack
-#  $(BUILD_DIR_DEBUG)/%.o: CXXFLAGS += -fsanitize=safe-stack
-  $(BUILD_DIR_DEBUG)/%.o: CXXFLAGS += -stdlib=libc++
-endif
- 
-ifeq ($(strip $(SANITIZER)),asan)
-  $(BUILD_DIR_DEBUG)/%.o: DEFS += -U_FORTIFY_SOURCE
-  $(BUILD_DIR_DEBUG)/%.o: CFLAGS += -fsanitize=$(SANITIZER_TYPE)
-  $(BUILD_DIR_DEBUG)/%.o: CXXFLAGS += -fsanitize=$(SANITIZER_TYPE)
-endif
-ifeq ($(strip $(SANITIZER)),valgrind)
-  $(BUILD_DIR_DEBUG)/%.o: DEFS += -U_FORTIFY_SOURCE
-endif
-
-$(BUILD_DIR_DEBUG)/%.o: CFLAGS += $(DEFS) $(DEBUG_INFO) $(WARNINGS) -std=c11 -fno-omit-frame-pointer -fstack-protector-strong
-$(BUILD_DIR_DEBUG)/%.o: CXXFLAGS += $(DEFS) $(DEBUG_INFO) $(WARNINGS) -std=c++17 -fno-omit-frame-pointer -fstack-protector-strong 
-
-#ifdef USE_CLANG
-#  $(BUILD_DIR_DEBUG)/$(TARGET_NAME): LDFLAGS += -fsanitize=safe-stack
-#endif
-
-$(BUILD_DIR_DEBUG)/$(TARGET_NAME): LDFLAGS += -Wl,-z,relro,-z,now,-z,noexecstack -Wl,--Map,$(MAPFILE)
-ifeq ($(strip $(SANITIZER)),asan)
-  $(BUILD_DIR_DEBUG)/$(TARGET_NAME): LDFLAGS += -fsanitize=$(SANITIZER_TYPE)
-else
-  $(BUILD_DIR_DEBUG)/$(TARGET_NAME): LDFLAGS += -Wl,-z,defs
-endif
-
-
 # ========================      Release    ===================================
 ifeq ($(strip $(BUILD)),Release)
-  DEFS += -DNDEBUG -UDEBUG
+  DEFS += -DNDEBUG -UDEBUG -UCATCH2
+
+
+  $(BUILD_DIR_RELEASE)/%.o: CFLAGS += $(DEFS) -O2 $(WARNINGS) -std=c11 -march=native -fPIE -fstack-protector-strong
+  $(BUILD_DIR_RELEASE)/%.o: CXXFLAGS += $(DEFS) -O2 $(WARNINGS) -std=c++17 -march=native -fPIE -fstack-protector-strong
+
+  $(BUILD_DIR_RELEASE)/$(TARGET_NAME): LDFLAGS += -O2 $(WARNINGS) -pie -Wl,-pie -Wl,-z,defs,-z,relro,-z,now,-z,notext,-z,noexecstack -Wl,--Map,$(MAPFILE) -Wl,-s
+
+  ifdef USE_CLANG
+    $(BUILD_DIR_RELEASE)/%.o: CFLAGS += -flto=thin -fsanitize=cfi -fvisibility=hidden #-fsanitize=safe-stack
+    $(BUILD_DIR_RELEASE)/%.o: CXXFLAGS += -stdlib=libc++ -flto=thin -fsanitize=cfi -fvisibility=hidden #-fsanitize=safe-stack
+    $(BUILD_DIR_RELEASE)/$(TARGET_NAME): LDFLAGS += -flto=thin -fsanitize=cfi -fvisibility=hidden #-fsanitize=safe-stack
+  else
+    $(BUILD_DIR_RELEASE)/%.o: CFLAGS += -flto -fuse-linker-plugin -fstack-clash-protection
+    $(BUILD_DIR_RELEASE)/%.o: CXXFLAGS += -flto -fuse-linker-plugin -fstack-clash-protection
+    $(BUILD_DIR_RELEASE)/$(TARGET_NAME): LDFLAGS += -flto -fuse-linker-plugin -fPIE -fstack-clash-protection
+  endif
 endif
 
-$(BUILD_DIR_RELEASE)/%.o: CFLAGS += $(DEFS) -O2 $(WARNINGS) -std=c11 -march=native -fPIE -fstack-protector-strong
-$(BUILD_DIR_RELEASE)/%.o: CXXFLAGS += $(DEFS) -O2 $(WARNINGS) -std=c++17 -march=native -fPIE -fstack-protector-strong
-
-$(BUILD_DIR_RELEASE)/$(TARGET_NAME): LDFLAGS += -O2 $(WARNINGS) -pie -Wl,-pie -Wl,-z,defs,-z,relro,-z,now,-z,notext,-z,noexecstack -Wl,--Map,$(MAPFILE) -Wl,-s
-
-ifdef USE_CLANG
-  $(BUILD_DIR_RELEASE)/%.o: CFLAGS += -flto=thin -fsanitize=cfi -fvisibility=hidden #-fsanitize=safe-stack
-  $(BUILD_DIR_RELEASE)/%.o: CXXFLAGS += -stdlib=libc++ -flto=thin -fsanitize=cfi -fvisibility=hidden #-fsanitize=safe-stack
-  $(BUILD_DIR_RELEASE)/$(TARGET_NAME): LDFLAGS += -flto=thin -fsanitize=cfi -fvisibility=hidden #-fsanitize=safe-stack
-else
-  $(BUILD_DIR_RELEASE)/%.o: CFLAGS += -flto -fuse-linker-plugin -fstack-clash-protection
-  $(BUILD_DIR_RELEASE)/%.o: CXXFLAGS += -flto -fuse-linker-plugin -fstack-clash-protection
-  $(BUILD_DIR_RELEASE)/$(TARGET_NAME): LDFLAGS += -flto -fuse-linker-plugin -fPIE -fstack-clash-protection
+ifneq ($(MAKECMDGOALS),clean)
+  ifeq ($(strip $(BUILD)),)
+    $(error Build [Debug | Release] not specified.)
+  endif
+  ifeq ($(strip $(BUILD)),$(DEBUG_STR))
+    BUILD_SPECIFIED := 1
+  endif
+  ifeq ($(strip $(BUILD)),$(RELEASE_STR))
+    BUILD_SPECIFIED := 1
+  endif
+  ifndef BUILD_SPECIFIED
+    $(error Build "$(BUILD)" is a proper build [Debug | Release].)
+  endif
 endif
-
-
 
 # Source .c and .cpp files
 SRCS_CXX = test_main.cpp test_input.cpp test_stack.cpp test_presentation.cpp
