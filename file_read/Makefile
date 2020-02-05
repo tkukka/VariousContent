@@ -2,7 +2,7 @@ SHELL = /bin/sh
 .SUFFIXES:
 .SUFFIXES: .h .c .cpp .o .java .class
 # Java settings
-CLASS := JavaFileRead
+CLASS := FileRead
 JAVA_SRC := $(CLASS).java
 JAVA_TARGET := $(CLASS).class
 JAVAC := javac

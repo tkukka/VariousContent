@@ -14,7 +14,7 @@ import java.util.List;
  * http://zetcode.com/java/readtext/
  *
  */
-public class JavaFileRead {
+public class FileRead {
     public static final String FILENAME = "./eng-uk_web_2002_1M-words.txt";
 
     /**
@@ -58,9 +58,9 @@ public class JavaFileRead {
     public static void main(final String[] args) {
         final Console con = System.console();
         if (con != null) {
-            con.writer().println("Java reading file: " + JavaFileRead.FILENAME );
-            final int nlines = JavaFileRead.read_file(FILENAME);
-            //final int nlines = JavaFileRead.read_file2(FILENAME);
+            con.writer().println("Java reading file: " + FileRead.FILENAME );
+            final int nlines = FileRead.read_file(FILENAME);
+            //final int nlines = FileRead.read_file2(FILENAME);
             con.writer().println("Lines: " + nlines);
             con.writer().println("Java exit");
         }

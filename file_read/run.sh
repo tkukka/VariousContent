@@ -7,7 +7,7 @@ echo "Build done!"
 echo
 ./file_read_c
 ./file_read_cxx
-java JavaFileRead
+java FileRead
 python3 ./file_read.py
 ./file_read.R
 echo "Shell script reads..."
