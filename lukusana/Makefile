@@ -42,10 +42,14 @@ ifdef USE_CLANG
   DEBUG_INFO := -g3 -glldb -O0
   LDFLAGS += -fuse-ld=lld-8
   AR := llvm-ar-8
+  COV_FLAGS = -fprofile-instr-generate -fcoverage-mapping
+  COV_LDFLAGS = -fprofile-instr-generate -fcoverage-mapping
 else
   DEBUG_INFO := -g3 -ggdb -O0
   LDFLAGS += -fuse-ld=gold
   AR = ar
+  COV_FLAGS = --coverage -ftest-coverage
+  COV_LDFLAGS = -lgcov --coverage
 endif
 
 
@@ -69,6 +73,10 @@ ifeq ($(strip $(BUILD)),$(DEBUG_STR))
   CXXFLAGS += -fdebug-prefix-map=$$(pwd)=..
   LDFLAGS += $(DEBUG_INFO) $(WARNINGS)
 
+  coverage: DEFS += -U_FORTIFY_SOURCE
+  coverage: CFLAGS += $(COV_FLAGS)
+  coverage: CXXFLAGS += $(COV_FLAGS)
+  coverage: LDFLAGS += $(COV_LDFLAGS)
 
   ifdef USE_CLANG
   #  $(BUILD_DIR_DEBUG)/%.o: CFLAGS += -fsanitize=safe-stack
@@ -188,7 +196,7 @@ else
 
 endif
 
-.PHONY: all clean distclean depend memsize
+.PHONY: all clean distclean depend memsize coverage
 
 # ========================   Pattern rules   ================================
 ifdef USE_CXX_SOURCES
@@ -247,6 +255,8 @@ memsize: $(TARGET)
 	@echo --- Memory usage ---
 	$(SIZE) $(OBJS) $(TARGET) || true
 
+coverage: $(TARGET)
+
 depend: $(DEPENDFILE)
 
 $(DEPENDFILE): $(SRCS)
@@ -263,6 +273,7 @@ clean:
 	@echo --- Clean [$(BUILD)]  ---
 	$(RM) $(OBJS) $(TARGET) $(LIB_A_TARGET) $(MAPFILE)
 	$(RM) $(LIB_OBJS) $(LIB_SO_TARGET)
+	$(RM) $(BUILD_DIR)/*.gcda $(BUILD_DIR)/*.gcno
 
 distclean: clean
 	@echo --- Distclean [$(BUILD)] ---

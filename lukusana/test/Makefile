@@ -33,9 +33,13 @@ ifdef USE_CLANG
   WARNINGS += -Wtautological-compare -Wtautological-constant-in-range-compare -Wgnu
   DEBUG_INFO := -g3 -glldb -O0
   LDFLAGS += -fuse-ld=lld-8
+  COV_FLAGS = -fprofile-instr-generate -fcoverage-mapping
+  COV_LDFLAGS = -fprofile-instr-generate -fcoverage-mapping
 else
   DEBUG_INFO := -g3 -ggdb -O0
   LDFLAGS += -fuse-ld=gold
+  COV_FLAGS = --coverage -ftest-coverage
+  COV_LDFLAGS = -lgcov --coverage
 endif
 
 
@@ -59,6 +63,11 @@ ifeq ($(strip $(BUILD)),$(DEBUG_STR))
   CFLAGS += -fdebug-prefix-map=$$(pwd)=..
   CXXFLAGS += -fdebug-prefix-map=$$(pwd)=..
   LDFLAGS += $(DEBUG_INFO) $(WARNINGS)
+
+  coverage: DEFS += -U_FORTIFY_SOURCE
+  #coverage: CFLAGS += $(COV_FLAGS)
+  #coverage: CXXFLAGS += $(COV_FLAGS)
+  coverage: LDFLAGS += $(COV_LDFLAGS)
 
 
   ifdef USE_CLANG
@@ -129,13 +138,13 @@ else
    LINKER := $(CXX)
    CPP := $(CXX) -E
 
-ifdef USE_CLANG
-   LDLIBS += -lc++
-endif
+  ifdef USE_CLANG
+     LDLIBS += -lc++
+  endif
 
 endif
 
-.PHONY: all clean distclean depend memsize
+.PHONY: all clean distclean depend memsize coverage
 
 $(BUILD_DIR)/%.o: %.c
 	@echo --- C compiling [$(BUILD)] ---
@@ -159,6 +168,8 @@ $(TARGET): $(OBJS)
 memsize: $(TARGET)
 	@echo --- Memory usage ---
 	$(SIZE) $(OBJS) $(TARGET) || true
+
+coverage: $(TARGET)
 
 depend: $(DEPENDFILE)
 
