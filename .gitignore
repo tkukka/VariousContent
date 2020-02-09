@@ -9,4 +9,5 @@ lukusana/lib-Release/
 __pycache__
 lukusana/test/Debug
 lukusana/test/Release
+!lukusana/lukusana-original/testcases.txt
 
