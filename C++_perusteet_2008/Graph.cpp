@@ -37,7 +37,7 @@ void Graph::AddNodes(const Node& n, const AdjType& adj_nodes)
  *  Poistaa solmut ja leveyshaun käyttämät aputiedot.
  *
  */
-void Graph::Reset(void)
+void Graph::Reset()
 {
     data.clear();         // Kaikki solmut pois
     distances.clear();    // Etäisyydet pois
@@ -49,7 +49,7 @@ void Graph::Reset(void)
 /** Tulostaa graafin solmut ruudulle.
  *  Ensin tulee solmu ja sitten sen vierussolmut.
  */
-void Graph::Print(void) const
+void Graph::Print() const
 {
     using std::cout;
     using std::endl;
@@ -184,7 +184,7 @@ Graph::PathResult Graph::BFS_Path(const Node& start, const Node& end)
  * @return Polun.
  * @see PathType
  */
-const Graph::PathType& Graph::GetPath(void) const
+const Graph::PathType& Graph::GetPath() const
 {
     return path;
 }
@@ -207,7 +207,7 @@ void Graph::PathToFile(std::ofstream& out_file) const
 /** Alustaa leveyshaun tarvitsemat tiedot solmujen väristä, edeltäjistä ja
  *   etäisyyksistä.
  */
-void Graph::InitNodes(void)
+void Graph::InitNodes()
 {
     // Pitää käydä kaikki graafin solmut läpi iteraattorilla.
 
@@ -269,3 +269,4 @@ const Graph::AdjType* Graph::GetAdjNodes(const Node& n) const
 
     return &(iter->second);
 }
+

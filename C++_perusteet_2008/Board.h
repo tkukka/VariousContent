@@ -28,7 +28,7 @@ public:
     Board();
     ~Board();
 
-    void Reset(void);
+    void Reset();
     FileStatus ReadFile(std::ifstream& infile);
     void Print(const Graph::PathType* path) const;
     void ConvertToGraph(Graph& graph) const;
@@ -75,3 +75,4 @@ private:
 };
 
 #endif /* BOARD_H */
+

@@ -26,7 +26,7 @@ Board::~Board()
 /**
  * Palauttaa laudan alkutilaan.
  */
-void Board::Reset(void)
+void Board::Reset()
 {
     data.clear();
     width = 0;
@@ -365,3 +365,4 @@ void Board::GetDimension(int* w, int* h) const
     *w = static_cast<int>(width);
     *h = static_cast<int>(height);
 }
+

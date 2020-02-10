@@ -17,9 +17,9 @@ public:
     ~Node();
 
     void SetXY(int _x, int _y);
-    bool operator==(const Node& other) const;
-    bool operator<(const Node& other) const;
-    void Print(std::ostream& output) const;
+    std::ostream& Print(std::ostream& output) const;
+    int X() const { return x; }
+    int Y() const { return y; }
 
 private:
     /**
@@ -32,6 +32,9 @@ private:
     int y;
 };
 
+bool operator==(const Node& a, const Node& b);
+bool operator<(const Node& a, const Node& b);
 std::ostream& operator<<(std::ostream& output, const Node& n);
 
 #endif
+

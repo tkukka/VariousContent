@@ -20,9 +20,9 @@ public:
 
     void Usage(const char* str) const;
     int ProcessCmdLine(int argc, char** argv);
-    int ReadBoard(void);
-    void PrintBoard(void) const;
-    void SearchPath(void);
+    int ReadBoard();
+    void PrintBoard() const;
+    void SearchPath();
 
 private:
     /**
@@ -72,3 +72,4 @@ private:
 };
 
 #endif
+

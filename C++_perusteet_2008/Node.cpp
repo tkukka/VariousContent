@@ -54,34 +54,33 @@ void Node::SetXY(int _x, int _y)
 
 /**
  * Yhtäsuuruuden vertailuoperaattori.
- * @param other Solmu johon verrataan
+ *
  */
-bool Node::operator==(const Node& other) const
+bool operator==(const Node& a, const Node& b)
 {
-    return (x == other.x) && (y == other.y);
+    return (a.X() == b.X() ) && ( a.Y() == b.Y() );
 }
 
 /**
  * Toteuttaa map-säiliön less-predikaatin vaatiman operaattorin.
- * @param other Solmu johon verrataan
+ *
  */
-bool Node::operator<(const Node& other) const
+bool operator<(const Node& a, const Node& b)
 {
-    if(x != other.x) {
-        return (x < other.x);
+    if(a.X() != b.X()) {
+        return (a.X() < b.X());
     }
 
-    return (y < other.y);
+    return (a.Y() < b.Y());
 }
 
 /**
  * Tulostaa solmun virtaan.
  * @param output Virta
  */
-void Node::Print(std::ostream& output) const
+std::ostream& Node::Print(std::ostream& output) const
 {
-
-    output << x << " " << y;
+    return (output << x << " " << y);
 }
 
 /**
@@ -91,6 +90,6 @@ void Node::Print(std::ostream& output) const
  */
 std::ostream& operator<<(std::ostream& output, const Node& n)
 {
-    n.Print(output);
-    return output;
+    return n.Print(output);
 }
+

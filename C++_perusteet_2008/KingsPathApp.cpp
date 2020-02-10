@@ -108,7 +108,7 @@ int KingsPathApp::ProcessCmdLine(int argc, char** argv)
  * @return 0 jos OK tai -1 jos tuli virhe.
  */
 
-int KingsPathApp::ReadBoard(void)
+int KingsPathApp::ReadBoard()
 {
     using std::cout;
     using std::endl;
@@ -142,7 +142,7 @@ int KingsPathApp::ReadBoard(void)
 /** Tulostaa shakkilaudan.
  *
  */
-void KingsPathApp::PrintBoard(void) const
+void KingsPathApp::PrintBoard() const
 {
     using std::cout;
     using std::endl;
@@ -157,7 +157,7 @@ void KingsPathApp::PrintBoard(void) const
 /** Hakee lyhyimmän kuninkaan polun.
  *  Tulostaa haun tuloksen. Sulkee tulostustiedoston.
  */
-void KingsPathApp::SearchPath(void)
+void KingsPathApp::SearchPath()
 {
     using std::cout;
     using std::endl;
@@ -252,3 +252,4 @@ void KingsPathApp::SearchPath(void)
         output_file.close();
     }
 }
+

@@ -49,11 +49,11 @@ public:
     ~Graph();
 
     void AddNodes(const Node& n, const AdjType& adj_nodes);
-    void Reset(void);
-    void Print(void) const;
+    void Reset();
+    void Print() const;
     BFSResult BFS(const Node& start);
     PathResult BFS_Path(const Node& start, const Node& end);
-    const PathType& GetPath(void) const;
+    const PathType& GetPath() const;
     void PathToFile(std::ofstream& out_file) const;
 
 private:
@@ -66,7 +66,7 @@ private:
     };
 
     // Leveyshaun apumetodit
-    void InitNodes(void);
+    void InitNodes();
     void SetDistance(const Node& n, int d);
     void SetPredecessor(const Node& v, const Node& u);
     void SetNodeColor(const Node& n, NodeColor color);
@@ -115,3 +115,4 @@ private:
 };
 
 #endif /* GRAPH_H */
+
