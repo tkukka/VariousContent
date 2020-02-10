@@ -3,15 +3,31 @@
 */
 
 #include <iostream>
+#include <string_view>
 
 #include "Graph.h"
 #include "KingsPathApp.h"
 #include "Node.h"
 
 // tulostusvakioiden alustus
+/**
+ * Komentoriviparametrien lukumäärä.
+ */
 static constexpr int PARAMETER_COUNT = 4;
+
+/**
+ * Tulostus, kun ei ole polkua.
+ */
 static constexpr char OUTPUT_NO_PATH[] = "-1 -1";
+
+/**
+ * Tulostus, kun tiedosto on väärää muotoa.
+ */
 static constexpr char OUTPUT_INVALID_FORMAT[] = "-2 -2";
+
+/**
+ * Tulostus, kun tapahtuu ajonaikainen virhe.
+ */
 static constexpr char OUTPUT_RUNTIME_ERR[] = "-3 -3";
 
 /**
@@ -56,13 +72,11 @@ void KingsPathApp::Usage(const char* str)
  */
 int KingsPathApp::ProcessCmdLine(int argc, char** argv)
 {
-    using std::cout;
-    using std::endl;
-    using std::string;
+    using namespace std;
 
     // 1. parametrin vertailtavat arvot
-    const string switch_show("-show");
-    const string switch_quiet("-quiet");
+    string_view switch_show{"-show"};
+    string_view switch_quiet{"-quiet"};
 
     // Aluksi parametrien lukumäärä oikea?
     if(argc != PARAMETER_COUNT) {
@@ -114,18 +128,18 @@ int KingsPathApp::ReadBoard()
     using std::cout;
     using std::endl;
 
-    Board::FileStatus ret; // kertoo, miten kävi laudan lukemisesssa
+    FileStatus ret; // kertoo, miten kävi laudan lukemisesssa
 
     ret = board.ReadFile(input_file);
 
-    if(ret == Board::FILE_NOT_OPEN) {
+    if(ret == FileStatus::FILE_NOT_OPEN) {
         if(display_messages) {
             cout << "Tiedosto " << input_file_name << " ei ole auki." << endl;
         }
         output_file << OUTPUT_RUNTIME_ERR << endl;
         return -1;
     }
-    else if(ret == Board::FILE_FORMAT_ERROR) {
+    else if(ret == FileStatus::FILE_FORMAT_ERROR) {
         if(display_messages) {
             cout << "Tiedosto " << input_file_name << " ei ole oikeaa muotoa."
                  << endl;
@@ -164,12 +178,10 @@ void KingsPathApp::SearchPath()
     using std::endl;
 
     Graph graph;               // laudan vapaiden ruutujen graafi
-    Node start_node(0, 0);     // polun alku
+    const Node start_node{0, 0};     // polun alku
     Node end_node;             // polun loppu
     Graph::BFSResult retBFS;   // leveyshaun tulos
     Graph::PathResult retPath; // polun haun tulos
-    int width;                 // laudan leveys
-    int height;                // laudan korkeus
 
     // Lauta graafimuotoon
     board.ConvertToGraph(graph);
@@ -177,7 +189,7 @@ void KingsPathApp::SearchPath()
     // graph.Print();
 
     // Laudan oikea alanurkka..koordinaatit?
-    board.GetDimension(&width, &height);
+    auto [width, height] = board.GetDimension();
     end_node.SetXY(width - 1, height - 1);
 
     // Tehdään leveyshaku

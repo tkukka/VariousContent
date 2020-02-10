@@ -4,15 +4,30 @@
 
 #include "Board.h"
 
-// sallittujen merkkien alustus
-const char* Board::ALLOWED_CHARS = "EP";
+
+/**
+ * Laudan ruutujen sallitut kirjainmerkit.
+ */
+static constexpr char ALLOWED_CHARS[] = "EP";
+
+/**
+ * Laudan ruutu varattu.
+ */
+static constexpr char SQUARE_OCCUPIED = 'P';
+
+/**
+ * Laudan ruutu vapaa.
+ */
+static constexpr char SQUARE_FREE = 'E';
+
 
 /**
  * Oletusmuodostin.
  */
 Board::Board()
-    : width(0)
-    , height(0)
+    : data{}
+    , width{0}
+    , height{0}
 {
 }
 
@@ -39,38 +54,32 @@ void Board::Reset()
  * @return Lukemisen onnistuminen.
  * @see FileStatus
  */
-Board::FileStatus Board::ReadFile(std::ifstream& infile)
+FileStatus Board::ReadFile(std::ifstream& infile)
 {
     using std::getline;
     using std::string;
-    // using std::cout;
-    // using std::endl;
 
     // tsekataan onko auki
     if(infile.is_open() == false) {
-        return FILE_NOT_OPEN;
+        return FileStatus::FILE_NOT_OPEN;
     }
 
-    string::size_type char_index; // Ilmaisee paikan, missä haettu merkki on
     string::size_type row_length = 0; // Rivin leveys tiedostossa
-    bool first_row_measured =
-        false;    // Rivin leveys luetaan 1. riviltä. Tämä lippu apuna.
-    string line;  // Luettu tekstirivi
+    bool first_row_measured = false;  // Rivin leveys luetaan 1. riviltä. Tämä lippu apuna.
     int rows = 0; // Tiedostosta luettujen rivien lukumäärä
 
     // Nollataan laudan tiedot
     Reset();
 
+    string line;  // Luettu tekstirivi
     // Käydään läpi tiedoston rivit kunnes tiedosto loppuu
-    while(infile.eof() == false) {
-        getline(infile, line); // luetaan rivi
+    while(getline(infile, line) ) {
 
         // Onko tyhjä rivi?
         if(line.empty()) {
             // Tiedosto ei lopussa vielä?
-            if(infile.eof() ==
-                false) { // keskellä tiedostoa tyhjä rivi => virhe
-                return FILE_FORMAT_ERROR;
+            if(infile.eof() == false) { // keskellä tiedostoa tyhjä rivi => virhe
+                return FileStatus::FILE_FORMAT_ERROR;
             }
 
             // Viimeinen rivi voi olla tyhjä. Poistutaan ilman hälyä.
@@ -78,10 +87,10 @@ Board::FileStatus Board::ReadFile(std::ifstream& infile)
         }
 
         // Etsitään vääriä merkkejä
-        char_index = line.find_first_not_of(ALLOWED_CHARS);
+        auto char_index = line.find_first_not_of(ALLOWED_CHARS);
         // Löytyikö kiellettyjä?
         if(char_index != string::npos) {
-            return FILE_FORMAT_ERROR;
+            return FileStatus::FILE_FORMAT_ERROR;
         }
 
         // Otetaan ylös 1. rivin pituus
@@ -93,7 +102,7 @@ Board::FileStatus Board::ReadFile(std::ifstream& infile)
         // Tutkitaan jokaisen luetun rivin pituus
         if(row_length != line.length()) {
             // cout << "File row len error" << endl;
-            return FILE_FORMAT_ERROR;
+            return FileStatus::FILE_FORMAT_ERROR;
         }
 
         // Rivi on OK
@@ -103,15 +112,15 @@ Board::FileStatus Board::ReadFile(std::ifstream& infile)
 
     // Otetaan vielä lopussa shakkilaudan mitat
     height = rows;
-    width = row_length;
-    return READ_OK;
+    width = static_cast<int>(row_length);
+    return FileStatus::READ_OK;
 }
 
 /** Tulostaa shakkilaudan ruudulle polun kanssa tai ilman.
  * Sama metodi tulostaa laudalle kuninkaan polun, jos sellainen annetaan.
  * Suurin näytöllä järkevästi toimiva laudan leveys 9 ruutua.
  *
- * @param path Polku, tai 0 jos tulostetaan vain lauta ilman polkua.
+ * @param path Polku, tai nullptr jos tulostetaan vain lauta ilman polkua.
  *
  */
 void Board::Print(const Graph::PathType* path) const
@@ -127,27 +136,23 @@ void Board::Print(const Graph::PathType* path) const
     }
 
     // Yläosan vaakaan juoksevat numerot. Sarakkeet.
-    for(size_t i = 0; i < width; i++) {
+    for(int i = 0; i < width; ++i) {
         cout << "\t" << i;
     }
     cout << endl;
 
     // ruudun koordinaatit
     int row = 0;
-    int column = 0;
-    BoardDataType::const_iterator row_iter =
-        data.begin(); // tekstirivin iteraattori
+    int column;
 
-    while(row_iter != data.end()) {
+    for(const auto& data_row: data) {
         cout << row;
         column = 0;
 
-        string::const_iterator char_iter =
-            (*row_iter).begin(); // yksittäisten merkkien iteraattori
-        while(char_iter != (*row_iter).end()) {
+        for(const auto c: data_row ) {
             // tulostetaan varattu ruutu?
-            if((*char_iter) == SQUARE_OCCUPIED) {
-                cout << "\t" << (*char_iter);
+            if(c == SQUARE_OCCUPIED) {
+                cout << "\t" << c;
             }
             else { // vapaa ruutu tulostuu
 
@@ -155,8 +160,7 @@ void Board::Print(const Graph::PathType* path) const
                 {
                     // pitää tutkia onko nykyinen vapaa ruutu jossain kohdassa
                     // polkua. vähän tehotonta...
-                    Node temp(column, row);
-                    int index = NodePosition(temp, *path);
+                    auto index = NodePosition({column, row}, *path);
                     if(index >= 0) // tämä ruutu on polussa?
                     {
                         cout << "\t" << (index + 1);
@@ -169,15 +173,11 @@ void Board::Print(const Graph::PathType* path) const
                     cout << "\t";
                 }
             }
-
-            ++char_iter;
             ++column;
         }
 
         cout << endl;
-
         ++row;
-        ++row_iter;
     }
 }
 
@@ -356,13 +356,10 @@ void Board::ConvertToGraph(Graph& graph) const
 
 /** Palauttaa laudan leveyden ja korkeuden.
  *
- * @param w Leveys
- * @param h Korkeus
  *
  */
-void Board::GetDimension(int* w, int* h) const
+std::tuple<int, int> Board::GetDimension() const
 {
-    *w = static_cast<int>(width);
-    *h = static_cast<int>(height);
+    return std::make_tuple(width, height);
 }
 

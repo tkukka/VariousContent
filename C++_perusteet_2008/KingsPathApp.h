@@ -25,25 +25,7 @@ public:
     void SearchPath();
 
 private:
-    /**
-     * Komentoriviparametrien lukumäärä.
-     */
-    //static const int PARAMETER_COUNT = 4;
 
-    /**
-     * Tulostus, kun ei ole polkua.
-     */
-    //static const char* OUTPUT_NO_PATH;
-
-    /**
-     * Tulostus, kun tiedosto on väärää muotoa.
-     */
-    //static const char* OUTPUT_INVALID_FORMAT;
-
-    /**
-     * Tulostus, kun tapahtuu ajonaikainen virhe.
-     */
-    //static const char* OUTPUT_RUNTIME_ERR;
 
     /**
      * Näytölle tulostuksen tilamuuttuja.
