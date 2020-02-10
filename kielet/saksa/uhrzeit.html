@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Die Uhrzeiten</title>
+
+<script type="text/javascript">
+
+const NUMBERS1 = ["null", "eins" , "zwei", "drei", "vier", 
+                  "fünf", "sechs", "sieben", "acht", "neun", 
+                  "zehn", "elf", "zwölf", "dreizehn", "vierzehn", 
+                  "fünfzehn", "sechzehn", "siebzehn", "achtzehn", "neunzehn"];
+            
+const NUMBERS2 = ["zwanzig", "dreißig", "vierzig", "fünfzig"];
+const NUM1 = "ein";
+const QUARTER = "Viertel ";
+const PAST = " nach ";
+const TO = " vor ";
+
+var hours = 0;
+var minutes = 0;
+//------------------------------------------------------------------------
+function randomInt(m)
+{
+  return Math.floor((Math.random() * Math.floor(m)));
+}
+//------------------------------------------------------------------------
+function randomHour()
+{
+  return randomInt(24);
+}
+//------------------------------------------------------------------------
+function randomMin()
+{
+  var r = 0;
+  var s = 0;
+  
+  s = randomInt(60);
+  while ( (s % 5 != 0) && r < 3)
+  {
+    ++r;
+    s = randomInt(60);
+  }
+
+  return s;
+}
+//------------------------------------------------------------------------
+function randomTime()
+{
+   hours = randomHour();
+   minutes = randomMin();
+}
+//------------------------------------------------------------------------
+function timeToString()
+{
+  var hOut = "";
+  hOut = (hours >= 10) ? hours : "0" + hours;
+  var minOut = "";
+  minOut = (minutes >= 10) ? minutes : "0" + minutes;
+  
+  return hOut + "." + minOut;
+}
+//------------------------------------------------------------------------
+function valueToString(val)
+{
+
+   if (val < 0)
+   {
+      return "";
+   }
+   else if(val <= 19)
+   {
+     return NUMBERS1[val];
+   }
+   else if ((val % 10) == 0)
+   {
+      return NUMBERS2[val / 10 - 2];
+   }
+   var quotient = 0;
+   var modulus = 0;
+   
+   quotient = Math.floor(val / 10);
+   modulus = val % 10;
+   
+   if(modulus == 1)
+   {
+      return NUM1 + "und" + NUMBERS2[quotient - 2];
+   }
+   
+    return NUMBERS1[modulus] + "und" + NUMBERS2[quotient - 2];   
+}
+//------------------------------------------------------------------------
+function toOfficialTime()
+{
+   var textOut = "Es ist ";
+   
+   if (minutes == 0)
+   {
+     if (hours != 1)
+     {
+        if(hours == 0)
+        {
+           textOut += valueToString(24) + " Uhr.";
+        }
+        else
+        {
+           textOut += valueToString(hours) + " Uhr.";
+        }
+     }
+     else
+     {
+        textOut += NUM1 + " Uhr.";
+     }
+   
+   }
+   else
+   {
+      if (hours != 1)
+      {
+        if(hours == 0)
+        {
+           textOut += valueToString(24) + " Uhr " + valueToString(minutes) + ".";
+        }
+        else
+        {
+           textOut += valueToString(hours) + " Uhr " + valueToString(minutes) + ".";
+        }
+      }
+      else
+      {
+         textOut +=  NUM1 + " Uhr " + valueToString(minutes) + ".";
+      }
+   }
+   
+   
+   return textOut;
+}
+//------------------------------------------------------------------------
+function toSpokenTime()
+{
+   var textOut = "Es ist ";
+   var hh = 0;
+   
+   hh = hours % 12;
+   
+   if((hours == 0) && (minutes == 0))
+   {
+      textOut += "zwölf/Mitternacht."
+   }
+   else if ((hours == 12) && (minutes == 0))
+   {
+      textOut += "zwölf/Mittag."
+   }
+   else if (minutes == 0)
+   {
+      textOut += valueToString(hh) + ".";
+   }
+   else if (minutes == 30)
+   {
+      textOut += "halb " + valueToString(hh + 1) + ".";
+   }
+   else if (minutes == 15)
+   {
+       if(hh == 0)
+       {
+         hh += 12;
+       }
+   
+       textOut += QUARTER + PAST + valueToString(hh) + ".";
+   }
+   else if(minutes == 45)
+   {
+        textOut += QUARTER + TO + valueToString(hh + 1) + "."; 
+   }
+   else if(minutes < 30)
+   {
+      
+      if (minutes < 20)
+      {
+        if(hh == 0)
+        {
+           hh += 12;
+        }
+        
+        if(minutes == 1)
+        {
+            textOut += NUM1 + PAST + valueToString(hh) + ".";
+        }
+        else
+        {
+            textOut += valueToString(minutes) + PAST + valueToString(hh) + ".";
+        }
+    
+      }
+      else
+      {
+         if(minutes == 29)
+         {
+              textOut += NUM1 + TO + "halb " + valueToString(hh + 1) + ".";
+         }
+         else
+         {
+              textOut += valueToString(30 - minutes) + TO + "halb " + valueToString(hh + 1) + ".";
+         }
+          
+      }
+   }
+   else if(minutes > 30)
+   {
+      
+      if(minutes > 40)
+      {
+         if(minutes == 59)
+         {
+            textOut += NUM1 + TO + valueToString(hh + 1) + ".";
+         }
+         else
+         {
+            textOut += valueToString(60 - minutes) + TO + valueToString(hh + 1) + ".";
+         }
+      }
+      else
+      {
+         if(minutes == 31)
+         {
+            textOut += NUM1 + PAST + "halb " + valueToString(hh + 1) + ".";
+         }
+         else
+         {
+            textOut += valueToString(minutes - 30) + PAST + "halb " + valueToString(hh + 1) + ".";
+         }
+         
+      }
+   }
+   return textOut;
+}
+//------------------------------------------------------------------------
+function IncHour()
+{
+   document.getElementById("answer").innerHTML = ""; 
+   ++hours;
+   if(hours >= 24)
+   {
+      hours = 0;
+   }
+   document.getElementById("question").innerHTML = timeToString();
+}
+//------------------------------------------------------------------------
+function DecHour()
+{
+   document.getElementById("answer").innerHTML = ""; 
+   --hours;
+   if(hours < 0)
+   {
+      hours = 23;
+   }
+   document.getElementById("question").innerHTML = timeToString();
+}
+//------------------------------------------------------------------------
+function IncMin()
+{
+   document.getElementById("answer").innerHTML = ""; 
+   ++minutes;
+   if(minutes >= 60)
+   {
+      minutes = 0;
+   }
+   document.getElementById("question").innerHTML = timeToString();
+}
+//------------------------------------------------------------------------
+function DecMin()
+{
+   document.getElementById("answer").innerHTML = ""; 
+   --minutes;
+   if(minutes < 0)
+   {
+      minutes = 59;
+   }
+   document.getElementById("question").innerHTML = timeToString();
+}
+//------------------------------------------------------------------------
+
+function NextTime()
+{
+   document.getElementById("answer").innerHTML = ""; 
+   randomTime();
+   document.getElementById("question").innerHTML = timeToString();
+}
+//------------------------------------------------------------------------
+function DisplayAnswer()
+{
+   document.getElementById("answer").innerHTML = toSpokenTime() + "  " + toOfficialTime();
+}
+
+</script>
+</head>
+<body>
+
+<h1>Wie viel Uhr ist es jetzt? Wie spät ist es?</h1>
+<button onclick="NextTime()">Arvo seuraava aika</button>
+<button onclick="IncHour()">h + 1</button>
+<button onclick="DecHour()">h - 1</button>
+<button onclick="IncMin()">min + 1</button>
+<button onclick="DecMin()">min - 1</button>
+
+<p id="question" style="font-family:arial;color:black;font-size:20px;">00.00</p>
+<p id="answer" style="min-height:20px;font-family:arial;color:blue;font-size:20px;"></p> 
+<button onclick="DisplayAnswer()">Vastaus</button>
+</body>
+</html>
+
