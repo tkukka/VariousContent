@@ -18,7 +18,7 @@ public:
     KingsPathApp();
     ~KingsPathApp();
 
-    void Usage(const char* str) const;
+    static void Usage(const char* str);
     int ProcessCmdLine(int argc, char** argv);
     int ReadBoard();
     void PrintBoard() const;
@@ -28,22 +28,22 @@ private:
     /**
      * Komentoriviparametrien lukumäärä.
      */
-    static const int PARAMETER_COUNT = 4;
+    //static const int PARAMETER_COUNT = 4;
 
     /**
      * Tulostus, kun ei ole polkua.
      */
-    static const char* OUTPUT_NO_PATH;
+    //static const char* OUTPUT_NO_PATH;
 
     /**
      * Tulostus, kun tiedosto on väärää muotoa.
      */
-    static const char* OUTPUT_INVALID_FORMAT;
+    //static const char* OUTPUT_INVALID_FORMAT;
 
     /**
      * Tulostus, kun tapahtuu ajonaikainen virhe.
      */
-    static const char* OUTPUT_RUNTIME_ERR;
+    //static const char* OUTPUT_RUNTIME_ERR;
 
     /**
      * Näytölle tulostuksen tilamuuttuja.

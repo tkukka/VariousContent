@@ -9,9 +9,10 @@
 #include "Node.h"
 
 // tulostusvakioiden alustus
-const char* KingsPathApp::OUTPUT_NO_PATH = "-1 -1";
-const char* KingsPathApp::OUTPUT_INVALID_FORMAT = "-2 -2";
-const char* KingsPathApp::OUTPUT_RUNTIME_ERR = "-3 -3";
+static constexpr int PARAMETER_COUNT = 4;
+static constexpr char OUTPUT_NO_PATH[] = "-1 -1";
+static constexpr char OUTPUT_INVALID_FORMAT[] = "-2 -2";
+static constexpr char OUTPUT_RUNTIME_ERR[] = "-3 -3";
 
 /**
  * Oletusmuodostin.
@@ -40,7 +41,7 @@ KingsPathApp::~KingsPathApp()
  * Ohjelman käytön opastusmetodi.
  * @param str Ohjelman nimi (.exe).
  */
-void KingsPathApp::Usage(const char* str) const
+void KingsPathApp::Usage(const char* str)
 {
     using namespace std;
     cout << "Ohjelman käyttö:" << endl;
@@ -60,18 +61,18 @@ int KingsPathApp::ProcessCmdLine(int argc, char** argv)
     using std::string;
 
     // 1. parametrin vertailtavat arvot
-    string switch_show("-show");
-    string switch_quiet("-quiet");
+    const string switch_show("-show");
+    const string switch_quiet("-quiet");
 
     // Aluksi parametrien lukumäärä oikea?
     if(argc != PARAMETER_COUNT) {
-        Usage(argv[0]);
+        KingsPathApp::Usage(argv[0]);
         return -1;
     }
 
     //-show , -quiet jäi antamatta?
     if(switch_show != argv[1] && switch_quiet != argv[1]) {
-        Usage(argv[0]);
+        KingsPathApp::Usage(argv[0]);
         return -1;
     }
 
@@ -149,7 +150,7 @@ void KingsPathApp::PrintBoard() const
 
     if(display_messages) {
         cout << endl;
-        board.Print(0);
+        board.Print(nullptr);
         cout << endl;
     }
 }
@@ -233,14 +234,12 @@ void KingsPathApp::SearchPath()
         }
         // Polku tiedostoon
         graph.PathToFile(output_file);
-        output_file.close();
     }
     else if(retPath == Graph::NO_PATH) { // Poluton tilanne
         if(display_messages) {
             std::cout << "Polkua ei ole." << std::endl;
         }
         output_file << OUTPUT_NO_PATH << endl;
-        output_file.close();
     }
     else // INVALID_NODE
     {
@@ -249,7 +248,8 @@ void KingsPathApp::SearchPath()
                       << std::endl;
         }
         output_file << OUTPUT_NO_PATH << endl;
-        output_file.close();
     }
+
+    output_file.close();
 }
 
