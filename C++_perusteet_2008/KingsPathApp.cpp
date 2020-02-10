@@ -180,8 +180,8 @@ void KingsPathApp::SearchPath()
     Graph graph;               // laudan vapaiden ruutujen graafi
     const Node start_node{0, 0};     // polun alku
     Node end_node;             // polun loppu
-    Graph::BFSResult retBFS;   // leveyshaun tulos
-    Graph::PathResult retPath; // polun haun tulos
+    BFSResult retBFS;   // leveyshaun tulos
+    PathResult retPath; // polun haun tulos
 
     // Lauta graafimuotoon
     board.ConvertToGraph(graph);
@@ -197,7 +197,7 @@ void KingsPathApp::SearchPath()
 
     // Oliko haku onnistunut?
     if(retBFS ==
-        Graph::BFS_NO_ADJ_NODES) { // Tämän tilanteen syy aloitussolmussa.
+        BFSResult::BFS_NO_ADJ_NODES) { // Tämän tilanteen syy aloitussolmussa.
 
         if(display_messages) {
             std::cout << "Polkua ei ole." << std::endl;
@@ -206,7 +206,7 @@ void KingsPathApp::SearchPath()
         output_file.close();
         return;
     }
-    else if(retBFS == Graph::BFS_NO_COLOR) { // erikoinen ja odottamaton
+    else if(retBFS == BFSResult::BFS_NO_COLOR) { // erikoinen ja odottamaton
                                              // tilanne
         if(display_messages) {
             std::cout << "Ajonaikainen virhe. Solmun väri puuttui."
@@ -216,8 +216,7 @@ void KingsPathApp::SearchPath()
         output_file.close();
         return;
     }
-    else if(retBFS ==
-        Graph::BFS_NO_DISTANCE) { // erikoinen ja odottamaton tilanne
+    else if(retBFS == BFSResult::BFS_NO_DISTANCE) { // erikoinen ja odottamaton tilanne
         if(display_messages) {
             std::cout << "Ajonaikainen virhe. Solmun etäisyys puuttui."
                       << std::endl;
@@ -231,7 +230,7 @@ void KingsPathApp::SearchPath()
     retPath = graph.BFS_Path(start_node, end_node);
 
     // Polku on olemassa?
-    if(retPath == Graph::PATH_EXIST) {
+    if(retPath == PathResult::PATH_EXIST) {
         if(display_messages) {
             std::cout << "Polku on olemassa." << std::endl;
         }
@@ -247,7 +246,7 @@ void KingsPathApp::SearchPath()
         // Polku tiedostoon
         graph.PathToFile(output_file);
     }
-    else if(retPath == Graph::NO_PATH) { // Poluton tilanne
+    else if(retPath == PathResult::NO_PATH) { // Poluton tilanne
         if(display_messages) {
             std::cout << "Polkua ei ole." << std::endl;
         }

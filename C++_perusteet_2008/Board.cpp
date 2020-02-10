@@ -1,6 +1,7 @@
 /** \file Board.cpp
     Lautaluokan toteutus
 */
+#include <iterator>
 
 #include "Board.h"
 
@@ -106,8 +107,8 @@ FileStatus Board::ReadFile(std::ifstream& infile)
         }
 
         // Rivi on OK
-        rows++;
-        data.push_back(line);
+        ++rows;
+        data.emplace_back(line);
     }
 
     // Otetaan vielä lopussa shakkilaudan mitat
@@ -190,18 +191,15 @@ void Board::Print(const Graph::PathType* path) const
  */
 int Board::NodePosition(const Node& n, const Graph::PathType& path) const
 {
-    Graph::PathType::const_iterator iter = path.begin(); // Solmujen
-                                                         // iteraattori
     int position = 0; // sijainti polussa. 0 = ensimmäinen
 
-    while(iter != path.end()) {
-        if((*iter) == n) // löytyi?
-        {
+    for(const auto& path_item: path) {
+        if (path_item == n) {
             return position;
         }
-        ++iter;
         ++position;
     }
+
     // ei ole polussa
     return -1;
 }
@@ -213,7 +211,7 @@ void Board::ConvertToGraph(Graph& graph) const
 {
     // using std::cout;
     // using std::endl;
-    using std::string;
+    using namespace std;
 
     // ei lautaa mistä ottaa ruutuja?
     if(data.empty() == true) {
@@ -222,38 +220,38 @@ void Board::ConvertToGraph(Graph& graph) const
 
     // tehdään laudasta kopio, koska lisätään kaksi riviä varattuja ruutuja.
     BoardDataType copy_data = data;
-    int row_length =
+    auto row_length =
         static_cast<int>(copy_data[0].length()); // laudan rivin leveys ylös
-    string filler(
+
+    const string FILLER(
         row_length, SQUARE_OCCUPIED); // tehdään täyterivi varatuista ruuduista
 
     // Lisätään nyt 2 apuriviä indeksoinnin helpottamiseksi
-    BoardDataType::iterator first_element = copy_data.begin();
-    copy_data.insert(first_element, filler); // rivi laudan alkuun
-    copy_data.push_back(filler);             // rivi laudan loppuun
+    auto first_element = begin(copy_data);
+    copy_data.insert(first_element, FILLER); // rivi laudan alkuun
+    copy_data.emplace_back(FILLER);             // rivi laudan loppuun
 
     // montako riviä laudassa nyt, otetaan ylös silmukkaa varten
-    int row_count = static_cast<int>(copy_data.size());
+    auto row_count = static_cast<int>(copy_data.size());
 
     int counter = 0;    // montako solmua, joilla oli vierussolmuja
     int actual_row = 0; // seuraa todellista riviä alkuperäisessa laudassa
     Graph::AdjType adj_nodes; // kerää vierussolmut
 
     // kierretään rivejä alkaen toisesta rivistä aina toiseksi viimeiseen asti
-    for(int i = 1; i < (row_count - 1); i++, actual_row++) {
+    for(auto i = 1; i < (row_count - 1); ++i, ++actual_row) {
         // otetaan ylös kolme riviä laudasta: edellinen, nykyinen ja seuraava.
-        const string& prev_row = copy_data[i - 1];
-        const string& current_row = copy_data[i];
-        const string& next_row = copy_data[i + 1];
+        const auto& prev_row = copy_data[i - 1];
+        const auto& current_row = copy_data[i];
+        const auto& next_row = copy_data[i + 1];
 
         // kierretään sarakkeita (yksittäisiä merkkejä rivillä)
-        for(int j = 0; j < row_length; j++) {
+        for(auto j = 0; j < row_length; ++j) {
             adj_nodes.clear();
 
             // cout << "(" << j << ", " << actual_row  << "): ";
 
-            Node current_node(
-                j, actual_row); // Tehdään tästä nykyisestä ruudusta solmu.
+            const Node CURRENT_NODE{j, actual_row}; // Tehdään tästä nykyisestä ruudusta solmu.
 
             // onko nykyinen ruutu tyhjä?
             if(current_row[j] == SQUARE_FREE) {
@@ -268,8 +266,7 @@ void Board::ConvertToGraph(Graph& graph) const
                     if(prev_row[j - 1] == SQUARE_FREE) {
                         // cout << "(" << j-1 << ", " << actual_row-1 << ") ";
                         // oli vapaa, lisätään vierussolmuksi
-                        Node n(j - 1, actual_row - 1);
-                        adj_nodes.push_back(n);
+                        adj_nodes.emplace_back(j - 1, actual_row - 1);
                     }
                 }
 
@@ -277,8 +274,7 @@ void Board::ConvertToGraph(Graph& graph) const
                 {
                     // cout << "(" << j << ", " << actual_row-1 << ") ";
                     // oli vapaa, lisätään vierussolmuksi
-                    Node n(j, actual_row - 1);
-                    adj_nodes.push_back(n);
+                    adj_nodes.emplace_back(j, actual_row - 1);
                 }
 
                 if(j < (row_length - 1)) /* 3 */
@@ -286,8 +282,7 @@ void Board::ConvertToGraph(Graph& graph) const
                     if(prev_row[j + 1] == SQUARE_FREE) {
                         // cout << "(" << j+1 << ", " << actual_row-1 << ") ";
                         // oli vapaa, lisätään vierussolmuksi
-                        Node n(j + 1, actual_row - 1);
-                        adj_nodes.push_back(n);
+                        adj_nodes.emplace_back(j + 1, actual_row - 1);
                     }
                 }
 
@@ -296,8 +291,7 @@ void Board::ConvertToGraph(Graph& graph) const
                     if(current_row[j - 1] == SQUARE_FREE) {
                         // cout << "(" << j-1 << ", " << actual_row << ") ";
                         // oli vapaa, lisätään vierussolmuksi
-                        Node n(j - 1, actual_row);
-                        adj_nodes.push_back(n);
+                        adj_nodes.emplace_back(j - 1, actual_row);
                     }
                 }
 
@@ -306,8 +300,7 @@ void Board::ConvertToGraph(Graph& graph) const
                     if(current_row[j + 1] == SQUARE_FREE) {
                         // cout << "(" << j+1 << ", " << actual_row << ") ";
                         // oli vapaa, lisätään vierussolmuksi
-                        Node n(j + 1, actual_row);
-                        adj_nodes.push_back(n);
+                        adj_nodes.emplace_back(j + 1, actual_row);
                     }
                 }
 
@@ -316,8 +309,7 @@ void Board::ConvertToGraph(Graph& graph) const
                     if(next_row[j - 1] == SQUARE_FREE) {
                         // cout << "(" << j-1 << ", " << actual_row+1 << ") ";
                         // oli vapaa, lisätään vierussolmuksi
-                        Node n(j - 1, actual_row + 1);
-                        adj_nodes.push_back(n);
+                        adj_nodes.emplace_back(j - 1, actual_row + 1);
                     }
                 }
 
@@ -325,8 +317,7 @@ void Board::ConvertToGraph(Graph& graph) const
                 {
                     // std::cout << "(" << j << ", " << actual_row+1 << ") ";
                     // oli vapaa, lisätään vierussolmuksi
-                    Node n(j, actual_row + 1);
-                    adj_nodes.push_back(n);
+                    adj_nodes.emplace_back(j, actual_row + 1);
                 }
 
                 if(j < (row_length - 1)) /* 8 */
@@ -334,8 +325,7 @@ void Board::ConvertToGraph(Graph& graph) const
                     if(next_row[j + 1] == SQUARE_FREE) {
                         // std::cout << "(" << j+1 << ", " << actual_row+1 <<
                         // ") "; oli vapaa, lisätään vierussolmuksi
-                        Node n(j + 1, actual_row + 1);
-                        adj_nodes.push_back(n);
+                        adj_nodes.emplace_back(j + 1, actual_row + 1);
                     }
                 }
 
@@ -343,8 +333,8 @@ void Board::ConvertToGraph(Graph& graph) const
 
             // Ei lisätä yksinäisiä vapaita shakkiruutuja graafiin
             if(adj_nodes.empty() == false) {
-                counter++;
-                graph.AddNodes(current_node, adj_nodes);
+                ++counter;
+                graph.AddNodes(CURRENT_NODE, adj_nodes);
             }
 
         } // for (sarakkeet)

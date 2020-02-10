@@ -6,8 +6,15 @@
 
 #include "Graph.h"
 
-// poluttoman solmun vakion alustus
-const Node Graph::NIL_NODE(-1, -1);
+
+/**
+ * Solmun etäisyys ääretön.
+ */
+static constexpr int DIST_INFINITE = -1;
+
+/** Solmu, johon ei tule polkua.
+ */
+static const Node NIL_NODE{-1, -1};
 
 /**
  * Oletusmuodostin.
@@ -79,7 +86,7 @@ void Graph::Print() const
  * @return Menikö haku ongelmitta (BFSResult).
  * @see BFSResult
  */
-Graph::BFSResult Graph::BFS(const Node& start)
+BFSResult Graph::BFS(const Node& start)
 {
     typedef std::deque<Node> QueueType; // Jonon tietotyypin lyhennys
 
@@ -88,7 +95,7 @@ Graph::BFSResult Graph::BFS(const Node& start)
     InitNodes();
 
     SetDistance(start, 0);
-    SetNodeColor(start, GRAY);
+    SetNodeColor(start, NodeColor::GRAY);
     node_queue.clear();
 
     node_queue.push_back(start);
@@ -101,7 +108,7 @@ Graph::BFSResult Graph::BFS(const Node& start)
 
         if(!adj) // Vierussolmut puuttuvat?
         {
-            return BFS_NO_ADJ_NODES;
+            return BFSResult::BFS_NO_ADJ_NODES;
         }
 
         // Käsitellään jokainen vierussolmu
@@ -112,19 +119,19 @@ Graph::BFSResult Graph::BFS(const Node& start)
 
             if(color_iter == node_colors.end()) // Väri puuttuu?
             {                                   // Poikkeuksellinen tilanne.
-                return BFS_NO_COLOR;
+                return BFSResult::BFS_NO_COLOR;
             }
 
             // Solmussa ei ole käyty ?
-            if(color_iter->second == WHITE) {
-                SetNodeColor((*adj_iter), GRAY);
+            if(color_iter->second == NodeColor::WHITE) {
+                SetNodeColor((*adj_iter), NodeColor::GRAY);
                 // Etsitään solmun etäisyys
                 DistanceType::const_iterator dist_iter =
                     distances.find(current_node);
 
                 if(dist_iter == distances.end()) // Etäisyys puuttuu?
                 {                                // Poikkeuksellinen tilanne.
-                    return BFS_NO_DISTANCE;
+                    return BFSResult::BFS_NO_DISTANCE;
                 }
 
                 SetDistance((*adj_iter), (dist_iter->second) + 1);
@@ -133,10 +140,10 @@ Graph::BFSResult Graph::BFS(const Node& start)
             }
         }
 
-        SetNodeColor(current_node, BLACK);
+        SetNodeColor(current_node, NodeColor::BLACK);
     }
 
-    return BFS_OK;
+    return BFSResult::BFS_OK;
 }
 
 /** Suorittaa graafissa polun hakemisen kahden solmun välillä.
@@ -148,7 +155,7 @@ Graph::BFSResult Graph::BFS(const Node& start)
  * @see PathResult
  * @see BFS
  */
-Graph::PathResult Graph::BFS_Path(const Node& start, const Node& end)
+PathResult Graph::BFS_Path(const Node& start, const Node& end)
 {
     // using std::cout;
     // using std::endl;
@@ -162,12 +169,12 @@ Graph::PathResult Graph::BFS_Path(const Node& start, const Node& end)
 
         if(iter == predecessors.end()) {
             // cout << "Päätesolmu (" << end << ") ei kuulu graafiin." << endl;
-            return INVALID_NODE;
+            return PathResult::INVALID_NODE;
         }
         else if(iter->second == NIL_NODE) {
             // cout << "Ei polkua solmusta (" << start << ") solmuun (" << end
             // << ")." << endl;
-            return NO_PATH;
+            return PathResult::NO_PATH;
         }
         else {
             BFS_Path(start, iter->second);
@@ -175,7 +182,7 @@ Graph::PathResult Graph::BFS_Path(const Node& start, const Node& end)
         }
     }
 
-    return PATH_EXIST;
+    return PathResult::PATH_EXIST;
 }
 
 /** Antaa leveyshaun polun graafissa.
@@ -214,7 +221,7 @@ void Graph::InitNodes()
     for(GraphDataType::const_iterator iter = data.begin(); iter != data.end();
         ++iter) {
 
-        SetNodeColor((iter->first), WHITE);
+        SetNodeColor((iter->first), NodeColor::WHITE);
         SetDistance((iter->first), DIST_INFINITE);
         SetPredecessor((iter->first), NIL_NODE);
     }
