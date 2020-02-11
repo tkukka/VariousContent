@@ -9,6 +9,7 @@
 #include <list>
 #include <map>
 #include <vector>
+#include <optional>
 
 #include "Node.h"
 
@@ -33,6 +34,7 @@ enum class PathResult {
 /** Graafi-luokkaa käytetään shakkilaudan vapaiden ruutujen esittämiseen.
  */
 class Graph {
+
 public:
     /** Vierussolmujen tietotyyppi.
      */
@@ -66,12 +68,14 @@ private:
         BLACK  /*!< Musta. */
     };
 
+    using ListType = std::optional<AdjType>;
+
     // Leveyshaun apumetodit
     void InitNodes();
     void SetDistance(const Node& n, int d);
     void SetPredecessor(const Node& v, const Node& u);
     void SetNodeColor(const Node& n, NodeColor color);
-    const AdjType* GetAdjNodes(const Node& n) const;
+    ListType GetAdjNodes(const Node& n) const;
 
     /** Solmujen etäisyyslistan tietotyyppi.
      */

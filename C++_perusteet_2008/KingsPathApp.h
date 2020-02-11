@@ -14,6 +14,7 @@
  * Yksinkertainen sovellusluokka kuninkaan polun selvittämiseksi.
  */
 class KingsPathApp {
+
 public:
     KingsPathApp();
     ~KingsPathApp();

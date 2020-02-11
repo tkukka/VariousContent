@@ -26,6 +26,7 @@ enum class FileStatus {
  * Shakkilaudan esitys.
  */
 class Board {
+
 public:
 
     Board();
@@ -39,12 +40,11 @@ public:
 
 private:
     // apufunktio kun polkua tulostetaan
-    int NodePosition(const Node& n, const Graph::PathType& path) const;
+    static int NodePosition(const Node& n, const Graph::PathType& path);
 
     /**
      * Laudan ruutujen tietotyyppi.
      */
-//    typedef std::vector<std::string> BoardDataType;
     using BoardDataType = std::vector<std::string>;
 
     /**

@@ -10,6 +10,7 @@
 /** Solmuluokka graafia varten.
  */
 class Node {
+
 public:
     Node();
     Node(int _x, int _y);

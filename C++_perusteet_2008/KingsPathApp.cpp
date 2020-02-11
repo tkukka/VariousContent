@@ -106,7 +106,7 @@ int KingsPathApp::ProcessCmdLine(int argc, char** argv)
     // Otetaan nimi ylös.
     input_file_name = argv[2];
 
-    // Tiedosto, johon polku kirjoitetaan. Pääseekö käsiksi?
+    // Tiedosto, johon polku kirjoitetaan.
     output_file.open(argv[3]);
     if(!output_file.good()) {
         cout << "Tiedoston " << argv[3] << " avaaminen ei onnistunut." << endl;
@@ -128,9 +128,8 @@ int KingsPathApp::ReadBoard()
     using std::cout;
     using std::endl;
 
-    FileStatus ret; // kertoo, miten kävi laudan lukemisesssa
-
-    ret = board.ReadFile(input_file);
+    // miten kävi laudan lukemisesssa...
+    auto ret = board.ReadFile(input_file);
 
     if(ret == FileStatus::FILE_NOT_OPEN) {
         if(display_messages) {
@@ -178,22 +177,13 @@ void KingsPathApp::SearchPath()
     using std::endl;
 
     Graph graph;               // laudan vapaiden ruutujen graafi
-    const Node start_node{0, 0};     // polun alku
-    Node end_node;             // polun loppu
-    BFSResult retBFS;   // leveyshaun tulos
-    PathResult retPath; // polun haun tulos
-
     // Lauta graafimuotoon
     board.ConvertToGraph(graph);
 
-    // graph.Print();
-
-    // Laudan oikea alanurkka..koordinaatit?
-    auto [width, height] = board.GetDimension();
-    end_node.SetXY(width - 1, height - 1);
+    //graph.Print();
 
     // Tehdään leveyshaku
-    retBFS = graph.BFS(start_node);
+    auto retBFS = graph.BFS({0, 0});
 
     // Oliko haku onnistunut?
     if(retBFS ==
@@ -226,8 +216,10 @@ void KingsPathApp::SearchPath()
         return;
     }
 
+    // Laudan oikea alanurkka, koordinaatit?
+    auto [width, height] = board.GetDimension();
     // leveyshaku meni putkeen, etsitään nyt polku
-    retPath = graph.BFS_Path(start_node, end_node);
+    auto retPath = graph.BFS_Path({0, 0}, {width - 1, height - 1} );
 
     // Polku on olemassa?
     if(retPath == PathResult::PATH_EXIST) {
@@ -236,7 +228,7 @@ void KingsPathApp::SearchPath()
         }
 
         // Polku ruudulle
-        const Graph::PathType& path = graph.GetPath();
+        const auto& path = graph.GetPath();
 
         if(display_messages) {
             cout << endl;

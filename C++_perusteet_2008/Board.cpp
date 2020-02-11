@@ -131,7 +131,7 @@ void Board::Print(const Graph::PathType* path) const
     using std::string;
 
     // ei lautaa
-    if(data.empty() == true) {
+    if(data.empty()) {
         cout << "Laudassa ei ruutuja" << endl;
         return;
     }
@@ -161,10 +161,10 @@ void Board::Print(const Graph::PathType* path) const
                 {
                     // pitää tutkia onko nykyinen vapaa ruutu jossain kohdassa
                     // polkua. vähän tehotonta...
-                    auto index = NodePosition({column, row}, *path);
+                    auto index = Board::NodePosition({column, row}, *path);
                     if(index >= 0) // tämä ruutu on polussa?
                     {
-                        cout << "\t" << (index + 1);
+                        cout << "\t" <<  "\033[1;37;44m" <<  (index + 1) << "\033[0m";
                     }
                     else {
                         cout << "\t";
@@ -189,7 +189,7 @@ void Board::Print(const Graph::PathType* path) const
  * @param path Polku, josta solmua haetaan.
  * @return Indeksi (sijainti) polussa
  */
-int Board::NodePosition(const Node& n, const Graph::PathType& path) const
+int Board::NodePosition(const Node& n, const Graph::PathType& path)
 {
     int position = 0; // sijainti polussa. 0 = ensimmäinen
 
@@ -214,7 +214,7 @@ void Board::ConvertToGraph(Graph& graph) const
     using namespace std;
 
     // ei lautaa mistä ottaa ruutuja?
-    if(data.empty() == true) {
+    if(data.empty()) {
         return;
     }
 
@@ -223,18 +223,16 @@ void Board::ConvertToGraph(Graph& graph) const
     auto row_length =
         static_cast<int>(copy_data[0].length()); // laudan rivin leveys ylös
 
-    const string FILLER(
-        row_length, SQUARE_OCCUPIED); // tehdään täyterivi varatuista ruuduista
+    const string FILLER(row_length, SQUARE_OCCUPIED); // tehdään täyterivi varatuista ruuduista
 
     // Lisätään nyt 2 apuriviä indeksoinnin helpottamiseksi
-    auto first_element = begin(copy_data);
-    copy_data.insert(first_element, FILLER); // rivi laudan alkuun
+    copy_data.emplace(cbegin(copy_data), FILLER); // rivi laudan alkuun
     copy_data.emplace_back(FILLER);             // rivi laudan loppuun
 
     // montako riviä laudassa nyt, otetaan ylös silmukkaa varten
     auto row_count = static_cast<int>(copy_data.size());
 
-    int counter = 0;    // montako solmua, joilla oli vierussolmuja
+    //int counter = 0;    // montako solmua, joilla oli vierussolmuja
     int actual_row = 0; // seuraa todellista riviä alkuperäisessa laudassa
     Graph::AdjType adj_nodes; // kerää vierussolmut
 
@@ -250,8 +248,6 @@ void Board::ConvertToGraph(Graph& graph) const
             adj_nodes.clear();
 
             // cout << "(" << j << ", " << actual_row  << "): ";
-
-            const Node CURRENT_NODE{j, actual_row}; // Tehdään tästä nykyisestä ruudusta solmu.
 
             // onko nykyinen ruutu tyhjä?
             if(current_row[j] == SQUARE_FREE) {
@@ -333,8 +329,8 @@ void Board::ConvertToGraph(Graph& graph) const
 
             // Ei lisätä yksinäisiä vapaita shakkiruutuja graafiin
             if(adj_nodes.empty() == false) {
-                ++counter;
-                graph.AddNodes(CURRENT_NODE, adj_nodes);
+                //++counter;
+                graph.AddNodes({j, actual_row}, adj_nodes);
             }
 
         } // for (sarakkeet)
@@ -350,6 +346,6 @@ void Board::ConvertToGraph(Graph& graph) const
  */
 std::tuple<int, int> Board::GetDimension() const
 {
-    return std::make_tuple(width, height);
+    return {width, height};
 }
 
