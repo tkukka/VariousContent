@@ -8,12 +8,11 @@ BUILD_DIR_RELEASE := ./$(RELEASE_STR)
 TARGET_NAME := KingsPath
 TARGET := $(BUILD_DIR)/$(TARGET_NAME)
 MAPFILE := $(TARGET).map
-DEPENDFILE := ./.depend.$(BUILD)
 
 SANITIZER := 
 SANITIZER_TYPE := leak
 .SUFFIXES:
-.SUFFIXES: .c .h .cpp .o .a
+.SUFFIXES: .c .h .cpp .o .a .d
 CC = gcc-8 #clang-8
 CXX = g++-8 #clang-8
 CPP = $(CC) -E
@@ -65,8 +64,8 @@ ifeq ($(strip $(BUILD)),$(DEBUG_STR))
   LDFLAGS += $(DEBUG_INFO) $(WARNINGS)
 
   coverage: DEFS += -U_FORTIFY_SOURCE
-  #coverage: CFLAGS += $(COV_FLAGS)
-  #coverage: CXXFLAGS += $(COV_FLAGS)
+  coverage: CFLAGS += $(COV_FLAGS)
+  coverage: CXXFLAGS += $(COV_FLAGS)
   coverage: LDFLAGS += $(COV_LDFLAGS)
 
 
@@ -130,7 +129,7 @@ SRCS = $(SRCS_CXX) $(SRCS_C)
 OBJS_CXX = $(SRCS_CXX:.cpp=.o)
 OBJS_C = $(SRCS_C:.c=.o)
 OBJS := $(addprefix $(BUILD_DIR)/,$(OBJS_CXX)) $(addprefix $(BUILD_DIR)/,$(OBJS_C))
-
+DEPS := $(OBJS:.o=.d)
 
 ifeq ($(strip $(OBJS_CXX)),)
    LINKER := $(CC)
@@ -144,7 +143,7 @@ else
 
 endif
 
-.PHONY: all clean distclean depend memsize coverage
+.PHONY: all clean distclean memsize coverage
 
 $(BUILD_DIR)/%.o: %.c
 	@echo --- C compiling [$(BUILD)] ---
@@ -154,9 +153,23 @@ $(BUILD_DIR)/%.o: %.cpp
 	@echo --- C++ compiling [$(BUILD)] ---
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
+$(BUILD_DIR)/%.d: %.c
+	@echo --- Making C Depency [$(BUILD)] ---
+	$(RM) $@
+	$(CPP) -MM $^ >> $@.tmp
+	gawk -v S="$(BUILD_DIR)/" -F: '{if (NF<2) {print $$0; next} else { printf "%s%s:%s\n",S,$$1,$$2} }' $@.tmp >> $@
+	$(RM) $@.tmp
+
+$(BUILD_DIR)/%.d: %.cpp
+	@echo --- Making C++ Depency [$(BUILD)] ---
+	$(RM) $@
+	$(CPP) -MM $^ >> $@.tmp
+	gawk -v S="$(BUILD_DIR)/" -F: '{if (NF<2) {print $$0; next} else { printf "%s%s:%s\n",S,$$1,$$2} }' $@.tmp >> $@
+	$(RM) $@.tmp
+
 all: $(TARGET)
 
-$(OBJS): | $(BUILD_DIR)
+$(DEPS) $(OBJS): | $(BUILD_DIR)
 
 $(BUILD_DIR):
 	-test -d $(BUILD_DIR) || mkdir $(BUILD_DIR)
@@ -171,25 +184,16 @@ memsize: $(TARGET)
 
 coverage: $(TARGET)
 
-depend: $(DEPENDFILE)
-
-$(DEPENDFILE): $(SRCS)
-	@echo --- Depencies [$(BUILD)] ---
-	$(RM) $@
-	$(CPP) -MM $^ >> $@.tmp
-	gawk -v S="$(BUILD_DIR)/" -F: '{if (NF<2) {print $$0; next} else { printf "%s%s:%s\n",S,$$1,$$2} }' $@.tmp >> $@
-	$(RM) $@.tmp
-
 clean:
 	@echo --- Clean [$(BUILD)]  ---
-	$(RM) $(OBJS) $(TARGET) $(MAPFILE)
+	$(RM) $(OBJS) $(DEPS) $(TARGET) $(MAPFILE)
+	$(RM) $(BUILD_DIR)/*.gcda $(BUILD_DIR)/*.gcno
 
 distclean: clean
 	@echo --- Distclean [$(BUILD)] ---
-	$(RM) $(DEPENDFILE)
 	rmdir $(BUILD_DIR) || true
 
 ifneq ($(MAKECMDGOALS),clean)
-   -include $(DEPENDFILE)
+   -include $(DEPS)
 endif
 
