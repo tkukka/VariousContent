@@ -189,7 +189,15 @@ distclean: clean
 	$(RM) $(DEPENDFILE)
 	rmdir $(BUILD_DIR) || true
 
-ifneq ($(MAKECMDGOALS),clean)
+override undefine USE_CLEAN
+ifeq ($(MAKECMDGOALS),clean)
+   USE_CLEAN := 1
+endif
+ifeq ($(MAKECMDGOALS),distclean)
+   USE_CLEAN := 1
+endif
+
+ifndef USE_CLEAN
    -include $(DEPENDFILE)
 endif
 

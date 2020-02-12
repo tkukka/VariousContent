@@ -71,6 +71,14 @@ distclean: clean
 	$(RM) $(DEPEND)
 	rmdir $(BUILD) || true
 
-ifneq ($(MAKECMDGOALS),clean)
+override undefine USE_CLEAN
+ifeq ($(MAKECMDGOALS),clean)
+   USE_CLEAN := 1
+endif
+ifeq ($(MAKECMDGOALS),distclean)
+   USE_CLEAN := 1
+endif
+ifndef USE_CLEAN
    -include $(DEPEND)           # ./$(BUILD)/test1.o: test1.cpp test1.h
 endif
+
