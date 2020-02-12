@@ -75,8 +75,8 @@ int KingsPathApp::ProcessCmdLine(int argc, char** argv)
     using namespace std;
 
     // 1. parametrin vertailtavat arvot
-    string_view switch_show{"-show"};
-    string_view switch_quiet{"-quiet"};
+    string_view switch_show{ "-show" };
+    string_view switch_quiet{ "-quiet" };
 
     // Aluksi parametrien lukumäärä oikea?
     if(argc != PARAMETER_COUNT) {
@@ -176,14 +176,14 @@ void KingsPathApp::SearchPath()
     using std::cout;
     using std::endl;
 
-    Graph graph;               // laudan vapaiden ruutujen graafi
+    Graph graph; // laudan vapaiden ruutujen graafi
     // Lauta graafimuotoon
     board.ConvertToGraph(graph);
 
-    //graph.Print();
+    // graph.Print();
 
     // Tehdään leveyshaku
-    auto retBFS = graph.BFS({0, 0});
+    auto retBFS = graph.BFS({ 0, 0 });
 
     // Oliko haku onnistunut?
     if(retBFS ==
@@ -197,7 +197,7 @@ void KingsPathApp::SearchPath()
         return;
     }
     else if(retBFS == BFSResult::BFS_NO_COLOR) { // erikoinen ja odottamaton
-                                             // tilanne
+                                                 // tilanne
         if(display_messages) {
             std::cout << "Ajonaikainen virhe. Solmun väri puuttui."
                       << std::endl;
@@ -219,7 +219,7 @@ void KingsPathApp::SearchPath()
     // Laudan oikea alanurkka, koordinaatit?
     auto [width, height] = board.GetDimension();
     // leveyshaku meni putkeen, etsitään nyt polku
-    auto retPath = graph.BFS_Path({0, 0}, {width - 1, height - 1} );
+    auto retPath = graph.BFS_Path({ 0, 0 }, { width - 1, height - 1 });
 
     // Polku on olemassa?
     if(retPath == PathResult::PATH_EXIST) {

@@ -8,11 +8,10 @@
 #include <fstream>
 #include <list>
 #include <map>
-#include <vector>
 #include <optional>
+#include <vector>
 
 #include "Node.h"
-
 
 /** Leveyshaun paluuarvo
  */
@@ -79,7 +78,7 @@ private:
 
     /** Solmujen etäisyyslistan tietotyyppi.
      */
-    using DistanceType = std::map<Node, int> ;
+    using DistanceType = std::map<Node, int>;
 
     /** Solmujen edeltäjälistan tietotyyppi.
      */

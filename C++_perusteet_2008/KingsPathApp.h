@@ -26,8 +26,6 @@ public:
     void SearchPath();
 
 private:
-
-
     /**
      * Näytölle tulostuksen tilamuuttuja.
      */

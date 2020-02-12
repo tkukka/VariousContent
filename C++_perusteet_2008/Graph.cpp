@@ -4,9 +4,7 @@
 
 #include <deque>
 
-
 #include "Graph.h"
-
 
 /**
  * Solmun etäisyys ääretön.
@@ -15,7 +13,7 @@ static constexpr int DIST_INFINITE = -1;
 
 /** Solmu, johon ei tule polkua.
  */
-static const Node NIL_NODE{-1, -1};
+static const Node NIL_NODE{ -1, -1 };
 
 /**
  * Oletusmuodostin.
@@ -64,12 +62,12 @@ void Graph::Print() const
 
     cout << "Graafissa on " << data.size() << " solmua" << endl;
 
-      // käy läpi kaikki solmut iteraattorin avulla
-    for (const auto& [node, list]: data) {
+    // käy läpi kaikki solmut iteraattorin avulla
+    for(const auto& [node, list] : data) {
         cout << node << ": ";
 
         // Solmun vierussolmut seuraavaksi ruudulle iteroiden
-        for(const auto& n: list) {
+        for(const auto& n : list) {
             cout << n << "  ";
         }
 
@@ -95,7 +93,7 @@ BFSResult Graph::BFS(const Node& start)
     node_queue.emplace_back(start);
 
     while(node_queue.empty() == false) {
-        const auto& CURRENT_NODE( node_queue.front() );
+        const auto& CURRENT_NODE(node_queue.front());
         node_queue.pop_front();
 
         auto adj = GetAdjNodes(CURRENT_NODE);
@@ -106,12 +104,12 @@ BFSResult Graph::BFS(const Node& start)
         }
 
         // Käsitellään jokainen vierussolmu
-        for(const auto& adj_node: *adj) {
+        for(const auto& adj_node : *adj) {
             // Etsitään solmun väri
             const auto color = node_colors.find(adj_node);
 
             if(color == node_colors.end()) // Väri puuttuu?
-            {                                   // Poikkeuksellinen tilanne.
+            {                              // Poikkeuksellinen tilanne.
                 return BFSResult::BFS_NO_COLOR;
             }
 
@@ -122,7 +120,7 @@ BFSResult Graph::BFS(const Node& start)
                 const auto dist = distances.find(CURRENT_NODE);
 
                 if(dist == distances.end()) // Etäisyys puuttuu?
-                {                                // Poikkeuksellinen tilanne.
+                {                           // Poikkeuksellinen tilanne.
                     return BFSResult::BFS_NO_DISTANCE;
                 }
 
@@ -196,10 +194,9 @@ const Graph::PathType& Graph::GetPath() const
 void Graph::PathToFile(std::ofstream& out_file) const
 {
 
-    for(const auto& item: path) {
+    for(const auto& item : path) {
         out_file << item << std::endl; // Solmu tiedostoon
     }
-
 }
 
 /** Alustaa leveyshaun tarvitsemat tiedot solmujen väristä, edeltäjistä ja
@@ -256,6 +253,6 @@ Graph::ListType Graph::GetAdjNodes(const Node& n) const
     // etsitään solmun vierussolmulista
     const auto a_list = data.find(n);
 
-    return (a_list == data.end()) ? std::nullopt : ListType{a_list->second};
+    return (a_list == data.end()) ? std::nullopt : ListType{ a_list->second };
 }
 

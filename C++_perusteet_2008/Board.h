@@ -7,12 +7,11 @@
 
 #include <fstream>
 #include <string>
-#include <vector>
 #include <tuple>
+#include <vector>
 
 #include "Graph.h"
 #include "Node.h"
-
 
 /** Laudan tiedostosta lukemisen paluuarvo.
  */
@@ -20,7 +19,7 @@ enum class FileStatus {
     READ_OK,          /*!< Lukeminen onnistui. */
     FILE_NOT_OPEN,    /*!< Tiedosto oli avaamatta. */
     FILE_FORMAT_ERROR /*!< Tiedoston muoto väärä. */
-    };
+};
 
 /**
  * Shakkilaudan esitys.
@@ -28,7 +27,6 @@ enum class FileStatus {
 class Board {
 
 public:
-
     Board();
     ~Board();
 

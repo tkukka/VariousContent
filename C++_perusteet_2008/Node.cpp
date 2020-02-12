@@ -58,7 +58,7 @@ void Node::SetXY(int _x, int _y)
  */
 bool operator==(const Node& a, const Node& b)
 {
-    return (a.X() == b.X() ) && ( a.Y() == b.Y() );
+    return (a.X() == b.X()) && (a.Y() == b.Y());
 }
 
 /**

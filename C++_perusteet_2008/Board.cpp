@@ -5,7 +5,6 @@
 
 #include "Board.h"
 
-
 /**
  * Laudan ruutujen sallitut kirjainmerkit.
  */
@@ -21,14 +20,13 @@ static constexpr char SQUARE_OCCUPIED = 'P';
  */
 static constexpr char SQUARE_FREE = 'E';
 
-
 /**
  * Oletusmuodostin.
  */
 Board::Board()
     : data{}
-    , width{0}
-    , height{0}
+    , width{ 0 }
+    , height{ 0 }
 {
 }
 
@@ -72,9 +70,9 @@ FileStatus Board::ReadFile(std::ifstream& infile)
     // Nollataan laudan tiedot
     Reset();
 
-    string line;  // Luettu tekstirivi
+    string line; // Luettu tekstirivi
     // Käydään läpi tiedoston rivit kunnes tiedosto loppuu
-    while(getline(infile, line) ) {
+    while(getline(infile, line)) {
 
         // Onko tyhjä rivi?
         if(line.empty()) {
@@ -146,11 +144,11 @@ void Board::Print(const Graph::PathType* path) const
     int row = 0;
     int column;
 
-    for(const auto& data_row: data) {
+    for(const auto& data_row : data) {
         cout << row;
         column = 0;
 
-        for(const auto c: data_row ) {
+        for(const auto c : data_row) {
             // tulostetaan varattu ruutu?
             if(c == SQUARE_OCCUPIED) {
                 cout << "\t" << c;
@@ -161,10 +159,11 @@ void Board::Print(const Graph::PathType* path) const
                 {
                     // pitää tutkia onko nykyinen vapaa ruutu jossain kohdassa
                     // polkua. vähän tehotonta...
-                    auto index = Board::NodePosition({column, row}, *path);
+                    auto index = Board::NodePosition({ column, row }, *path);
                     if(index >= 0) // tämä ruutu on polussa?
                     {
-                        cout << "\t" <<  "\033[1;37;44m" <<  (index + 1) << "\033[0m";
+                        cout << "\t"
+                             << "\033[1;37;44m" << (index + 1) << "\033[0m";
                     }
                     else {
                         cout << "\t";
@@ -193,8 +192,8 @@ int Board::NodePosition(const Node& n, const Graph::PathType& path)
 {
     int position = 0; // sijainti polussa. 0 = ensimmäinen
 
-    for(const auto& path_item: path) {
-        if (path_item == n) {
+    for(const auto& path_item : path) {
+        if(path_item == n) {
             return position;
         }
         ++position;
@@ -227,12 +226,12 @@ void Board::ConvertToGraph(Graph& graph) const
 
     // Lisätään nyt 2 apuriviä indeksoinnin helpottamiseksi
     copy_data.emplace(cbegin(copy_data), FILLER); // rivi laudan alkuun
-    copy_data.emplace_back(FILLER);             // rivi laudan loppuun
+    copy_data.emplace_back(FILLER);               // rivi laudan loppuun
 
     // montako riviä laudassa nyt, otetaan ylös silmukkaa varten
     auto row_count = static_cast<int>(copy_data.size());
 
-    //int counter = 0;    // montako solmua, joilla oli vierussolmuja
+    // int counter = 0;    // montako solmua, joilla oli vierussolmuja
     int actual_row = 0; // seuraa todellista riviä alkuperäisessa laudassa
     Graph::AdjType adj_nodes; // kerää vierussolmut
 
@@ -330,7 +329,7 @@ void Board::ConvertToGraph(Graph& graph) const
             // Ei lisätä yksinäisiä vapaita shakkiruutuja graafiin
             if(adj_nodes.empty() == false) {
                 //++counter;
-                graph.AddNodes({j, actual_row}, adj_nodes);
+                graph.AddNodes({ j, actual_row }, adj_nodes);
             }
 
         } // for (sarakkeet)
@@ -346,6 +345,6 @@ void Board::ConvertToGraph(Graph& graph) const
  */
 std::tuple<int, int> Board::GetDimension() const
 {
-    return {width, height};
+    return { width, height };
 }
 
