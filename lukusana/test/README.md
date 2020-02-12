@@ -10,7 +10,7 @@ $ ./test_lukusana
 $ cd ../..
 $ gcov-8 -d -b -k -m -r cplusplus/*.cpp  --object-directory Debug/ > gcov_coverage_report.txt
 ```
-For **clang** (8.0)
+For **Clang** (8.0)
 
 ```Shell Session
 $ make CC=clang-8 CXX=clang++-8 BUILD=Debug coverage
