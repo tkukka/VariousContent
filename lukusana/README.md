@@ -27,8 +27,8 @@ Flag |Compile C Sources | Compile C++ Sources
 
 Flag |Use Clang | Use GCC
 ----|----|----
-**CC**  |  < undefined > or clang |  gcc-8
-**CXX**  |  < undefined > or clang++ |  g++-8
+**CC**  |  < undefined > or clang-8 |  gcc-8
+**CXX**  |  < undefined > or clang++-8 |  g++-8
 
 Flag | Debug Build, the default | Release Build
 ----|----|----
@@ -81,7 +81,7 @@ For **g++**
 ```Shell Session
 $ make USE_CXX_SOURCES=1 CC=gcc-8 CXX=g++-8 BUILD=Debug coverage
 ```
-For **clang**
+For **Clang**
 
 ```Shell Session
 $ make USE_CXX_SOURCES=1 CC=clang-8 CXX=clang++-8 BUILD=Debug coverage
