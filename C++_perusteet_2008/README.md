@@ -6,6 +6,9 @@ Modern C++17 implementation basing on the original files.
 **original**: tehtävänanto, alkuperäiset C++98-lähdekoodit (kevät v.2008, Windows XP). 
 The assignment, the original C++-sources (C++98, spring 2008, Windows XP).
 
+**VStudio_2019** C++17 toteutuksen Visual Studio -projekti. 
+Visual Studio build project files for the new C++17 implementation.
+
 # Source C++ Dialect
 
 **C++**: C++17 (compiler: -std=c++17)
