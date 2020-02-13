@@ -1,9 +1,9 @@
-/*  Oulun yliopisto / Tietojenk‰sittelytieteiden laitos
+/*  Oulun yliopisto / Tietojenk√§sittelytieteiden laitos
  *  Kurssi: C-ohjelmointi 812316A, lukuvuosi 2004-2005
- *  Kurssin harjoitustyˆ: "Luvun sanallinen muoto" (koodi 1.05)
+ *  Kurssin harjoitusty√∂: "Luvun sanallinen muoto" (koodi 1.05)
  *  Tiedosto: lukusana.c  10.01.2005
- *  Tekij‰:   Tero Kukka
- *            Oulun yliopisto / S‰hkˆ- ja tietotekniikan osasto
+ *  Tekij√§:   Tero Kukka
+ *            Oulun yliopisto / S√§hk√∂- ja tietotekniikan osasto
  *            Tietotekniikan koulutusohjelma 2004
  */
 
@@ -14,16 +14,16 @@
 #include <limits.h>    /* lukuesitysten maksimit     */
 #include <assert.h>    /* assert-makro/funktio */
 
-/* Symboliset esik‰‰nt‰j‰vakiot: */
-#define LOWER_LIMIT   0ul          /* Pienin luku, jotka hyv‰ksyt‰‰n */
-#define UPPER_LIMIT   10000000ul   /* Suurin luku, jotka hyv‰ksyt‰‰n */
+/* Symboliset esik√§√§nt√§j√§vakiot: */
+#define LOWER_LIMIT   0ul          /* Pienin luku, jotka hyv√§ksyt√§√§n */
+#define UPPER_LIMIT   10000000ul   /* Suurin luku, jotka hyv√§ksyt√§√§n */
 #define ARG_PROGRAM_NAME  argv[0]  /* Ohjelman komentoriviargumentti */
 #define ARG_USER_INPUT    argv[1]  /* Ohjelman komentoriviargumentti */
-#define INPUT_OK      0  /* Syˆtteen tarkastusfunktion paluuarvo */
-#define INPUT_ERROR   -1 /* Syˆtteen tarkastusfunktion paluuarvo */
-#define INPUT_PARAM_ERROR  -2 /* Syˆtteen tarkastusfunktion paluuarvo */
+#define INPUT_OK      0  /* Sy√∂tteen tarkastusfunktion paluuarvo */
+#define INPUT_ERROR   -1 /* Sy√∂tteen tarkastusfunktion paluuarvo */
+#define INPUT_PARAM_ERROR  -2 /* Sy√∂tteen tarkastusfunktion paluuarvo */
 
-/* Solmun tietotyyppi tulostettavaa teksti‰ varten */
+/* Solmun tietotyyppi tulostettavaa teksti√§ varten */
 typedef struct node
     {
     struct node *next; /* seuraavan solmun osoite */
@@ -34,15 +34,15 @@ typedef struct node
 /* Linkitetyn pinon tietotyyppi */
 typedef struct
     {
-    int   count; /* solmujen lukum‰‰r‰ */
-    Node  *top;  /* linkki p‰‰llimm‰iseen solmuun */
+    int   count; /* solmujen lukum√§√§r√§ */
+    Node  *top;  /* linkki p√§√§llimm√§iseen solmuun */
     } Stack;
 
 /*        Tulosteisiin tarvittavat tekstivakiot     */
 
-/*  Ensin lukusanat 0 - 19  valmiiksi m‰‰riteltyin‰ tekstein‰.
- *  (Numerot 10 - 19 ovat luonteeltaan ep‰s‰‰nnˆllisi‰,
- *  joten ne on helpointa m‰‰ritell‰ t‰ss‰.)
+/*  Ensin lukusanat 0 - 19  valmiiksi m√§√§riteltyin√§ tekstein√§.
+ *  (Numerot 10 - 19 ovat luonteeltaan ep√§s√§√§nn√∂llisi√§,
+ *  joten ne on helpointa m√§√§ritell√§ t√§ss√§.)
  */
 
 static const char *NUMBERS_0_19[] =
@@ -52,60 +52,60 @@ static const char *NUMBERS_0_19[] =
     "kaksi",
     "kolme",
 #if defined(__BORLANDC__) || defined(_MSC_VER) /* Skandit kuntoon
-                                                  esik‰‰nt‰j‰lipuilla */
-    "neljÑ",
+                                                  esik√§√§nt√§j√§lipuilla */
+    "nelj¬Ñ",
 #else
-    "nelj‰",
+    "nelj√§",
 #endif
     "viisi",
     "kuusi",
 #if defined(__BORLANDC__) || defined(_MSC_VER)
-    "seitsemÑn",
+    "seitsem¬Ñn",
 #else
-    "seitsem‰n",
+    "seitsem√§n",
 #endif
     "kahdeksan",
 #if defined(__BORLANDC__) || defined(_MSC_VER)
-    "yhdeksÑn",
+    "yhdeks¬Ñn",
 #else
-    "yhdeks‰n",
+    "yhdeks√§n",
 #endif
     "kymmenen",
     "yksitoista",
     "kaksitoista",
     "kolmetoista",
 #if defined(__BORLANDC__) || defined(_MSC_VER)
-    "neljÑtoista",
+    "nelj¬Ñtoista",
 #else
-    "nelj‰toista",
+    "nelj√§toista",
 #endif
     "viisitoista",
     "kuusitoista",
 #if defined(__BORLANDC__) || defined(_MSC_VER)
-    "seitsemÑntoista",
+    "seitsem¬Ñntoista",
 #else
-    "seitsem‰ntoista",
+    "seitsem√§ntoista",
 #endif
     "kahdeksantoista",
 #if defined(__BORLANDC__) || defined(_MSC_VER)
-    "yhdeksÑntoista"
+    "yhdeks¬Ñntoista"
 #else
-    "yhdeks‰ntoista"
+    "yhdeks√§ntoista"
 #endif
     };
 
 /* Monikkomuotoinen tekstivakio kymmenille */
 #if defined(__BORLANDC__) || defined(_MSC_VER)   /* Skandit kuntoon
-                                                    esik‰‰nt‰j‰lipuilla */
-static const char *TENS = "kymmentÑ";
+                                                    esik√§√§nt√§j√§lipuilla */
+static const char *TENS = "kymment¬Ñ";
 #else
-static const char *TENS = "kymment‰";
+static const char *TENS = "kymment√§";
 #endif
 
 /* Monikkomuotoinen tekstivakio sadoille */
 static const char *HUNDREDS = "sataa";
 
-/* Yksikkˆmuotoinen tekstivakio luvulle 100 */
+/* Yksikk√∂muotoinen tekstivakio luvulle 100 */
 static const char *ONE_HUNDRED = "sata";
 
 /* Monikkomuotoisten tekstivakioiden taulukko tuhannen
@@ -119,7 +119,7 @@ static const char *THOUSANDS_BY_EXP[] =
     "miljardia"
     };
 
-/* Yksikkˆmuotoisten tekstivakioiden taulukko tuhannen
+/* Yksikk√∂muotoisten tekstivakioiden taulukko tuhannen
  * eri potensseille. Taulukon indeksi = 1000:n eksponentti
  */
 static const char *THOUSAND_BY_EXP[] =
@@ -130,12 +130,12 @@ static const char *THOUSAND_BY_EXP[] =
     "miljardi"
     };
 
-/* Tulostuksen tekstivakio v‰lilyˆnnille. */
+/* Tulostuksen tekstivakio v√§lily√∂nnille. */
 static const char *SPACE = " ";
 
 /*
  *     Aliohjelmien esittelyt
- *     (Kuvaukset toteutusten yhteydess‰)
+ *     (Kuvaukset toteutusten yhteydess√§)
  */
 
 int validate_and_convert_input(const char *input, unsigned long *number);
@@ -148,35 +148,35 @@ void make_string_presentation(unsigned long number, Stack *stack);
 
 
 /*
- *         P‰‰ohjelma
+ *         P√§√§ohjelma
  */
 int main(int argc, char *argv[])
     {
-    Stack *stack = NULL;   /* Ohjelman k‰ytt‰m‰ dyn.varattava pino */
-    unsigned long number;  /* K‰ytt‰j‰n antama luku */
+    Stack *stack = NULL;   /* Ohjelman k√§ytt√§m√§ dyn.varattava pino */
+    unsigned long number;  /* K√§ytt√§j√§n antama luku */
 
     printf("Ohjelma muuttaa annetun luvun sanalliseen muotoon.\n");
 
     if (argc != 2) /* Ohjelman parametreja tasan kaksi kpl? */
-        { /* Parametrien m‰‰r‰ ei ole oikea */
+        { /* Parametrien m√§√§r√§ ei ole oikea */
         if (argc > 2)
             {
             printf("\nAnnoit liian monta parametria. ");
             }
 #if defined(__BORLANDC__)  || defined(_MSC_VER)  /* Skandit kuntoon
-                                                    esik‰‰nt‰j‰lipuilla */
-        printf("Ohjelman kÑyttî: %s <luku>\n", ARG_PROGRAM_NAME );
-        printf("\nLuvun on oltava vÑliltÑ %lu - %lu.\n", LOWER_LIMIT,
+                                                    esik√§√§nt√§j√§lipuilla */
+        printf("Ohjelman k¬Ñytt¬î: %s <luku>\n", ARG_PROGRAM_NAME );
+        printf("\nLuvun on oltava v¬Ñlilt¬Ñ %lu - %lu.\n", LOWER_LIMIT,
             UPPER_LIMIT);
 #else
-        printf("Ohjelman k‰yttˆ: %s <luku>\n", ARG_PROGRAM_NAME );
-        printf("\nLuvun on oltava v‰lilt‰ %lu - %lu.\n", LOWER_LIMIT,
+        printf("Ohjelman k√§ytt√∂: %s <luku>\n", ARG_PROGRAM_NAME );
+        printf("\nLuvun on oltava v√§lilt√§ %lu - %lu.\n", LOWER_LIMIT,
             UPPER_LIMIT);
 #endif
         return 1;
         }
 
-    /* Tarkista syˆte ja muunna se merkkimuodosta kokonaisluvuksi */
+    /* Tarkista sy√∂te ja muunna se merkkimuodosta kokonaisluvuksi */
     if( validate_and_convert_input(ARG_USER_INPUT, &number ) )
         {  /* Jokin virhe tapahtui, ohjelman suoritus lopetetaan */
         return 1;
@@ -206,135 +206,135 @@ int main(int argc, char *argv[])
 
 /*   validate_and_convert_input
  *
- *   Tarkistaa, ett‰ \0-terminoitu syˆte sis‰lt‰‰ vain numeromerkkej‰.
- *   Sen j‰lkeen yritt‰‰ muuntaa syˆtteen 32-bittiseksi 10-j‰rjestelm‰n
- *   etumerkittˆm‰ksi luvuksi (unsigned long). Jos muunnos onnistui,
- *   tarkistaa, ett‰ lukuarvo on ohjelmalta vaadittujen rajojen sis‰ll‰.
- *   Hyv‰ksytty lukuarvo v‰litet‰‰n kutsujalle.
+ *   Tarkistaa, ett√§ \0-terminoitu sy√∂te sis√§lt√§√§ vain numeromerkkej√§.
+ *   Sen j√§lkeen yritt√§√§ muuntaa sy√∂tteen 32-bittiseksi 10-j√§rjestelm√§n
+ *   etumerkitt√∂m√§ksi luvuksi (unsigned long). Jos muunnos onnistui,
+ *   tarkistaa, ett√§ lukuarvo on ohjelmalta vaadittujen rajojen sis√§ll√§.
+ *   Hyv√§ksytty lukuarvo v√§litet√§√§n kutsujalle.
  *
  *   Parametrit:
- *          input       tarkistettava merkkimuotoinen syˆte
- *          number      hyv‰ksytty‰ syˆtett‰ vastaava lukuarvo
+ *          input       tarkistettava merkkimuotoinen sy√∂te
+ *          number      hyv√§ksytty√§ sy√∂tett√§ vastaava lukuarvo
  *
  *   Paluuarvo:
  *          INPUT_PARAM_ERROR  jompikumpi parametri oli NULL
- *          INPUT_ERROR   syˆtett‰ ei hyv‰ksytty
- *          INPUT_OK      syˆte on OK, 'number' sis‰lt‰‰ lukuarvon
+ *          INPUT_ERROR   sy√∂tett√§ ei hyv√§ksytty
+ *          INPUT_OK      sy√∂te on OK, 'number' sis√§lt√§√§ lukuarvon
  *
  */
 int validate_and_convert_input(const char *input, unsigned long *number)
     {
-    const char  *origin = input; /* Syˆtteen alku muunnosta varten */
-    char        *conv_endp;  /* Muunnoksen pys‰ytt‰neen merkin osoitin */
+    const char  *origin = input; /* Sy√∂tteen alku muunnosta varten */
+    char        *conv_endp;  /* Muunnoksen pys√§ytt√§neen merkin osoitin */
 
     if( input == NULL || number == NULL)
-        {  /* Parametrit pieless‰, palataan kutsuvaan funktioon */
+        {  /* Parametrit pieless√§, palataan kutsuvaan funktioon */
         return INPUT_PARAM_ERROR;
         }
 
-    /* K‰yd‰‰n koko syˆte l‰pi merkki merkilt‰.*/
+    /* K√§yd√§√§n koko sy√∂te l√§pi merkki merkilt√§.*/
     while( *input != 0 )
         {
         if( !( isdigit((int) *input) ) ) /* Merkki ei ole numeromerkki? */
             {
 #if defined(__BORLANDC__)   || defined(_MSC_VER) /* Skandit kuntoon
-                                                    esik‰‰nt‰j‰lipuilla */
-            printf("\n\aSyîtteesi sisÑlsi muita merkkejÑ kuin numeroita. "
-                "EnsimmÑinen virheellinen merkki: %c\n", *input);
+                                                    esik√§√§nt√§j√§lipuilla */
+            printf("\n\aSy¬îtteesi sis¬Ñlsi muita merkkej¬Ñ kuin numeroita. "
+                "Ensimm¬Ñinen virheellinen merkki: %c\n", *input);
 #else
-            printf("\n\aSyˆtteesi sis‰lsi muita merkkej‰ kuin numeroita. "
-                "Ensimm‰inen virheellinen merkki: %c\n", *input);
+            printf("\n\aSy√∂tteesi sis√§lsi muita merkkej√§ kuin numeroita. "
+                "Ensimm√§inen virheellinen merkki: %c\n", *input);
 #endif
             return INPUT_ERROR;
             }
         input++;
         }
 
-    /* Globaali virhekoodi pit‰‰ nollata ennen j‰rjestelm‰funktiota,
+    /* Globaali virhekoodi pit√§√§ nollata ennen j√§rjestelm√§funktiota,
      * jotta vanha virhekoodi ei sotkisi virheentarkistusta */
     errno = 0;
     *number = strtoul(origin, &conv_endp, 10);
 
-    /* Muunnosvirhe tapahtui, jos lukuarvoksi tuli ‰‰rip‰‰n luku ja
-       virhekoodi ERANGE on asetettu (Borland ylivuotaa t‰ss‰ hieman) */
+    /* Muunnosvirhe tapahtui, jos lukuarvoksi tuli √§√§rip√§√§n luku ja
+       virhekoodi ERANGE on asetettu (Borland ylivuotaa t√§ss√§ hieman) */
     if ( *number == ULONG_MAX && errno == ERANGE )
         {
         printf("\n\aAntamasi luku oli suurempi kuin %lu. ", ULONG_MAX);
 #if defined(__BORLANDC__)  || defined(_MSC_VER)  /* Skandit kuntoon
-                                                    esik‰‰nt‰j‰lipuilla */
-        printf("Luvun on oltava vÑliltÑ %lu - %lu.\n", LOWER_LIMIT,
+                                                    esik√§√§nt√§j√§lipuilla */
+        printf("Luvun on oltava v¬Ñlilt¬Ñ %lu - %lu.\n", LOWER_LIMIT,
             UPPER_LIMIT);
 #else
-        printf("Luvun on oltava v‰lilt‰ %lu - %lu.\n", LOWER_LIMIT,
+        printf("Luvun on oltava v√§lilt√§ %lu - %lu.\n", LOWER_LIMIT,
             UPPER_LIMIT);
 #endif
         return INPUT_ERROR;
         }
 
-    assert( conv_endp != origin); /* Muunnos muulla tavalla pieless‰?*/
+    assert( conv_endp != origin); /* Muunnos muulla tavalla pieless√§?*/
 
-    /* Syˆte lukualueen sis‰ll‰? */
+    /* Sy√∂te lukualueen sis√§ll√§? */
     if ( *number < LOWER_LIMIT || *number > UPPER_LIMIT )
         {
 #if defined(__BORLANDC__)  || defined(_MSC_VER) /* Skandit kuntoon
-                                                   esik‰‰nt‰j‰lipuilla */
-        printf("\n\aAntamasi luku ei ollut vÑliltÑ %lu - %lu.\n",
+                                                   esik√§√§nt√§j√§lipuilla */
+        printf("\n\aAntamasi luku ei ollut v¬Ñlilt¬Ñ %lu - %lu.\n",
             LOWER_LIMIT, UPPER_LIMIT);
 #else
-        printf("\n\aAntamasi luku ei ollut v‰lilt‰ %lu - %lu.\n",
+        printf("\n\aAntamasi luku ei ollut v√§lilt√§ %lu - %lu.\n",
             LOWER_LIMIT, UPPER_LIMIT);
 #endif
         return INPUT_ERROR;
         }
 
-    /* Syˆte on kunnossa! */
+    /* Sy√∂te on kunnossa! */
     printf("Annoit luvun: %lu.\n", *number);
     return INPUT_OK;
     }
 
 /*   pop_from_stack
  *
- *   Poistaa pinosta solmun ja palauttaa sen sis‰lt‰m‰n tekstivakion
+ *   Poistaa pinosta solmun ja palauttaa sen sis√§lt√§m√§n tekstivakion
  *   osoitteen kutsujalle
  *
  *   Parametrit:
- *          stack        osoite pinoon, jolle operaatio tehd‰‰n
+ *          stack        osoite pinoon, jolle operaatio tehd√§√§n
  *
  *   Paluuarvo:
  *          osoite tekstivakioon tai NULL, jos
- *          pino oli tyhj‰
+ *          pino oli tyhj√§
  */
 const char *pop_from_stack(Stack *stack)
     {
     const char    *node_data; /* Solmun datan palauttamiseen tarvittava
-                                 lyhytaikainen s‰ilˆ */
+                                 lyhytaikainen s√§il√∂ */
     Node          *ptr;  /* Poistettavan solmun osoitin */
 
     assert(stack != NULL); /* Validi pinon osoitin? */
     if(stack->count == 0)
-      { /* Pino on tyhj‰, joten kutsuja saa NULL:in */
+      { /* Pino on tyhj√§, joten kutsuja saa NULL:in */
       return NULL;
       }
-    /* Otetaan k‰sittelyyn pinon p‰‰llimm‰inen solmu */
+    /* Otetaan k√§sittelyyn pinon p√§√§llimm√§inen solmu */
     ptr = stack->top;
     assert(ptr != NULL); /* Tarkista onko pino sekaisin */
-    stack->top = ptr->next;  /* Linkit‰ ohi poistettavan solmun */
+    stack->top = ptr->next;  /* Linkit√§ ohi poistettavan solmun */
     node_data = ptr->data; /* Kopiointi return:ia varten */
-    free(ptr);  /* Solmun viem‰n muistin vapautus */
+    free(ptr);  /* Solmun viem√§n muistin vapautus */
     stack->count--;
     return node_data;
     }
 
 /*   push_to_stack
  *
- *   Pist‰‰ pinoon osoitteen tekstivakioon.
+ *   Pist√§√§ pinoon osoitteen tekstivakioon.
  *
  *   Parametrit:
- *          stack        osoite pinoon, jolle operaatio tehd‰‰n
+ *          stack        osoite pinoon, jolle operaatio tehd√§√§n
  *          data         tekstivakion osoite
  *
  *   Paluuarvo:
- *          Ei mit‰‰n
+ *          Ei mit√§√§n
  *
  */
 void push_to_stack(Stack *stack, const char *data)
@@ -343,7 +343,7 @@ void push_to_stack(Stack *stack, const char *data)
 
     assert(stack != NULL); /* Validi pinon osoitin? */
     /* Luodaan uusi solmu, alustetaan solmun tiedot ja
-       asetetaan se sitten pinoon p‰‰llimm‰iseksi */
+       asetetaan se sitten pinoon p√§√§llimm√§iseksi */
     new_node = (Node *) malloc( sizeof(Node) );
     assert(new_node != NULL); /* Muistinvaraus OK? */
     new_node->next = stack->top;
@@ -354,24 +354,24 @@ void push_to_stack(Stack *stack, const char *data)
 
 /*   print_stack
  *
- *   Tulostaa annetusta pinosta kaiken datan/tekstin per‰kk‰in.
- *   Lopussa pino on tyhj‰.
+ *   Tulostaa annetusta pinosta kaiken datan/tekstin per√§kk√§in.
+ *   Lopussa pino on tyhj√§.
  *
  *   Parametrit:
- *          stack        osoite pinoon, jonka sis‰ltˆ tulostetaan
+ *          stack        osoite pinoon, jonka sis√§lt√∂ tulostetaan
  *
  *   Paluuarvo:
- *          Ei mit‰‰n
+ *          Ei mit√§√§n
  *
  */
 void print_stack(Stack *stack)
     {
-    const char  *data;  /* Kulloinkin k‰sitelt‰v‰n solmun data */
+    const char  *data;  /* Kulloinkin k√§sitelt√§v√§n solmun data */
 
     assert(stack != NULL); /* Validi pinon osoitin? */
     printf("Antamasi luku sanallisessa muodossa: ");
     data = pop_from_stack(stack);
-    while ( data != NULL) /* K‰y l‰pi solmuja kunnes NULL ilmoittaa lopun */
+    while ( data != NULL) /* K√§y l√§pi solmuja kunnes NULL ilmoittaa lopun */
         {
         printf("%s", data);
         data = pop_from_stack(stack);
@@ -383,7 +383,7 @@ void print_stack(Stack *stack)
  *   Luo pinon ja alustaa sen valmiiksi.
  *
  *   Parametrit:
- *          Ei mit‰‰n
+ *          Ei mit√§√§n
  *
  *   Paluuarvo:
  *          Osoite luotuun pinoon
@@ -404,19 +404,19 @@ Stack *create_stack(void)
 
 /*   destroy_stack
  *
- *   Tuhoaa pinon. Pinon on oltava tyhj‰.
+ *   Tuhoaa pinon. Pinon on oltava tyhj√§.
  *
  *   Parametrit:
  *          stack       pino, joka tuhotaan
  *
  *   Paluuarvo:
- *          Ei mit‰‰n
+ *          Ei mit√§√§n
  *
  */
 void destroy_stack(Stack *stack)
     {
     assert(stack != NULL); /* Validi pinon osoitin? */
-    assert(stack->count == 0); /* Pinon oltava tyhj‰ */
+    assert(stack->count == 0); /* Pinon oltava tyhj√§ */
     if(stack)
         {
         free(stack);
@@ -426,15 +426,15 @@ void destroy_stack(Stack *stack)
 /*   make_string_presentation
  *
  *   Muuntaa annetun luvun sanalliseen esitysmuotoon.
- *   Hyˆdynt‰‰ tekstivakioita, jotka pannaan pinoon
- *   myˆhemp‰‰ tulostusta varten.
+ *   Hy√∂dynt√§√§ tekstivakioita, jotka pannaan pinoon
+ *   my√∂hemp√§√§ tulostusta varten.
  *
  *   Parametrit:
  *          number       lukuarvo, joka muunnetaan
  *          stack        pino, johon muunnoksen tekstit tallennetaan
  *
  *   Paluuarvo:
- *          Ei mit‰‰n
+ *          Ei mit√§√§n
  *
  */
 void make_string_presentation(unsigned long number, Stack *stack)
@@ -447,40 +447,40 @@ void make_string_presentation(unsigned long number, Stack *stack)
         }
     else  /* Nollaa suurempien lukujen muunnos */
         {
-        int t = 0; /* Tuhatluvun eksponentti / ryhm‰laskuri */
+        int t = 0; /* Tuhatluvun eksponentti / ryhm√§laskuri */
 
-        /* Silmukassa k‰sitell‰‰n annettua lukua 'number' kolmen numeron
-         * ryhmiss‰. Ryhm‰n lukuarvo on 1000:n jakoj‰‰nnˆs. Jakoj‰‰nnˆksest‰
+        /* Silmukassa k√§sitell√§√§n annettua lukua 'number' kolmen numeron
+         * ryhmiss√§. Ryhm√§n lukuarvo on 1000:n jakoj√§√§nn√∂s. Jakoj√§√§nn√∂ksest√§
          * voidaan edelleen poimia alimman tason lukuarvoja, joita vastaava
          * tekstivakio on olemassa. Lopuksi luvusta tiputetaan viimeiset 3
-         * numeroa eli se jaetaan 1000:lla. Seuraava 3 numeron ryhm‰ aloittaa
-         * uuden kierroksen ellei k‰ytt‰j‰n antama luku ole k‰sitelty.
-         * Luku on k‰sitelty, kun jako 1000:lla tuottaa viimein nollan.
+         * numeroa eli se jaetaan 1000:lla. Seuraava 3 numeron ryhm√§ aloittaa
+         * uuden kierroksen ellei k√§ytt√§j√§n antama luku ole k√§sitelty.
+         * Luku on k√§sitelty, kun jako 1000:lla tuottaa viimein nollan.
          */
         while (number != 0)
             {
-            /* K‰sitelt‰v‰n numeroryhm‰n lukuarvo 0 - 999. Samalla se on
+            /* K√§sitelt√§v√§n numeroryhm√§n lukuarvo 0 - 999. Samalla se on
              * tuhansien, miljoonien ja miljardien kerroin. Lukuarvo
-             * jaetaan edelleen osiin oikean tekstin lˆyt‰miseksi
+             * jaetaan edelleen osiin oikean tekstin l√∂yt√§miseksi
              */
             unsigned long group_val  = number % 1000;
 
-            if (group_val != 0) /* Vain nollasta eroava ryhm‰n lukuarvo
-                                 * k‰sitell‰‰n */
+            if (group_val != 0) /* Vain nollasta eroava ryhm√§n lukuarvo
+                                 * k√§sitell√§√§n */
                 {
-                unsigned long last_2 = group_val % 100;  /* Numeroryhm‰n 2
-                                                          * viimeist‰
+                unsigned long last_2 = group_val % 100;  /* Numeroryhm√§n 2
+                                                          * viimeist√§
                                                           * numeroa
                                                           */
 
                 /* Ensin tuhannet, miljoonat ja miljardit tekstiksi.
-                 * Tuhansien eksponentti v‰hint‰‰n 1?
+                 * Tuhansien eksponentti v√§hint√§√§n 1?
                  */
                 if (t > 0)
                     {
-                    /* Erotetaan edellisen ryhm‰n teksti v‰lilyˆnnill‰ */
+                    /* Erotetaan edellisen ryhm√§n teksti v√§lily√∂nnill√§ */
                     push_to_stack(stack, SPACE);
-                    assert(t <= 3); /* Varmistusta. Toteutus riitt‰‰
+                    assert(t <= 3); /* Varmistusta. Toteutus riitt√§√§
                                      * miljardeihin asti eli
                                      * maksimi kertaluokka on 1000^3
                                      */
@@ -490,11 +490,11 @@ void make_string_presentation(unsigned long number, Stack *stack)
                            * Teksti: "tuhat", "miljoona", "miljardi"
                            */
                         push_to_stack(stack, THOUSAND_BY_EXP[t]);
-                        /* Numeroryhm‰ k‰sitelty. Hyp‰t‰‰n suoraan luvussa
+                        /* Numeroryhm√§ k√§sitelty. Hyp√§t√§√§n suoraan luvussa
                          * vasemmalle 3 numeroa, siis
-                         * seuraavaan kolmen numeron ryhm‰‰n */
+                         * seuraavaan kolmen numeron ryhm√§√§n */
                         number /= 1000;
-                        t++; /* Myˆs 1000:n eksponentti kasvaa */
+                        t++; /* My√∂s 1000:n eksponentti kasvaa */
                         continue;
                         }
                     else
@@ -506,39 +506,39 @@ void make_string_presentation(unsigned long number, Stack *stack)
                         }
                     } /* t > 0 */
 
-                /* Tutkitaan ryhm‰n lukuarvon kahta viimeist‰ numeroa,
-                   ja jaetaan ryhm‰t kahteen eri tapaukseen */
+                /* Tutkitaan ryhm√§n lukuarvon kahta viimeist√§ numeroa,
+                   ja jaetaan ryhm√§t kahteen eri tapaukseen */
                 if ( last_2 <= 19 ) /* x00...x19 -loppuiset erikoistapaukset*/
                     {
-                    if(last_2 != 0) /* Estet‰‰n "nolla"-teksti */
-                        { /* Teksti: "yksi" ... "yhdeks‰ntoista" */
+                    if(last_2 != 0) /* Estet√§√§n "nolla"-teksti */
+                        { /* Teksti: "yksi" ... "yhdeks√§ntoista" */
                         push_to_stack(stack, NUMBERS_0_19[last_2]);
                         }
                     /* Seuraavana satojen kerroin */
                     group_val /= 100;
                     }
-                else /* x20...x99-loppuiset ovat s‰‰nnˆllisi‰*/
+                else /* x20...x99-loppuiset ovat s√§√§nn√∂llisi√§*/
                     {
-                    /* K‰sitell‰‰n ensin ykkˆset.
-                     * Tasakympit hyp‰t‰‰n yli, jotta ei tulisi
+                    /* K√§sitell√§√§n ensin ykk√∂set.
+                     * Tasakympit hyp√§t√§√§n yli, jotta ei tulisi
                      *  "nolla" tulostukseen
                      */
                     if (group_val % 10 != 0 )
                         {
-                        /* Teksti: "yksi" ... "yhdeks‰n" */
+                        /* Teksti: "yksi" ... "yhdeks√§n" */
                         push_to_stack(stack, NUMBERS_0_19[group_val % 10]);
                         }
-                    /* K‰sitell‰‰n (monikolliset) kymmenet */
+                    /* K√§sitell√§√§n (monikolliset) kymmenet */
                     group_val /= 10;
-                    /* Teksti: "kymment‰" */
+                    /* Teksti: "kymment√§" */
                     push_to_stack(stack, TENS);
-                    /* Kymmenien kerrointeksti "kaksi"..."yhdeks‰n" */
+                    /* Kymmenien kerrointeksti "kaksi"..."yhdeks√§n" */
                     push_to_stack(stack, NUMBERS_0_19[group_val % 10]);
                     /* Seuraavana satojen kerroin */
                     group_val /= 10;
-                     } /* 2 viimeisen numeron k‰sittelyn loppu */
+                     } /* 2 viimeisen numeron k√§sittelyn loppu */
 
-                /* Lopuksi k‰sitell‰‰n sadat */
+                /* Lopuksi k√§sitell√§√§n sadat */
                 if (group_val == 1) /* Tasan yksi sata? */
                     {  /* Teksti: "sata" */
                     push_to_stack(stack, ONE_HUNDRED);
@@ -546,13 +546,13 @@ void make_string_presentation(unsigned long number, Stack *stack)
                 else if (group_val > 1)   /* Muut satalukemat */
                     { /* Teksti: "sataa" */
                     push_to_stack(stack, HUNDREDS);
-                    /* Satojen kerrointeksti "kaksi"..."yhdeks‰n" */
+                    /* Satojen kerrointeksti "kaksi"..."yhdeks√§n" */
                     push_to_stack(stack, NUMBERS_0_19[group_val]);
                     }
 
                 } /* if (group_val != 0) */
 
-            number /= 1000; /* Siirryt‰‰n seuraan 3 numeron ryhm‰‰n, siis
+            number /= 1000; /* Siirryt√§√§n seuraan 3 numeron ryhm√§√§n, siis
                              * seuraavaan tuhatluvun eksponenttiin */
             t++;            /* Tuhansien eksponentti kasvaa */
             }  /* while (number != 0) */
