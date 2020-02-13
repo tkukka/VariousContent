@@ -51,42 +51,42 @@ Board::FileStatus Board::ReadFile(std::ifstream& infile)
       return FILE_NOT_OPEN;
    }
 
-   string::size_type char_index;     //Ilmaisee paikan, miss‰ haettu merkki on
+   string::size_type char_index;     //Ilmaisee paikan, miss√§ haettu merkki on
    string::size_type row_length = 0; //Rivin leveys tiedostossa
-   bool first_row_measured = false;  //Rivin leveys luetaan 1. rivilt‰. T‰m‰ lippu apuna.
+   bool first_row_measured = false;  //Rivin leveys luetaan 1. rivilt√§. T√§m√§ lippu apuna.
    string line;   //Luettu tekstirivi
-   int rows = 0;  //Tiedostosta luettujen rivien lukum‰‰r‰
+   int rows = 0;  //Tiedostosta luettujen rivien lukum√§√§r√§
 
    //Nollataan laudan tiedot
    Reset();
 
-   //K‰yd‰‰n l‰pi tiedoston rivit kunnes tiedosto loppuu
+   //K√§yd√§√§n l√§pi tiedoston rivit kunnes tiedosto loppuu
    while(infile.eof() == false)
    {
       getline(infile, line); //luetaan rivi
       
-      //Onko tyhj‰ rivi?
+      //Onko tyhj√§ rivi?
       if(line.empty())
       {
-         //Tiedosto ei lopussa viel‰?
+         //Tiedosto ei lopussa viel√§?
          if(infile.eof() == false)
-         {  //keskell‰ tiedostoa tyhj‰ rivi => virhe
+         {  //keskell√§ tiedostoa tyhj√§ rivi => virhe
             return FILE_FORMAT_ERROR;
          }
 
-         //Viimeinen rivi voi olla tyhj‰. Poistutaan ilman h‰ly‰.
+         //Viimeinen rivi voi olla tyhj√§. Poistutaan ilman h√§ly√§.
          break;
       }
 
-      //Etsit‰‰n v‰‰ri‰ merkkej‰
+      //Etsit√§√§n v√§√§ri√§ merkkej√§
       char_index = line.find_first_not_of(ALLOWED_CHARS);
-      //Lˆytyikˆ kiellettyj‰?
+      //L√∂ytyik√∂ kiellettyj√§?
       if(char_index != string::npos) 
       {
          return FILE_FORMAT_ERROR;
       }
       
-      //Otetaan ylˆs 1. rivin pituus
+      //Otetaan yl√∂s 1. rivin pituus
       if(first_row_measured == false)
       {
          row_length = line.length();
@@ -105,7 +105,7 @@ Board::FileStatus Board::ReadFile(std::ifstream& infile)
       data.push_back(line);
    }
    
-   //Otetaan viel‰ lopussa shakkilaudan mitat
+   //Otetaan viel√§ lopussa shakkilaudan mitat
    height = rows;
    width = row_length;
    return READ_OK;
@@ -113,7 +113,7 @@ Board::FileStatus Board::ReadFile(std::ifstream& infile)
 
 /** Tulostaa shakkilaudan ruudulle polun kanssa tai ilman.
  * Sama metodi tulostaa laudalle kuninkaan polun, jos sellainen annetaan.
- * Suurin n‰ytˆll‰ j‰rkev‰sti toimiva laudan leveys 9 ruutua.
+ * Suurin n√§yt√∂ll√§ j√§rkev√§sti toimiva laudan leveys 9 ruutua.
  *
  * @param path Polku, tai 0 jos tulostetaan vain lauta ilman polkua.
  *  
@@ -131,7 +131,7 @@ void Board::Print(const Graph::PathType* path) const
       return;
    }
 
-   //Yl‰osan vaakaan juoksevat numerot. Sarakkeet.
+   //Yl√§osan vaakaan juoksevat numerot. Sarakkeet.
    for(size_t i = 0; i < width; i++)
    {
       cout << "\t" << i;
@@ -148,7 +148,7 @@ void Board::Print(const Graph::PathType* path) const
       cout << row; 
       column = 0;
       
-      string::const_iterator char_iter = (*row_iter).begin(); //yksitt‰isten merkkien iteraattori
+      string::const_iterator char_iter = (*row_iter).begin(); //yksitt√§isten merkkien iteraattori
       while(char_iter != (*row_iter).end() )
       {
          //tulostetaan varattu ruutu?
@@ -161,11 +161,11 @@ void Board::Print(const Graph::PathType* path) const
 
             if(path) //jos polku tulostetaan laudalle
             {
-               //pit‰‰ tutkia onko nykyinen vapaa ruutu jossain kohdassa polkua.
-               //v‰h‰n tehotonta...
+               //pit√§√§ tutkia onko nykyinen vapaa ruutu jossain kohdassa polkua.
+               //v√§h√§n tehotonta...
                Node temp(column, row);
                int index = NodePosition(temp, *path);
-               if(index >= 0) //t‰m‰ ruutu on polussa?
+               if(index >= 0) //t√§m√§ ruutu on polussa?
                {
                   cout  << "\t" << (index+1) ;
                }
@@ -193,8 +193,8 @@ void Board::Print(const Graph::PathType* path) const
 
 }
 
-/** Hakee, miss‰ kohtaa polkua on jokin annettu solmu.
- * K‰ytet‰‰n apumetodina kun polkua tulostetaan laudalle.
+/** Hakee, miss√§ kohtaa polkua on jokin annettu solmu.
+ * K√§ytet√§√§n apumetodina kun polkua tulostetaan laudalle.
  
  * @param n Haettava solmu
  * @param path Polku, josta solmua haetaan.
@@ -203,11 +203,11 @@ void Board::Print(const Graph::PathType* path) const
 int Board::NodePosition(const Node& n, const Graph::PathType& path) const
 {
    Graph::PathType::const_iterator iter = path.begin(); //Solmujen iteraattori
-   int position = 0; //sijainti polussa. 0 = ensimm‰inen
+   int position = 0; //sijainti polussa. 0 = ensimm√§inen
 
    while(iter != path.end())
    {
-      if( (*iter) == n) //lˆytyi?
+      if( (*iter) == n) //l√∂ytyi?
       {
          return position;
       }
@@ -227,50 +227,50 @@ void Board::ConvertToGraph(Graph& graph) const
    //using std::endl;
    using std::string;
 
-   //ei lautaa mist‰ ottaa ruutuja?
+   //ei lautaa mist√§ ottaa ruutuja?
    if (data.empty() == true)
    {
       return;
    }
 
-   //tehd‰‰n laudasta kopio, koska lis‰t‰‰n kaksi rivi‰ varattuja ruutuja.
+   //tehd√§√§n laudasta kopio, koska lis√§t√§√§n kaksi rivi√§ varattuja ruutuja.
    BoardDataType copy_data = data;
-   int row_length = static_cast<int>(copy_data[0].length()); //laudan rivin leveys ylˆs
-   string filler(row_length, SQUARE_OCCUPIED);    //tehd‰‰n t‰yterivi varatuista ruuduista
+   int row_length = static_cast<int>(copy_data[0].length()); //laudan rivin leveys yl√∂s
+   string filler(row_length, SQUARE_OCCUPIED);    //tehd√§√§n t√§yterivi varatuista ruuduista
   
-   //Lis‰t‰‰n nyt 2 apurivi‰ indeksoinnin helpottamiseksi
+   //Lis√§t√§√§n nyt 2 apurivi√§ indeksoinnin helpottamiseksi
    BoardDataType::iterator first_element = copy_data.begin();
    copy_data.insert(first_element, filler); //rivi laudan alkuun
    copy_data.push_back(filler);             //rivi laudan loppuun
 
-   //montako rivi‰ laudassa nyt, otetaan ylˆs silmukkaa varten
+   //montako rivi√§ laudassa nyt, otetaan yl√∂s silmukkaa varten
    int row_count = static_cast<int>(copy_data.size());
   
    int counter = 0; //montako solmua, joilla oli vierussolmuja
-   int actual_row = 0; //seuraa todellista rivi‰ alkuper‰isessa laudassa
-   Graph::AdjType adj_nodes;         //ker‰‰ vierussolmut
+   int actual_row = 0; //seuraa todellista rivi√§ alkuper√§isessa laudassa
+   Graph::AdjType adj_nodes;         //ker√§√§ vierussolmut
 
-   //kierret‰‰n rivej‰ alkaen toisesta rivist‰ aina toiseksi viimeiseen asti
+   //kierret√§√§n rivej√§ alkaen toisesta rivist√§ aina toiseksi viimeiseen asti
    for(int i = 1; i < (row_count-1); i++, actual_row++)
    {
-      //otetaan ylˆs kolme rivi‰ laudasta: edellinen, nykyinen ja seuraava.
+      //otetaan yl√∂s kolme rivi√§ laudasta: edellinen, nykyinen ja seuraava.
       const string& prev_row = copy_data[i-1];
       const string& current_row = copy_data[i];
       const string& next_row = copy_data[i+1];
 
-      //kierret‰‰n sarakkeita (yksitt‰isi‰ merkkej‰ rivill‰)
+      //kierret√§√§n sarakkeita (yksitt√§isi√§ merkkej√§ rivill√§)
       for(int j = 0; j < row_length; j++)
       {
          adj_nodes.clear();
 
          //cout << "(" << j << ", " << actual_row  << "): ";
         
-         Node current_node(j, actual_row); //Tehd‰‰n t‰st‰ nykyisest‰ ruudusta solmu.
+         Node current_node(j, actual_row); //Tehd√§√§n t√§st√§ nykyisest√§ ruudusta solmu.
 
-         //onko nykyinen ruutu tyhj‰?
+         //onko nykyinen ruutu tyhj√§?
          if (current_row[j] == SQUARE_FREE) 
          {
-            /* Tutkitaan 8 naapuriruutua. J‰rjestys:
+            /* Tutkitaan 8 naapuriruutua. J√§rjestys:
              *    1 2 3
              *    4   5
              *    6 7 8
@@ -281,7 +281,7 @@ void Board::ConvertToGraph(Graph& graph) const
                if(prev_row[j-1] == SQUARE_FREE) 
                {
                   //cout << "(" << j-1 << ", " << actual_row-1 << ") ";
-                  //oli vapaa, lis‰t‰‰n vierussolmuksi
+                  //oli vapaa, lis√§t√§√§n vierussolmuksi
                   Node n(j-1, actual_row-1);
                   adj_nodes.push_back(n);
 
@@ -291,7 +291,7 @@ void Board::ConvertToGraph(Graph& graph) const
             if(prev_row[j] == SQUARE_FREE)  /* 2 */
             {
                //cout << "(" << j << ", " << actual_row-1 << ") ";
-               //oli vapaa, lis‰t‰‰n vierussolmuksi
+               //oli vapaa, lis√§t√§√§n vierussolmuksi
                Node n(j, actual_row-1);
                adj_nodes.push_back(n);
             }
@@ -301,7 +301,7 @@ void Board::ConvertToGraph(Graph& graph) const
                if(prev_row[j+1] == SQUARE_FREE) 
                {
                   //cout << "(" << j+1 << ", " << actual_row-1 << ") ";
-                  //oli vapaa, lis‰t‰‰n vierussolmuksi
+                  //oli vapaa, lis√§t√§√§n vierussolmuksi
                   Node n(j+1, actual_row-1);
                   adj_nodes.push_back(n);
                }
@@ -313,7 +313,7 @@ void Board::ConvertToGraph(Graph& graph) const
                if (current_row[j-1] == SQUARE_FREE) 
                {
                   //cout << "(" << j-1 << ", " << actual_row << ") ";
-                  //oli vapaa, lis‰t‰‰n vierussolmuksi                  
+                  //oli vapaa, lis√§t√§√§n vierussolmuksi                  
                   Node n(j-1, actual_row);
                   adj_nodes.push_back(n);
                }
@@ -324,7 +324,7 @@ void Board::ConvertToGraph(Graph& graph) const
                if (current_row[j+1] == SQUARE_FREE) 
                {
                   //cout << "(" << j+1 << ", " << actual_row << ") ";
-                  //oli vapaa, lis‰t‰‰n vierussolmuksi                  
+                  //oli vapaa, lis√§t√§√§n vierussolmuksi                  
                   Node n(j+1, actual_row);
                   adj_nodes.push_back(n);
                }
@@ -335,7 +335,7 @@ void Board::ConvertToGraph(Graph& graph) const
                if (next_row[j-1] == SQUARE_FREE) 
                {
                   //cout << "(" << j-1 << ", " << actual_row+1 << ") ";
-                  //oli vapaa, lis‰t‰‰n vierussolmuksi
+                  //oli vapaa, lis√§t√§√§n vierussolmuksi
                   Node n(j-1, actual_row+1);
                   adj_nodes.push_back(n);
                }
@@ -344,7 +344,7 @@ void Board::ConvertToGraph(Graph& graph) const
             if (next_row[j] == SQUARE_FREE)  /* 7 */
             {
                //std::cout << "(" << j << ", " << actual_row+1 << ") ";
-               //oli vapaa, lis‰t‰‰n vierussolmuksi
+               //oli vapaa, lis√§t√§√§n vierussolmuksi
                Node n(j, actual_row+1);
                adj_nodes.push_back(n);
             }
@@ -354,7 +354,7 @@ void Board::ConvertToGraph(Graph& graph) const
                if (next_row[j+1] == SQUARE_FREE) 
                {
                   //std::cout << "(" << j+1 << ", " << actual_row+1 << ") ";
-                  //oli vapaa, lis‰t‰‰n vierussolmuksi
+                  //oli vapaa, lis√§t√§√§n vierussolmuksi
                   Node n(j+1, actual_row+1);
                   adj_nodes.push_back(n);
                }
@@ -362,7 +362,7 @@ void Board::ConvertToGraph(Graph& graph) const
 
          } //if ( current_row[j] == SQUARE_FREE  )
 
-         //Ei lis‰t‰ yksin‰isi‰ vapaita shakkiruutuja graafiin
+         //Ei lis√§t√§ yksin√§isi√§ vapaita shakkiruutuja graafiin
          if(adj_nodes.empty() == false )
          {
             counter++;

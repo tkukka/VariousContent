@@ -11,7 +11,7 @@
 #include "Board.h"
 
 /**
-  * Yksinkertainen sovellusluokka kuninkaan polun selvitt‰miseksi.
+  * Yksinkertainen sovellusluokka kuninkaan polun selvitt√§miseksi.
   */
 class KingsPathApp
 {
@@ -27,7 +27,7 @@ public:
 
 private:
    /**
-    * Komentoriviparametrien lukum‰‰r‰.
+    * Komentoriviparametrien lukum√§√§r√§.
     */
    static const int PARAMETER_COUNT = 4;
 
@@ -37,7 +37,7 @@ private:
    static const char* OUTPUT_NO_PATH;
 
    /**
-    * Tulostus, kun tiedosto on v‰‰r‰‰ muotoa.
+    * Tulostus, kun tiedosto on v√§√§r√§√§ muotoa.
     */
    static const char* OUTPUT_INVALID_FORMAT;
    
@@ -47,7 +47,7 @@ private:
    static const char* OUTPUT_RUNTIME_ERR;
 
    /**
-    * N‰ytˆlle tulostuksen tilamuuttuja.
+    * N√§yt√∂lle tulostuksen tilamuuttuja.
     */
    bool display_messages;
 

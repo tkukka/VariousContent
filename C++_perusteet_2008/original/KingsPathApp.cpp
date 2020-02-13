@@ -41,19 +41,19 @@ KingsPathApp::~KingsPathApp()
 }
 
 /** 
- * Ohjelman käytön opastusmetodi.
+ * Ohjelman kÃ¤ytÃ¶n opastusmetodi.
  * @param str Ohjelman nimi (.exe).
  */
 void KingsPathApp::Usage(const char *str) const
 {
    using namespace std;
-   cout << "Ohjelman käyttö:" << endl;
+   cout << "Ohjelman kÃ¤yttÃ¶:" << endl;
    cout << str << " <-show | -quiet> <input file> <output file>" << endl;
 }
 
-/** Käsittelee komentoriviparametrit.
+/** KÃ¤sittelee komentoriviparametrit.
  * Avaa tiedostot valmiiksi.
- * @param argc Parametrien lukumäärä
+ * @param argc Parametrien lukumÃ¤Ã¤rÃ¤
  * @param argv Parametritaulukko
  * @return 0 jos OK tai -1 jos tuli virhe.
  */
@@ -67,14 +67,14 @@ int KingsPathApp::ProcessCmdLine(int argc, char **argv)
    string switch_show("-show");
    string switch_quiet("-quiet");
 
-   //Aluksi parametrien lukumäärä oikea?
+   //Aluksi parametrien lukumÃ¤Ã¤rÃ¤ oikea?
    if(argc != PARAMETER_COUNT)
    {
       Usage(argv[0]);
       return -1;
    }
 
-   //-show , -quiet jäi antamatta?
+   //-show , -quiet jÃ¤i antamatta?
    if(switch_show != argv[1] && switch_quiet != argv[1])
    {
       Usage(argv[0]);
@@ -90,17 +90,17 @@ int KingsPathApp::ProcessCmdLine(int argc, char **argv)
       display_messages = false;
    }
 
-   //Tiedosto, josta lauta pitäisi löytyä. Onko olemassa?
+   //Tiedosto, josta lauta pitÃ¤isi lÃ¶ytyÃ¤. Onko olemassa?
    input_file.open(argv[2]);
    if(! input_file.good() )
    {
-      cout << "Tiedostoa " << argv[2] << " ei löydy." << endl;
+      cout << "Tiedostoa " << argv[2] << " ei lÃ¶ydy." << endl;
       return -1;
    }
-   //Otetaan nimi ylös.
+   //Otetaan nimi ylÃ¶s.
    input_file_name = argv[2];
 
-   //Tiedosto, johon polku kirjoitetaan. Pääseekö käsiksi?
+   //Tiedosto, johon polku kirjoitetaan. PÃ¤Ã¤seekÃ¶ kÃ¤siksi?
    output_file.open(argv[3]);
    if( ! output_file.good() )
    {
@@ -123,7 +123,7 @@ int KingsPathApp::ReadBoard(void)
    using std::cout;
    using std::endl;
 
-   Board::FileStatus ret; //kertoo, miten kävi laudan lukemisesssa
+   Board::FileStatus ret; //kertoo, miten kÃ¤vi laudan lukemisesssa
 
    ret = board.ReadFile(input_file);
 
@@ -169,7 +169,7 @@ void KingsPathApp::PrintBoard(void) const
 
 }
 
-/** Hakee lyhyimmän kuninkaan polun.
+/** Hakee lyhyimmÃ¤n kuninkaan polun.
  *  Tulostaa haun tuloksen. Sulkee tulostustiedoston.
  */
 void KingsPathApp::SearchPath(void)
@@ -194,12 +194,12 @@ void KingsPathApp::SearchPath(void)
    board.GetDimension(&width, &height);
    end_node.SetXY(width- 1, height - 1);
 
-   //Tehdään leveyshaku
+   //TehdÃ¤Ã¤n leveyshaku
    retBFS = graph.BFS(start_node);
 
    //Oliko haku onnistunut?
    if(retBFS == Graph::BFS_NO_ADJ_NODES)
-   {  //Tämän tilanteen syy aloitussolmussa. 
+   {  //TÃ¤mÃ¤n tilanteen syy aloitussolmussa. 
 
       if(display_messages)
       {
@@ -213,7 +213,7 @@ void KingsPathApp::SearchPath(void)
    {  //erikoinen ja odottamaton tilanne
       if(display_messages)
       {
-         std::cout << "Ajonaikainen virhe. Solmun väri puuttui." << std::endl;
+         std::cout << "Ajonaikainen virhe. Solmun vÃ¤ri puuttui." << std::endl;
       }
       output_file << OUTPUT_RUNTIME_ERR << endl;
       output_file.close();
@@ -223,14 +223,14 @@ void KingsPathApp::SearchPath(void)
    {  //erikoinen ja odottamaton tilanne
       if(display_messages)
       {
-         std::cout << "Ajonaikainen virhe. Solmun etäisyys puuttui." << std::endl;
+         std::cout << "Ajonaikainen virhe. Solmun etÃ¤isyys puuttui." << std::endl;
       }
       output_file << OUTPUT_RUNTIME_ERR << endl;
       output_file.close();
       return;
    }
 
-   //leveyshaku meni putkeen, etsitään nyt polku
+   //leveyshaku meni putkeen, etsitÃ¤Ã¤n nyt polku
    retPath = graph.BFS_Path(start_node, end_node);
 
    //Polku on olemassa?

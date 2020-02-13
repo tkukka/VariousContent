@@ -48,7 +48,7 @@ void Node::SetXY(int _x, int  _y)
 }
 
 /** 
- * Yht‰suuruuden vertailuoperaattori.
+ * Yht√§suuruuden vertailuoperaattori.
  * @param other Solmu johon verrataan
  */
 bool Node::operator==(const Node& other) const
@@ -57,7 +57,7 @@ bool Node::operator==(const Node& other) const
 }
 
 /** 
- * Toteuttaa map-s‰iliˆn less-predikaatin vaatiman operaattorin.
+ * Toteuttaa map-s√§ili√∂n less-predikaatin vaatiman operaattorin.
  * @param other Solmu johon verrataan
  */
 bool Node::operator<(const Node& other) const
@@ -81,7 +81,7 @@ void Node::Print(std::ostream& output) const
 }
 
 /** 
- * Tulostaa solmun virtaan k‰ytt‰en operaattoria <<.
+ * Tulostaa solmun virtaan k√§ytt√§en operaattoria <<.
  * @param output Virta
  * @param n Solmu
  */

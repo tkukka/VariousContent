@@ -1,5 +1,5 @@
 /** \file main.cpp
-    Sovelluksen k‰ynnist‰v‰ p‰‰ohjelma.
+    Sovelluksen k√§ynnist√§v√§ p√§√§ohjelma.
 */
 
 #define _CRTDBG_MAP_ALLOC
@@ -8,14 +8,14 @@
 #include "KingsPathApp.h"
 
 
-/** P‰‰ohjelma.
+/** P√§√§ohjelma.
  *
  */
 int main(int argc, char **argv)
 { 
    int ret = 0; //Rutiinien paluuarvo.
 
-   {//Lohko, jotta _CrtDumpMemoryLeaks() j‰‰ ulkopuolelle.
+   {//Lohko, jotta _CrtDumpMemoryLeaks() j√§√§ ulkopuolelle.
       KingsPathApp app;
      
       ret = app.ProcessCmdLine(argc, argv);

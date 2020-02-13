@@ -12,7 +12,7 @@
 
 #include "Node.h"
 
-/** Graafi-luokkaa k‰ytet‰‰n shakkilaudan vapaiden ruutujen esitt‰miseen.
+/** Graafi-luokkaa k√§ytet√§√§n shakkilaudan vapaiden ruutujen esitt√§miseen.
  */
 class Graph
 {
@@ -33,15 +33,15 @@ public:
     */
    enum BFSResult {BFS_OK, /*!< Leveyshaku onnistui. */
                    BFS_NO_ADJ_NODES, /*!< Solmulta puuttui vierussolmut */
-                   BFS_NO_COLOR, /*!< Solmulta puuttui v‰ri */
-                   BFS_NO_DISTANCE /*!< Solmulta puuttui et‰isyys */
+                   BFS_NO_COLOR, /*!< Solmulta puuttui v√§ri */
+                   BFS_NO_DISTANCE /*!< Solmulta puuttui et√§isyys */
    };
 
    /** Polun etsimisen paluuarvo
     */
-   enum PathResult {PATH_EXIST, /*!< Polku lˆytyi. */
-                    NO_PATH, /*!< Polkua ei lˆytynyt. */
-                    INVALID_NODE /*!< P‰‰tesolmu ei ole edelt‰j‰listassa. */
+   enum PathResult {PATH_EXIST, /*!< Polku l√∂ytyi. */
+                    NO_PATH, /*!< Polkua ei l√∂ytynyt. */
+                    INVALID_NODE /*!< P√§√§tesolmu ei ole edelt√§j√§listassa. */
    };
    
 
@@ -58,7 +58,7 @@ public:
   
 
 private:
-   /** Solmun v‰rin mahdolliset arvot.
+   /** Solmun v√§rin mahdolliset arvot.
     */
    enum NodeColor {WHITE, /*!< Valkea. */
                  GRAY,  /*!< Harmaa. */
@@ -73,20 +73,20 @@ private:
    const AdjType* GetAdjNodes(const Node& n) const;
 
 
-   /** Solmujen et‰isyyslistan tietotyyppi.
+   /** Solmujen et√§isyyslistan tietotyyppi.
     */
    typedef std::map<Node, int> DistanceType;
    
-   /** Solmujen edelt‰j‰listan tietotyyppi.
+   /** Solmujen edelt√§j√§listan tietotyyppi.
     */
    typedef std::map<Node, Node> PredecessorType;
    
-   /** Solmujen v‰rilistan tietotyyppi.
+   /** Solmujen v√§rilistan tietotyyppi.
     */
    typedef std::map<Node, NodeColor> ColorType;
 
 
-   /** Sis‰lt‰‰ graafin solmut.
+   /** Sis√§lt√§√§ graafin solmut.
     */
    GraphDataType data;
    
@@ -94,16 +94,16 @@ private:
     */
    PathType path;
    
-   /** Eri solmujen et‰isyydet leveyshaussa.
+   /** Eri solmujen et√§isyydet leveyshaussa.
     */
    DistanceType distances;
 
    /**
-    * Solmun et‰isyys ‰‰retˆn. 
+    * Solmun et√§isyys √§√§ret√∂n. 
     */
    static const int DIST_INFINITE = -1;
    
-   /** Eri solmujen edelt‰j‰t leveyshaussa.
+   /** Eri solmujen edelt√§j√§t leveyshaussa.
     */
    PredecessorType predecessors;
 
@@ -111,7 +111,7 @@ private:
     */
    static const Node NIL_NODE;
    
-   /** Eri solmujen v‰rit leveyshaussa.
+   /** Eri solmujen v√§rit leveyshaussa.
     */
    ColorType node_colors;
 
