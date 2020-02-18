@@ -3,11 +3,14 @@
 Modernisoitu versio (C++17) alkuperäisistä tiedostoista. 
 Modern C++17 implementation basing on the original files.
 
+**KingsPath_EclipseCDT_Windows** Eclipse CDT (C/C++ Development Tooling) -projektitiedostot. LLVM 9.0 (Clang, lld, libc++, C++17).
+Eclipse CDT project using LLVM 9.0 tools, libc++ and C++17.
+
 **original**: tehtävänanto, alkuperäiset C++98-lähdekoodit (kevät v.2008, Windows XP). 
 The assignment, the original C++-sources (C++98, spring 2008, Windows XP).
 
 **VStudio_2019** C++17 toteutuksen Visual Studio -projekti. 
-Visual Studio build project files for the new C++17 implementation.
+Visual Studio 2019 solution & project files for the new C++17 implementation.
 
 # Source C++ Dialect
 
