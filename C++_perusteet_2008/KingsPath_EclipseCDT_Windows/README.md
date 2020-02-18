@@ -31,7 +31,7 @@ Reference: [Building libc++](https://libcxx.llvm.org/docs/BuildingLibcxx.html). 
 
 4. Hack needed for Windows 7: *llvm-project\libcxx\CMakeLists.txt*, line 560 - 561: add *add_definitions(-DWINVER=0x0601)*
  *add_definitions(-D_WIN32_WINNT=0x0601)*  
-  Otherwise, builds links to *kernel32.dll* of Windows 10. (Maybe Windows 8.1 needs similar hack?)
+  Otherwise, the builds link to *kernel32.dll* of Windows 10. (Maybe Windows 8.1 needs similar hack?)
 
 5. Create a new build directory in *llvm-project*
 6. From Start Menu: start the *x64 Native Tools Command Prompt for VS 2019*
