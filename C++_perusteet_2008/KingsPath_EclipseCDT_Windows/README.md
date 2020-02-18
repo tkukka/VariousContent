@@ -11,10 +11,10 @@
    * LLDB Debugger plugin
 * [Java Runtime x64](https://jdk.java.net/) for Eclipse
 * [Git](https://git-scm.com/) for Windows
-* [LLVM Project from Git](http://llvm.org/docs/GettingStarted.html#checkout)
+* [LLVM Project sources](http://llvm.org/docs/GettingStarted.html#checkout)
 * [Python 3.x](https://www.python.org/downloads/windows/)
-* [Perl](http://strawberryperl.com/). (not sure was it needed)
-* Environment: PATH contains, set by installation
+* [Perl](http://strawberryperl.com/). (not sure whether it was needed)
+* Environment: PATH, set by installation
    * Python e.g C:\Python38\Scripts\;C:\Python38\
    * Perl e.g C:\Perl-Strawberry\c\bin;C:\Perl-Strawberry\perl\site\bin;C:\Perl-Strawberry\perl\bin
    * Git e.g C:\Git\cmd
@@ -33,11 +33,11 @@ Reference: [Building libc++](https://libcxx.llvm.org/docs/BuildingLibcxx.html). 
  *add_definitions(-D_WIN32_WINNT=0x0601)*  
   Otherwise, builds links to *kernel32.dll* of Windows 10. (Maybe Windows 8.1 needs similar hack?)
 
-5. Create build directory in llvm-project: *llvm-project\build*
+5. Create a new build directory in *llvm-project*
 6. From Start Menu: start the *x64 Native Tools Command Prompt for VS 2019*
 7. Change directory to the *build* directory
 7. For Windows 7, x64 Debug:  
-   cmake flags: -DCMAKE_SYSTEM_VERSION=7 -DCMAKE_BUILD_TYPE=Debug  
+   Use CMake flags: -DCMAKE_SYSTEM_VERSION=7 -DCMAKE_BUILD_TYPE=Debug  
    Other CMake settings stay the same.  
    Example, builds *c++.dll*:
 ```
@@ -47,10 +47,10 @@ Reference: [Building libc++](https://libcxx.llvm.org/docs/BuildingLibcxx.html). 
 
 > msbuild libcxx.sln -t:Build -p:Configuration=Debug;Platform=x64
 ```
-  The CMake building actually required more fiddling than the reference instructed. Not so simple.
+  The CMake building actually required more fiddling than the LLVM reference instructed. Not so simple.
 
 8. Windows 10 doesn't need -DCMAKE_SYSTEM_VERSION for CMake. How about Windows 8.1?
-9. Release build: CMake needs *-DCMAKE_BUILD_TYPE=Release* and the final build uses *-p:Configuration=Release;Platform=x64* 
+9. Release build: CMake needs -DCMAKE_BUILD_TYPE=Release and the final build uses -p:Configuration=Release;Platform=x64 
 10. The resulting binaries (.dll, .lib) are located in *build\lib\Debug* and *build\lib\Release*:  
     c++.dll  
     c++.lib  
@@ -63,12 +63,12 @@ Or copy the files to other locations and give those directories.
 13. The lld linker looks for *libc++.lib*. Must rename *c++.lib* to *libc++.lib* (or copy and rename the copied file).
 
 
-## CMake Generator for Visual Studio 2019 - experiment
+## CMake Generator for Visual Studio 2019 - an experiment
 
 Seems to work only for Windows 7, Debug:
 
 ```
-> cmake -G "Visual Studio 16 2019" -A x64 -T "ClangCL" -DCMAKE_SYSTEM_VERSION=7 -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER="C:/LLVM-9/bin/clang++.exe" -DCMAKE_C_COMPILER="C:/LLVM-9/bin/clang.exe"  -DLLVM_PATH="C:/workspace/github/llvm-project/llvm" -DLIBCXX_ENABLE_SHARED=YES -DLIBCXX_ENABLE_STATIC=NO -DLIBCXX_ENABLE_EXPERIMENTAL_LIBRARY=NO  ..\libcxx
+> cmake -G "Visual Studio 16 2019" -A x64 -T "ClangCL" -DCMAKE_SYSTEM_VERSION=7 -DCMAKE_BUILD_TYPE=Debug ...
 
 > ...
 
