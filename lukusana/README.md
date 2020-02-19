@@ -10,15 +10,22 @@
 * **C**: C11 (compiler: -std=c11)
 * **C++**: C++17 (compiler: -std=c++17)
 
-# Build Platform
+# Build Platforms
+### Linux (development platform)
 - Ubuntu 18.04 LTS
 - GNU Make 4.1
 - C library: **GNU libc 2.27**
 - **GCC 8.3**, linker: GNU gold 1.15 (ld.gold), libstdc++ (libstdc++.so.6.0.25, GLIBCXX_3.4.25, CXXABI_1.3.11)
 - **Clang 8.0**, linker: LLD 8.0  (ld.lld-8) + libc++ 8.0
-- optional: CodeLite 13.x IDE. Using Custom Makefile Project.
+- optional: CodeLite 13.x IDE. Using Custom Makefile Project (the files lukusana.workspace, *.project).
 
-# Build Flags for Makefile
+### Windows 7 SP 1 x64
+Just experimenting how it builds with  
+   1) LLVM Release 9.0
+   2) Microsoft Visual Studio Community 2019.  
+See the folder **cplusplus**.
+
+# Linux: Build Flags for Makefile
 
 Flag |Compile C Sources | Compile C++ Sources
 ----|----|----
@@ -74,7 +81,7 @@ $ make distclean
 ```Shell Session
 $ make BUILD=Release distclean
 ```
-# Test Coverage Instrumentation (C++)
+# Linux: Test Coverage Instrumentation (C++)
 
 For **g++**
 
