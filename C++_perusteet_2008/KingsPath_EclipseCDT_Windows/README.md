@@ -1,3 +1,8 @@
+# Purpose
+
+Experimenting C++ compilation and linkig with a pure LLVM toolchain on Windows. 
+A pure Microsoft Visual C++ project is also [available](../VStudio_2019).
+
 # Setup
 
 * Windows 7 SP1 64 bit
@@ -5,7 +10,7 @@
    * C++ Clang Compiler for Windows (9.0.0)
    * C++ Clang-cl for v142 build tools (x64/x86)
    * C++ CMake Tools for Windows
-* [LLVM Release 9.0](http://releases.llvm.org/) (Clang compiler & tools for Windows x64)
+* [LLVM Release 9.0](http://releases.llvm.org/) (64 bit Clang compiler & tools for Windows x64)
 * [Eclipse IDE](https://www.eclipse.org/downloads/) for C/C++ Developers 2019-12 (Windows 64-bit)
    * LLVM plugin(s)
    * LLDB Debugger plugin
@@ -63,7 +68,7 @@ Or copy the files to other locations and give those directories.
 13. The lld linker looks for *libc++.lib*. Must rename *c++.lib* to *libc++.lib* (or copy and rename the copied file).
 
 
-## CMake Generator for Visual Studio 2019 - an experiment
+### CMake Generator for Visual Studio 2019 - an experiment
 
 Seems to work only for Windows 7, Debug:
 
@@ -73,3 +78,17 @@ Seems to work only for Windows 7, Debug:
 > ...
 
 ```
+# Using Clang++ from the command-line
+
+Without any Eclipse CDT:  
+
+*Debug:*  
+```
+> build_x64_debug.bat
+```
+*Release:*  
+```
+> build_x64_release.bat
+```
+The exact command-line is in the .bat files.
+The .exe file needs *c++.dll*. The right version for Debug/Release, respectively.

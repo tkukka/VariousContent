@@ -63,7 +63,7 @@
                                     								
                                 </option>
                                 								
-                                <option id="llvm.c_cpp.compiler.option.debugging.other.1995312624" name="Other debugging flags" superClass="llvm.c_cpp.compiler.option.debugging.other" useByScannerDiscovery="false" value="-glldb" valueType="string"/>
+                                <option id="llvm.c_cpp.compiler.option.debugging.other.1995312624" name="Other debugging flags" superClass="llvm.c_cpp.compiler.option.debugging.other" useByScannerDiscovery="false" value="-glldb -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer" valueType="string"/>
                                 								
                                 <inputType id="cdt.managedbuild.tool.llvm.c.compiler.input.2075126404" superClass="cdt.managedbuild.tool.llvm.c.compiler.input"/>
                                 							
@@ -105,7 +105,7 @@
                                 								
                                 <option id="llvm.c_cpp.compiler.option.misc.other.1514018910" name="Other flags" superClass="llvm.c_cpp.compiler.option.misc.other" useByScannerDiscovery="false" value="-c -fmessage-length=0 -Wextra -Wformat-security -Werror=format-security" valueType="string"/>
                                 								
-                                <option id="llvm.c_cpp.compiler.option.debugging.other.1396769204" name="Other debugging flags" superClass="llvm.c_cpp.compiler.option.debugging.other" useByScannerDiscovery="false" value="-glldb" valueType="string"/>
+                                <option id="llvm.c_cpp.compiler.option.debugging.other.1396769204" name="Other debugging flags" superClass="llvm.c_cpp.compiler.option.debugging.other" useByScannerDiscovery="false" value="-glldb -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer" valueType="string"/>
                                 								
                                 <option id="llvm.c_cpp.compiler.option.optimization.flags.594327037" name="Other optimization flags" superClass="llvm.c_cpp.compiler.option.optimization.flags" useByScannerDiscovery="false" value="-emit-llvm -m64" valueType="string"/>
                                 								
@@ -225,7 +225,7 @@
                                 								
                                 <option id="llvm.c_cpp.compiler.option.optimization.flags.513043701" name="Other optimization flags" superClass="llvm.c_cpp.compiler.option.optimization.flags" useByScannerDiscovery="false" value="-emit-llvm -march=native" valueType="string"/>
                                 								
-                                <option id="llvm.c_cpp.compiler.option.misc.other.1937485179" name="Other flags" superClass="llvm.c_cpp.compiler.option.misc.other" useByScannerDiscovery="false" value="-c -fmessage-length=0 -Wextra -Wformat-security -Werror=format-security  -flto -fvisibility=hidden" valueType="string"/>
+                                <option id="llvm.c_cpp.compiler.option.misc.other.1937485179" name="Other flags" superClass="llvm.c_cpp.compiler.option.misc.other" useByScannerDiscovery="false" value="-c -fmessage-length=0 -Wextra -Wformat-security -Werror=format-security -flto -fvisibility=hidden -fstack-protector-strong" valueType="string"/>
                                 								
                                 <inputType id="cdt.managedbuild.tool.llvm.c.compiler.input.1273456397" superClass="cdt.managedbuild.tool.llvm.c.compiler.input"/>
                                 							
@@ -265,7 +265,7 @@
                                 								
                                 <option id="llvm.c_cpp.compiler.option.warnings.pedantic.732337322" name="Pedantic (-pedantic)" superClass="llvm.c_cpp.compiler.option.warnings.pedantic" useByScannerDiscovery="false" value="true" valueType="boolean"/>
                                 								
-                                <option id="llvm.c_cpp.compiler.option.misc.other.1705776928" name="Other flags" superClass="llvm.c_cpp.compiler.option.misc.other" useByScannerDiscovery="false" value="-c -fmessage-length=0  -Wextra -Wformat-security -Werror=format-security -flto -fvisibility=hidden" valueType="string"/>
+                                <option id="llvm.c_cpp.compiler.option.misc.other.1705776928" name="Other flags" superClass="llvm.c_cpp.compiler.option.misc.other" useByScannerDiscovery="false" value="-c -fmessage-length=0 -Wextra -Wformat-security -Werror=format-security -flto -fvisibility=hidden -fstack-protector-strong" valueType="string"/>
                                 								
                                 <option id="llvm.c_cpp.compiler.option.optimization.flags.1303158063" name="Other optimization flags" superClass="llvm.c_cpp.compiler.option.optimization.flags" useByScannerDiscovery="false" value="-emit-llvm -m64 -march=native" valueType="string"/>
                                 								
