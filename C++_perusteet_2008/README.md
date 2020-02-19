@@ -27,6 +27,7 @@ Visual Studio 2019 solution & project files for the new C++17 implementation.
 Just experimenting how it builds with  
    1) LLVM Release 9.0
    2) Microsoft Visual Studio Community 2019.  
+
 See the folders **KingsPath_EclipseCDT_Windows** and **VStudio_2019**.
 
 # Linux: Build Flags for Makefile

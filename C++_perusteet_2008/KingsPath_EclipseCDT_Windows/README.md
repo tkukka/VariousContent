@@ -91,4 +91,4 @@ Without any Eclipse CDT:
 > build_x64_release.bat
 ```
 The exact command-line is in the .bat files.
-The .exe file needs *c++.dll*. The right version for Debug/Release, respectively.
+The .exe file needs *c++.dll*. The right version is needed for Debug/Release, respectively.

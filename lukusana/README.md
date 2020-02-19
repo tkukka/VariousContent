@@ -4,7 +4,7 @@
 
 **original**: alkuperäiset C99-lähdekoodit (v.2005, Windows XP). The original C-sources (C99, year 2005, Windows XP).
 
-**test**: C11- ja C++17 -totetutusten testejä. Some tests for C11 and C++17 implementation.
+**test**: C11- ja C++17 -totetutusten testejä. Some tests for C11 and C++17 implementations.
 
 # Source C/C++ Dialect
 * **C**: C11 (compiler: -std=c11)
@@ -23,6 +23,7 @@
 Just experimenting how it builds with  
    1) LLVM Release 9.0
    2) Microsoft Visual Studio Community 2019.  
+
 See the folder **cplusplus**.
 
 # Linux: Build Flags for Makefile
