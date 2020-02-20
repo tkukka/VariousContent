@@ -297,7 +297,7 @@
                                     								
                                 </option>
                                 								
-                                <option id="llvm.c.link.base.option.ldflags.208387170" name="Linker flags" superClass="llvm.c.link.base.option.ldflags" useByScannerDiscovery="false" value="-Wl,/subsystem:console,/machine:x64  -fuse-ld=lld" valueType="string"/>
+                                <option id="llvm.c.link.base.option.ldflags.208387170" name="Linker flags" superClass="llvm.c.link.base.option.ldflags" useByScannerDiscovery="false" value="-Wl,/subsystem:console,/machine:x64  -fuse-ld=lld -fstack-protector-strong" valueType="string"/>
                                 								
                                 <option id="llvm.c.link.option.strip.964217711" name="Omit all debug information (-strip-debug)" superClass="llvm.c.link.option.strip" useByScannerDiscovery="false" value="false" valueType="boolean"/>
                                 								
