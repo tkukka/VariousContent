@@ -5,7 +5,9 @@ Experimenting C++ compilation and linking with the MSYS2/mingw-w64 toolchain on 
 # Setup
 
 * Windows 7 SP1 64 bit
-* [MSYS2 x86_64](https://www.msys2.org/)
+* [MSYS2 x86_64](https://www.msys2.org/)  
+   * packages base, base-devel, gcc, mingw-w64-x86_64-toolchain
+
 * Environment: PATH  
    * mingw-w64 in path e.g C:\msys64\mingw64\bin
    * GCC 9.2.0, check from Windows Command Prompt: ```g++ -v```
