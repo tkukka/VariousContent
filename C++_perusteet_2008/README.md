@@ -6,6 +6,8 @@ Modern C++17 implementation basing on the original files.
 **KingsPath_EclipseCDT_Windows** Eclipse CDT (C/C++ Development Tooling) -projektitiedostot. LLVM 9.0 (Clang, lld, libc++, C++17).
 Eclipse CDT project using LLVM 9.0 tools, libc++ and C++17.
 
+**MSYS2** MSYS2/mingw-w64 kääntö ja linkitys komentoriviltä. A command-line build with the MSYS2/mingw-w64.
+
 **original**: tehtävänanto, alkuperäiset C++98-lähdekoodit (kevät v.2008, Windows XP). 
 The assignment, the original C++-sources (C++98, spring 2008, Windows XP).
 
@@ -24,11 +26,13 @@ Visual Studio 2019 solution & project files for the new C++17 implementation.
 - **Clang 8.0**, linker: LLD 8.0  (ld.lld-8) + libc++ 8.0
 
 ### Windows 7 SP 1 x64
+
 Just experimenting how it builds with  
    1) LLVM Release 9.0
    2) Microsoft Visual Studio Community 2019.  
+   3) MSYS2/mingw-w64 GCC 9.2.0  
 
-See the folders **KingsPath_EclipseCDT_Windows** and **VStudio_2019**.
+See the folders **KingsPath_EclipseCDT_Windows**, **MSYS2** and **VStudio_2019**.
 
 # Linux: Build Flags for Makefile
 
