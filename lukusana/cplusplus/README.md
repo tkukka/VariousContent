@@ -10,3 +10,8 @@ For building libc++ on Windows, see the other [project](../../C++_perusteet_2008
 ### Visual Studio Community 2019
 
 The solution file is in the folder **Visual_Studio_2019**.
+
+### MSYS2 / mingw-w64 GCC 9.2.0
+
+Look in the folder **MSYS2**.
+
