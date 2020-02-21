@@ -129,7 +129,7 @@ int KingsPathApp::ReadBoard()
     using std::endl;
 
     // miten kävi laudan lukemisesssa...
-    auto ret = board.ReadFile(input_file);
+    const auto ret = board.ReadFile(input_file);
 
     if(ret == FileStatus::FILE_NOT_OPEN) {
         if(display_messages) {
@@ -183,7 +183,7 @@ void KingsPathApp::SearchPath()
     // graph.Print();
 
     // Tehdään leveyshaku
-    auto retBFS = graph.BFS({ 0, 0 });
+    const auto retBFS = graph.BFS({ 0, 0 });
 
     // Oliko haku onnistunut?
     if(retBFS ==
@@ -217,9 +217,9 @@ void KingsPathApp::SearchPath()
     }
 
     // Laudan oikea alanurkka, koordinaatit?
-    auto [width, height] = board.GetDimension();
+    const auto [width, height] = board.GetDimension();
     // leveyshaku meni putkeen, etsitään nyt polku
-    auto retPath = graph.BFS_Path({ 0, 0 }, { width - 1, height - 1 });
+    const auto retPath = graph.BFS_Path({ 0, 0 }, { width - 1, height - 1 });
 
     // Polku on olemassa?
     if(retPath == PathResult::PATH_EXIST) {

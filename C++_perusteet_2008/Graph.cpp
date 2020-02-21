@@ -93,10 +93,8 @@ BFSResult Graph::BFS(const Node& start)
     node_queue.emplace_back(start);
 
     while(node_queue.empty() == false) {
-        const auto& CURRENT_NODE(node_queue.front());
-        node_queue.pop_front();
-
-        auto adj = GetAdjNodes(CURRENT_NODE);
+        const Node& CURRENT_NODE = node_queue.front();
+        const auto adj = GetAdjNodes(CURRENT_NODE);
 
         if(!adj) // Vierussolmut puuttuvat?
         {
@@ -131,6 +129,7 @@ BFSResult Graph::BFS(const Node& start)
         }
 
         SetNodeColor(CURRENT_NODE, NodeColor::BLACK);
+        node_queue.pop_front();
     }
 
     return BFSResult::BFS_OK;

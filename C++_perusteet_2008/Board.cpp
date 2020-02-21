@@ -86,7 +86,7 @@ FileStatus Board::ReadFile(std::ifstream& infile)
         }
 
         // Etsitään vääriä merkkejä
-        auto char_index = line.find_first_not_of(ALLOWED_CHARS);
+        const auto char_index = line.find_first_not_of(ALLOWED_CHARS);
         // Löytyikö kiellettyjä?
         if(char_index != string::npos) {
             return FileStatus::FILE_FORMAT_ERROR;
@@ -159,7 +159,7 @@ void Board::Print(const Graph::PathType* path) const
                 {
                     // pitää tutkia onko nykyinen vapaa ruutu jossain kohdassa
                     // polkua. vähän tehotonta...
-                    auto index = Board::NodePosition({ column, row }, *path);
+                    const auto index = Board::NodePosition({ column, row }, *path);
                     if(index >= 0) // tämä ruutu on polussa?
                     {
                         cout << "\t"
@@ -219,8 +219,7 @@ void Board::ConvertToGraph(Graph& graph) const
 
     // tehdään laudasta kopio, koska lisätään kaksi riviä varattuja ruutuja.
     BoardDataType copy_data = data;
-    auto row_length =
-        static_cast<int>(copy_data[0].length()); // laudan rivin leveys ylös
+    const auto row_length = static_cast<int>(copy_data[0].length()); // laudan rivin leveys ylös
 
     const string FILLER(row_length, SQUARE_OCCUPIED); // tehdään täyterivi varatuista ruuduista
 
@@ -229,21 +228,21 @@ void Board::ConvertToGraph(Graph& graph) const
     copy_data.emplace_back(FILLER);               // rivi laudan loppuun
 
     // montako riviä laudassa nyt, otetaan ylös silmukkaa varten
-    auto row_count = static_cast<int>(copy_data.size());
+    const auto row_count = copy_data.size();
 
     // int counter = 0;    // montako solmua, joilla oli vierussolmuja
     int actual_row = 0; // seuraa todellista riviä alkuperäisessa laudassa
     Graph::AdjType adj_nodes; // kerää vierussolmut
 
     // kierretään rivejä alkaen toisesta rivistä aina toiseksi viimeiseen asti
-    for(auto i = 1; i < (row_count - 1); ++i, ++actual_row) {
+    for(std::size_t i = 1; i < (row_count - 1); ++i, ++actual_row) {
         // otetaan ylös kolme riviä laudasta: edellinen, nykyinen ja seuraava.
         const auto& prev_row = copy_data[i - 1];
         const auto& current_row = copy_data[i];
         const auto& next_row = copy_data[i + 1];
 
         // kierretään sarakkeita (yksittäisiä merkkejä rivillä)
-        for(auto j = 0; j < row_length; ++j) {
+        for(int j = 0; j < row_length; ++j) {
             adj_nodes.clear();
 
             // cout << "(" << j << ", " << actual_row  << "): ";
