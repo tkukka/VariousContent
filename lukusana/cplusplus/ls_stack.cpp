@@ -41,7 +41,7 @@ void FooStack::print_stack()
         std::ostream_iterator<NodeDataType>(std::cout));
 }
 // ------------------------------------------------------------------------
-int FooStack::get_stack_size()
+std::size_t FooStack::get_stack_size()
 {
     return stk.size();
 }

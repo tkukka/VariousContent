@@ -16,7 +16,7 @@ public:
     static NodeDataType pop_from_stack();
 
     static void print_stack();
-    static int get_stack_size();
+    static std::size_t get_stack_size();
 
     static void clear_stack();
     static void close_stack();
