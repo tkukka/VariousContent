@@ -10,8 +10,8 @@ lib_path_release_gcc=${lib_path_release}-gcc
 lib_path_debug_clang=${lib_path_debug}-clang
 lib_path_release_clang=${lib_path_release}-clang
 # two bash arrays:
-flags_debug=(-Wl,--enable-new-dtags,-z,relro,-z,now,-z,defs,-z,noexecstack -g -Wall)
-flags_release=(-Wl,--enable-new-dtags,-z,relro,-z,now,-z,notext,-z,noexecstack,-z,defs,-pie,-s -O2 -Wall -march=native -fPIE -pie)
+flags_debug=(-Wl,--enable-new-dtags,-z,relro,-z,now,-z,defs,-z,noexecstack -g -Wall -fstack-protector-strong)
+flags_release=(-Wl,--enable-new-dtags,-z,relro,-z,now,-z,notext,-z,noexecstack,-z,defs,-pie,-s -O2 -Wall -march=native -fPIE -pie -fstack-protector-strong)
 link_dir=link-test
 outfile=linking_test_out.txt
 

@@ -71,8 +71,8 @@ ifeq ($(strip $(BUILD)),Debug)
   %.o: CFLAGS += $(DEFS) $(DEBUG_INFO) $(WARNINGS) -std=c11 -fno-omit-frame-pointer -fstack-protector-strong
   %.o: CXXFLAGS += $(DEFS) $(DEBUG_INFO) $(WARNINGS) -std=$(CXX_STD) -fno-omit-frame-pointer -fstack-protector-strong 
 
-  $(TARGET_C):: LDFLAGS += -Wl,-z,relro,-z,now,-z,noexecstack,-z,defs
-  $(TARGET_CXX): LDFLAGS += -Wl,-z,relro,-z,now,-z,noexecstack,-z,defs
+  $(TARGET_C):: LDFLAGS += -Wl,-z,relro,-z,now,-z,noexecstack,-z,defs -fstack-protector-strong
+  $(TARGET_CXX): LDFLAGS += -Wl,-z,relro,-z,now,-z,noexecstack,-z,defs -fstack-protector-strong
   ifdef USE_CLANG
     $(TARGET_CXX): LDFLAGS += -lc++
   endif
@@ -84,8 +84,8 @@ ifeq ($(strip $(BUILD)),Release)
   %.o: CFLAGS += $(DEFS) -O2 $(WARNINGS) -std=c11 -march=native -fPIE -fstack-protector-strong
   %.o: CXXFLAGS += $(DEFS) -O2 $(WARNINGS) -std=$(CXX_STD) -march=native -fPIE -fstack-protector-strong
 
-  $(TARGET_C): LDFLAGS += -O2 $(WARNINGS) -pie -Wl,-pie -Wl,-z,defs,-z,relro,-z,now,-z,notext,-z,noexecstack,-s
-  $(TARGET_CXX): LDFLAGS += -O2 $(WARNINGS) -pie -Wl,-pie -Wl,-z,defs,-z,relro,-z,now,-z,notext,-z,noexecstack,-s
+  $(TARGET_C): LDFLAGS += -O2 $(WARNINGS) -pie -Wl,-pie -Wl,-z,defs,-z,relro,-z,now,-z,notext,-z,noexecstack,-s -fstack-protector-strong
+  $(TARGET_CXX): LDFLAGS += -O2 $(WARNINGS) -pie -Wl,-pie -Wl,-z,defs,-z,relro,-z,now,-z,notext,-z,noexecstack,-s -fstack-protector-strong
 
   ifdef USE_CLANG
     %.o: CFLAGS += -flto=thin -fsanitize=cfi -fvisibility=hidden

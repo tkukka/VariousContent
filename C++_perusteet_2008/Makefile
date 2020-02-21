@@ -91,7 +91,7 @@ ifeq ($(strip $(BUILD)),$(DEBUG_STR))
   #  $(BUILD_DIR_DEBUG)/$(TARGET_NAME): LDFLAGS += -fsanitize=safe-stack
   #endif
 
-  $(BUILD_DIR_DEBUG)/$(TARGET_NAME): LDFLAGS += -Wl,-z,relro,-z,now,-z,noexecstack -Wl,--Map,$(MAPFILE)
+  $(BUILD_DIR_DEBUG)/$(TARGET_NAME): LDFLAGS += -fstack-protector-strong -Wl,-z,relro,-z,now,-z,noexecstack -Wl,--Map,$(MAPFILE)
   ifeq ($(strip $(SANITIZER)),asan)
     $(BUILD_DIR_DEBUG)/$(TARGET_NAME): LDFLAGS += -fsanitize=$(SANITIZER_TYPE)
   else
@@ -107,7 +107,7 @@ ifeq ($(strip $(BUILD)),$(RELEASE_STR))
   $(BUILD_DIR_RELEASE)/%.o: CFLAGS += $(DEFS) -O2 $(WARNINGS) -std=c11 -march=native -fPIE -fstack-protector-strong
   $(BUILD_DIR_RELEASE)/%.o: CXXFLAGS += $(DEFS) -O2 $(WARNINGS) -std=c++17 -march=native -fPIE -fstack-protector-strong
 
-  $(BUILD_DIR_RELEASE)/$(TARGET_NAME): LDFLAGS += -O2 $(WARNINGS) -pie -Wl,-pie -Wl,-z,defs,-z,relro,-z,now,-z,notext,-z,noexecstack -Wl,--Map,$(MAPFILE) -Wl,-s
+  $(BUILD_DIR_RELEASE)/$(TARGET_NAME): LDFLAGS += -fstack-protector-strong -O2 $(WARNINGS) -pie -Wl,-pie -Wl,-z,defs,-z,relro,-z,now,-z,notext,-z,noexecstack -Wl,--Map,$(MAPFILE) -Wl,-s
 
   ifdef USE_CLANG
     $(BUILD_DIR_RELEASE)/%.o: CFLAGS += -flto=thin -fsanitize=cfi -fvisibility=hidden #-fsanitize=safe-stack
