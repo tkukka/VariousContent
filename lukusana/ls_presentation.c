@@ -11,22 +11,23 @@
 #include "ls_presentation.h"
 #endif
 
-/*        Tulosteisiin tarvittavat tekstivakiot     */
 
-/*  Ensin lukusanat 0 - 19  valmiiksi määriteltyinä teksteinä.
- *  (Numerot 10 - 19 ovat luonteeltaan epäsäännöllisiä,
- *  joten ne on helpointa määritellä tässä.)
- */
+
 #ifdef __cplusplus
 namespace LS {
-
-using namespace std;
 
 template <typename T = LS::NodeDataType>
 int push_to_stack(T data) { return LS::FooStack::push_to_stack(data); }
 
 #endif
 
+/*        Tulosteisiin tarvittavat tekstivakiot     */
+
+
+/*  Ensin lukusanat 0 - 19  valmiiksi määriteltyinä teksteinä.
+ *  (Numerot 10 - 19 ovat luonteeltaan epäsäännöllisiä,
+ *  joten ne on helpointa määritellä tässä.)
+ */
 static const char NUMBERS_0_19[][17] =
     {
     u8"nolla",
