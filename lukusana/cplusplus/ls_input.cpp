@@ -34,14 +34,14 @@ InputStatus InputHandler::validate_and_convert_input(const std::string& input,
     try {
         ret = stoul(input, &pos);
     }
-    catch(std::invalid_argument& e) {
+    catch(const std::invalid_argument& e) {
 
         cout << "\n\aSyötteesi sisälsi muita merkkejä kuin numeroita. "
              << "Ensimmäinen virheellinen merkki: " << input[pos] << endl;
 
         return InputStatus::INPUT_ERROR;
     }
-    catch(std::out_of_range& e) {
+    catch(const std::out_of_range& e) {
 
         cout << "\n\aAntamasi luku oli suurempi kuin "
              << numeric_limits<unsigned long>::max() << ". ";
