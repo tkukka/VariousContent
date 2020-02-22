@@ -25,7 +25,10 @@ Contents
 ## kielet
 
 Sisältö
-* kesken
+* vanhoja pikkuruisia apuohjelmia kielten opiskeluun
+
+Contents
+* old tiny tools to help language studies
 
 ## lukusana
 
@@ -37,7 +40,7 @@ Sisältö
 * Linux: Dynaamisen linkitettävän kirjaston luonti (.so, Debug & Release)
 * Linux: Staattisen linkitettävän kirjaston luonti (.a, Debug & Release)
 * Linux: Yksikkötestejä ja linkityksen toimivuuden testausta (C, C++)
-* Windows: Kääntö LLVM:n ja Visual Studio 2019:n avulla mahdollista
+* Windows: C++ kääntö LLVM:n, MSYS2/mingw-w64:n ja Visual Studio 2019:n avulla mahdollista
 
 Contents
 * Program to spell out a given number in Finnish
@@ -47,6 +50,6 @@ Contents
 * Linux: Creates Dynamic Shared Object (DSO, .so) file (Debug & Release)
 * Linux: Creates Static Archive file .a (Debug & Release)
 * Linux: Added C & C++ unit tests plus linking tests 
-* Windows: Added support to build with LLVM and Visual Studio 2019
+* Windows: Added support to build the C++ sources with LLVM, MSYS2/mingw-w64 or Visual Studio 2019
 
 
