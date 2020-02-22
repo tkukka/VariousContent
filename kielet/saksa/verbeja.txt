@@ -1,0 +1,108 @@
+ab/biegen, biegt ab, bog ab, ist abgebogen	kääntyä
+an/bieten, bietet an, bot an, hat angeboten	tarjota
+an/fangen, fängt an, fing an, hat angefangen	alkaa, aloittaa
+an/rufen, ruft an, rief an, hat angerufen	soittaa
+bekommen, bekommt, bekam, hat bekommen	saada
+biegen, biegt, bog, hat/ist gebogen	taivuttaa/taipua
+bleiben, bleibt, blieb, ist geblieben	jäädä
+beschließen, beschließt, beschloss, hat beschlossen	päättää
+beweisen, beweist, bewies, hat bewiesen	todistaa
+(sich) bewerben (um), bewirbt, bewarb, hat beworben	hakea (työpaikkaa)
+bitten, bittet, bat, hat gebeten	pyytää
+blasen, bläst, blies, hat geblasen	puhaltaa
+bringen, bringt, brachte, hat gebracht	tuoda, viedä, saattaa
+denken, denkt, dachte, hat gedacht	ajatella
+ein/steigen, steigt ein, stieg ein, ist eingestiegen	nousta kulkuneuvoon
+empfehlen, empfiehlt, empfahl, hat empfohlen	suositella
+(sich) entscheiden, entscheidet, entschied, hat entschieden	päättää
+erkennen, erkennt, erkannte, hat erkannt	tunnistaa
+erscheinen, erscheint, erschien, ist erschienen	ilmestyä
+erschrecken, erschrickt, erschrak, ist erschrocken	pelästyä
+essen, isst, aß, hat gegessen	syödä
+fahren, fährt, fuhr, ist gefahren	ajaa, matkustaa
+fallen, fällt, fiel, ist gefallen	pudota, kaatua
+finden, findet, fand, hat gefunden	löytää
+fliegen, fliegt, flog, ist geflogen	lentää
+fließen, fließt, floss, ist geflossen	virrata
+frieren, friert, fror, hat gefroren	palella
+geben, gibt, gab, hat gegeben	antaa
+gefallen, gefällt, gefiel, hat gefallen	miellyttää
+gehen, geht, ging, ist gegangen	mennä, kulkea, kävellä
+gelingen, gelingt, gelang, ist gelungen	onnistua
+gelten, gilt, galt, hat gegolten	päteä, olla voimassa
+genießen, genießt, genoss, hat genossen	nauttia
+geschehen, geschieht, geschah, ist geschehen	tapahtua
+gewinnen, gewinnt, gewann, hat gewonnen	voittaa
+gießen, gießt, goss, hat gegossen	kaataa nestettä; valaa
+gleiten, gleitet, glitt, ist geglitten	liukua, lipua
+graben, gräbt, grub, hat gegraben	kaivaa
+greifen, greift, griff, hat gegriffen	tarttua
+haben, hat, hatte, hat gehabt	olla, omistaa
+halten, hält, hielt, hat gehalten	pitää, pysäyttää, pysähtyä
+hängen, hängt, hing, hat gehangen	riippua
+heben, hebt, hob, hat gehoben	nostaa
+heißen, heißt, hieß, hat geheißen	olla nimeltään
+helfen, hilft, half, hat geholfen	auttaa
+kennen, kennt, kannte, hat gekannt	tuntea
+kommen, kommt, kam, ist gekommen	tulla
+lassen, lässt, ließ, hat gelassen	antaa, sallia
+laufen, läuft, lief, ist gelaufen	juosta, mennä jalkaisin
+leihen, leiht, lieh, hat geliehen	lainata
+lesen, liest, las, hat gelesen	lukea
+liegen, liegt, lag, hat gelegen	sijaita, maata
+lügen, lügt, log, hat gelogen	valehdella
+nehmen, nimmt, nahm, hat genommen	ottaa
+nennen, nennt, nannte, hat genannt	nimittää, kutsua joksikin
+preisen, preist, pries, hat gepriesen	ylistää
+raten, rät, riet, hat geraten	neuvoa, arvata
+rennen, rennt, rannte, ist gerannt	juosta
+riechen, riecht, roch, hat gerochen	haista(a)
+rufen, ruft, rief, hat gerufen	huutaa, kutsua
+saufen, säuft, soff, hat gesoffen	ryypätä
+saugen, saugt, sog,  hat gesogen	imeä
+schaffen, schafft, schuf, hat geschaffen	luoda
+scheinen, scheint, schien, hat geschienen	paistaa, näyttää tekevän
+schlafen, schläft, schlief, hat geschlafen	nukkua
+schlagen, schlägt, schlug, hat geschlagen	lyödä
+schleifen, schleift, schliff, hat geschliffen	hioa
+schließen, schließt, schloss, hat geschlossen	sulkea, solmia, lopettaa
+schmelzen, schmilzt, schmolz, hat/ist geschmolzen	sulattaa/sulaa
+schneiden, schneidet, schnitt, hat geschnitten	leikata
+schreiben, schreibt, schrieb, hat geschrieben	kirjoittaa
+schreien, schreit, schrie, hat geschrieen	huutaa, kirkua
+schweigen, schweigt, schwieg, hat geschwiegen	vaieta
+schwimmen, schwimmt, schwamm, ist geschwommen	uida
+sehen, sieht, sah, hat gesehen	nähdä
+sein, ist, war, ist gewesen	olla
+singen, singt, sang, hat gesungen	laulaa
+sinken, sinkt, sank, ist gesunken	vajota, upota
+sitzen, sitzt, saß, hat gesessen	istua
+sprechen, spricht, sprach, hat gesprochen	puhua
+springen, springt, sprang, ist gesprungen	hypätä
+statt/finden, findet statt, fand statt, hat stattgefunden	tapahtua, olla
+stehen, steht, stand, hat gestanden	seisoa
+stehlen, stiehlt, stahl, hat gestohlen	varastaa
+steigen, steigt, stieg, ist gestiegen	nousta
+sterben, stirbt, starb, ist gestorben	kuolla
+streichen, streicht, strich, hat gestrichen	maalata
+streiten, streitet, stritt, hat gestritten	riidellä
+teil/nehmen, nimmt teil, nahm teil, hat teilgenommen	osallistua
+tragen, trägt, trug, hat getragen	kantaa
+treffen, trifft, traf, hat getroffen	tavata, kohdata
+trinken, trinkt, trank, hat getrunken	juoda
+tun, tut, tat, hat getan	tehdä
+überweisen, überweist, überwies, hat überwiesen	lähettää, maksattaa
+verbieten, verbietet, verbot, hat verboten	kieltää
+verbinden, verbindet, verband, hat verbunden	yhdistää
+vergessen, vergisst, vergaß, hat vergessen	unohtaa
+verlieren, verliert, verlor, hat verloren	menettää, kadottaa
+vermeiden, vermeidet, vermied, hat vermieden	välttää
+verstehen, versteht, verstand, hat verstanden	ymmärtää
+verschwinden, verschwindet, verschwand, ist verschwunden	kadota, hävitä
+wachsen, wächst, wuchs, ist gewachsen	kasvaa
+waschen, wäscht, wusch, hat gewaschen	pestä
+weg/werfen, wirft weg, warf weg, hat weggeworfen	heittää pois
+(für etwas) werben, wirbt, warb, hat geworben	mainostaa
+werden, wird, wurde, ist geworden	tulla joksikin
+wissen, weiß, wusste, hat gewusst	tietää
+ziehen, zieht, zog, hat gezogen	vetää
