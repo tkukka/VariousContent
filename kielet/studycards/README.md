@@ -1,6 +1,6 @@
 # StudyCards
 
-Apuohjelma kielten sanaston opiskeluun vuodelta 2007. Tehty Java 1.5:lla. Pikaisesti muokattu lukemaan UTF-8-tekstitiedostoja sisään. 
+Apuohjelma kielten sanaston opiskeluun vuodelta 2007. Tehty Java 1.5:lla (Swing UI). Pikaisesti muokattu lukemaan UTF-8-tekstitiedostoja sisään. 
 Todettu kääntyväksi virheilmoituksitta OpenJDK versiolla 11 (Linux) ja Oraclen JDK versiolla 10 (Linux).
 Esimerkkisanastoja [saksaksi](../saksa) ja [venäjäksi](../venaja).
 
@@ -17,7 +17,7 @@ run.sh: suorita Java-ohjelma (Linux)
 Aluksi ohjelma on tyhjä, sanasto luetaan sisään Tiedosto-valikon toiminnon kautta. 
 Kyselyn suuntaa voi vaihtaa (milloin vain) Asetukset-valikosta. Asetus vaikuttaa seuraavaan kysymykseen.
 Ohjelman voi sulkea nurkasta. Ohjelma arpoo listalta vastinpareja satunnaisesti. Listan sekoitus tehdään alussa. 
-Kyselyn aikana järjestys on kiinteä.
+Kyselyn aikana järjestys on kiinteä. Ikkunan kokoa voi muuttaa, tai muokata lähdekoodista aloituskokoa sopivaksi.
 
 ![näkymä-1](./image-1.png "näkymä 1")
 
