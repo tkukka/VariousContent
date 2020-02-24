@@ -8,10 +8,10 @@ Esimerkkisanastoja [saksaksi](../saksa) ja [venäjäksi](../venaja).
 
 # Sisältöä
 
-build.bat: käännä Java-tiedostot, tee .jar (Windows). Java:n bin-hakemisto oltava PATH-muuttujassa.  
+build.bat: käännä Java-tiedostot, tee .jar (Windows). Java JDK:n bin-hakemisto oltava PATH-muuttujassa.  
 *.java : lähdekooodit  
 Makefile: GNU Maken suoritusohjeet Java-tiedostojen kääntämiseksi (Linux). Riittää komento ```make```  
-run.bat: suorita Java-ohjelma (Windows). Java:n bin-hakemisto oltava PATH-muuttujassa.  
+run.bat: suorita Java-ohjelma (Windows). Java JRE:n bin-hakemisto oltava PATH-muuttujassa.  
 run.sh: suorita Java-ohjelma (Linux)  
 
 # Käyttöliittymä
