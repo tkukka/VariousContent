@@ -1,15 +1,17 @@
 # StudyCards
 
+![näkymä win7](./image-win7.png "näkymä win7")
+
 Apuohjelma kielten sanaston opiskeluun vuodelta 2007. Tehty Java 1.5:lla (Swing UI). Pikaisesti muokattu lukemaan UTF-8-tekstitiedostoja sisään. 
-Todettu kääntyväksi virheilmoituksitta OpenJDK versiolla 11 (Linux) ja Oraclen JDK versiolla 10 (Linux).
+Todettu kääntyväksi virheilmoituksitta OpenJDK versiolla 11 (Linux), Oraclen JDK versiolla 10 (Linux) ja Oraclen JDK versiolla 13 (Windows).
 Esimerkkisanastoja [saksaksi](../saksa) ja [venäjäksi](../venaja).
 
 # Sisältöä
 
-build.bat: käännä Java-tiedostot, tee .jar (Windows)  
+build.bat: käännä Java-tiedostot, tee .jar (Windows). Java:n bin-hakemisto oltava PATH-muuttujassa.  
 *.java : lähdekooodit  
 Makefile: GNU Maken suoritusohjeet Java-tiedostojen kääntämiseksi (Linux). Riittää komento ```make```  
-run.bat: suorita Java-ohjelma (Windows)  
+run.bat: suorita Java-ohjelma (Windows). Java:n bin-hakemisto oltava PATH-muuttujassa.  
 run.sh: suorita Java-ohjelma (Linux)  
 
 # Käyttöliittymä
