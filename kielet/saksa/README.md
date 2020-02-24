@@ -11,8 +11,10 @@ jne ...
 
 ### uhrzeit.html
 
+Selaimellla avattava www-sivu. JavaScript -pohjainen ohjelma, joka kysyy kellonaikoja saksaksi.
+
 ![uhrzeit.png](./uhrzeit.png "Die Uhrzeiten")
 
-Kellonaikoja saksaksi. Normaalisti arvotaan aika ja mietitään vastausta. Vastaus-napista nähdään vastaus. 
-Napeista voi askeltaa tunti eteen- ja taaksepäin, samoin minuutteja. Taas Vastaus-napista nähdään vastaus.
+Arvotaan aika ja mietitään vastausta. Vastaus-napista nähdään vastaus. 
+Napeista voi askeltaa tunti eteen- ja taaksepäin, samoin minuutteja. Jälleen Vastaus-napista nähdään vastaus.
 
