@@ -1,0 +1,2 @@
+javaw -cp . Clock
+
