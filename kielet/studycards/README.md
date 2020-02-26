@@ -6,7 +6,7 @@ Apuohjelma kielten sanaston opiskeluun vuodelta 2007. Tehty Java 1.5:lla (Swing 
 Todettu kääntyväksi virheilmoituksitta OpenJDK versiolla 11 (Linux), Oraclen JDK versiolla 10 (Linux) ja Oraclen JDK versiolla 13 (Windows).
 Esimerkkisanastoja [saksaksi](../saksa) ja [venäjäksi](../venaja).
 
-Python 3 -versio myös saatavilla. Renderöi venäjän tekstiä paremmin Windosissa kuin Linuxissa.  
+Python 3 -versio myös saatavilla. Renderöi venäjän tekstiä paremmin Windowsissa kuin Linuxissa.  
 ![python3-versio win7](./python3/image-win7.png "Python-version UI")
 
 # Sisältöä
