@@ -8,6 +8,7 @@ Esimerkkisanastoja [saksaksi](../saksa) ja [venäjäksi](../venaja).
 
 # Sisältöä
 
+python3: Python 3.6 -versio apuohjelmasta  
 build.bat: käännä Java-tiedostot, tee .jar (Windows). Java JDK:n bin-hakemisto oltava PATH-muuttujassa.  
 *.java : lähdekooodit  
 Makefile: GNU Maken suoritusohjeet Java-tiedostojen kääntämiseksi (Linux). Riittää komento ```make```  
