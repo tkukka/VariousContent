@@ -21,3 +21,12 @@ Apuohjelma venäjän kellonaikojen opiskeluun vuodelta 2007. Tehty Java 1.5:lla 
 Arpoo napista kellonajan. Mietityn fraasin voi tarkistaa toisesta napista. Kellonajan kohdalta voi hiiren napeilla
  siirtää tunteja ja minuutteja eteenpäin. Sama rullalla mutta nyt myös voi aikaa siirtää edestakaisin.
 
+### numbers: NumberView, Number
+
+Apuohjelma venäjän numeroiden opiskeluun.  
+Kääntyy virheilmoituksitta OpenJDK versiolla 11 ja Oraclen JDK versiolla 10 (Linux).  
+Arpoo napista numeron ja näyttää sen tekstinä.
+
+NumberView: käyttöliittymä /pääohjelma  
+Number: tekee luvusta tekstimuodon
+
