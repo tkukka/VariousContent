@@ -23,10 +23,12 @@ Arpoo napista kellonajan. Mietityn fraasin voi tarkistaa toisesta napista. Kello
 
 ### numbers: NumberView.class, Number.class
 
+![numeroita venäjäksi](./numbers/image-win7.png "numerot windows 7")
+
 Apuohjelma venäjän numeroiden opiskeluun.  
 Kääntyy virheilmoituksitta OpenJDK versiolla 11 ja Oraclen JDK versiolla 10 (Linux).  
 Arpoo napista numeron ja näyttää sen tekstinä.
 
-NumberView: käyttöliittymä /pääohjelma  
+NumberView: käyttöliittymä / pääohjelma  
 Number: tekee luvusta tekstimuodon
 
