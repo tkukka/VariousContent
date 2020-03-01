@@ -20,9 +20,9 @@ Lisäksi
 ## Ohjelmisto
 
 MS-DOS / Windows 9x  
-Borland Turbo Assembler (TASM) 16-bit v4.1
-Borland Turbo Link (TLINK) 16-bit v7.1
-Borland Turbo Debugger (TD) 16-bit v5.0
+Borland Turbo Assembler (TASM) 16-bit v4.1  
+Borland Turbo Link (TLINK) 16-bit v7.1  
+Borland Turbo Debugger (TD) 16-bit v5.0  
 Borland C++ v5.02
 
 ## Lähdekoodi aikajärjestyksessä
