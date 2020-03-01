@@ -32,7 +32,7 @@ Alkuperäisen lähdekoodin merkistö: MS-DOS koodisivu 850 / 437 (cp437, cp850, 
 Borland C++:n Windows C/ASM-projekteissa koodisivuna 1252.  
 Merkistö Git:issä: UTF-8 (rivinvaihtona LF)  
 Komennot:  
-1. ```tasm /w /zi /l tiedosto.asm```  
+1. ```tasm /m2 /w /zi /l tiedosto.asm```  
 2. ```tlink /v /Tde tiedosto.obj```   
 3. ```td tiedosto.exe```
 
