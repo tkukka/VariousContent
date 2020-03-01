@@ -1,0 +1,139 @@
+        ;RaTol Symbolinen konekieli -kurssi
+        ;Makrokirjasto "makrot.txt"
+        ;Tero Kukka IY96A
+
+exit    MACRO arg        ;lopetusmakro 'exit'
+        mov al, arg
+        mov ah, 4ch
+        int 21h
+        ENDM
+
+lue_ascii_AL MACRO      ;lukee yhden merkin kaiutuksella
+        mov ah, 01h
+        int 21h
+        ENDM
+
+tulosta_ascii MACRO arg  ;tulostaa yhden merkin DL:stä
+        push ax         ;arg:in oltava byte-tyyppiä
+        push dx
+        mov dl, arg
+        mov ah, 06h
+        int 21h
+        pop dx
+        pop ax
+        ENDM
+
+rivin_vaihto MACRO
+        tulosta_ascii 0ah
+        tulosta_ascii 0dh
+        ENDM
+
+ascii2bin MACRO arg     ;muuntaa ascii-nron binaariseksi
+        sub arg, '0'
+        ENDM
+
+bin2ascii MACRO arg     ;muuntaa bin.luvun ascii-nroksi
+        local OHI, LOPPU
+        cmp arg, 9h
+        jg OHI
+        add arg, '0'
+        jmp LOPPU
+OHI:
+        add arg, '7'
+LOPPU:
+        ENDM
+
+tulosta MACRO arg       ;tulostaa m.jonon ds:dx-muistipaikasta
+        push ax
+        push dx
+        mov dx, offset arg
+        mov ah, 09h
+        int 21h
+        pop dx
+        pop ax
+        ENDM
+
+siirra_vas MACRO arg1, arg2  ;siirtää arg1:n bittejä vasemmalle
+        push cx              ;arg2:n verran
+        mov cx, arg2
+        sal arg1, cl
+        pop cx
+        ENDM
+
+siirra_oik MACRO arg1, arg2  ;siirtää arg1:n bittejä oikealle
+        push cx              ;arg2:n verran.
+        mov cx, arg2
+        sar arg1, cl
+        pop cx
+        ENDM
+
+erota_hex_DX MACRO arg1, arg2 ;erottaa yhden hex-luvun arg1:stä DX:ään
+        mov dx, arg1
+        siirra_oik dx, arg2
+        and word ptr dx, 000Fh  ;DX on muotoa '000hex' (etunollat lisätään)
+        ENDM
+
+lue_luku MACRO arg      ;lukee muistiin luvun
+        push bx
+        push ax
+        mov bx, offset arg
+        lue_ascii_al
+        ascii2bin al
+        xor ah, ah
+        mov [bx], ax
+        pop ax
+        pop bx
+        ENDM
+
+tulosta_luku MACRO arg   ;tulostaa muistista luvun
+        push bx
+        push ax
+        mov bx, offset arg
+        mov ax, [bx]
+        bin2ascii al
+        tulosta_ascii al
+        pop ax
+        pop bx
+        ENDM
+
+
+lue_puskuriin MACRO segm, siir
+        push ds
+        push dx
+        push ax
+        mov ax, segm
+        mov ds, ax
+        mov dx, siir
+        mov ah, 0ah
+        int 21h
+        pop ax
+        pop dx
+        pop ds
+        ENDM
+
+;****    PINOMAKROT   **********
+
+tulosta_pinosta1 MACRO arg      ;tulostaa pinosta (hex)luvun asciina
+        push ax
+        push di
+        mov word ptr di, arg    ;alustetaan indeksi arg:ksi
+        mov byte ptr al, [bp + di]
+        bin2ascii al
+        tulosta_ascii al
+        pop di
+        pop ax
+        ENDM
+
+tulosta_pinosta MACRO arg  ;tulostaa pinosta (hex)lukuja ascii-muodossa
+        local ALKU, LOPPU  ;arg = 1. luvun sijainti
+        push di
+        mov word ptr di, arg   ;alustetaan indeksi 
+ALKU:
+        tulosta_pinosta1 di
+        sub di, 2
+        cmp di, 2       ;jos indeksi on 2, ei tulosteta enää
+        jz LOPPU
+        jmp ALKU
+LOPPU:
+        pop di
+        ENDM
