@@ -1,4 +1,4 @@
-                            BITS 32
+                            BITS    32
 
 laitetulostus               EQU     4
 stdout                      EQU     1
