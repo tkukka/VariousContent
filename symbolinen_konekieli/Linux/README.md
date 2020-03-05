@@ -41,6 +41,10 @@ Koko [Eclpse CDT](https://www.eclipse.org/cdt/) softan debuggeri toiminnee samoi
 Systeemikutsujen numerot: /usr/include/x86_64-linux-gnu/asm/unistd_32.h  
 Paketit: gcc-multilib libc6-dev-i386  
 
+Komentoriviparametrit:  
+1. assembler nasm: -w +all -f elf32 -g -F dwarf -l listaus.lst -o objektitiedosto.o lähdekoodi.asm  
+2. linker ld: -m elf_i386 objektitiedosto(t) -o binääri --Map tiedosto.map -dynamic-linker /lib/ld-linux.so.2
+
 ### eka_32.asm
 
 Tulostetaan tekstiä (UTF-8) käyttäen perinteistä ohjelmistopohjaista keskeytystä int 80h.  
