@@ -5,17 +5,36 @@ Netwide Assembler [NASM](https://nasm.us/ "nasm") v. 2.14.02 Stable
 Linkkeri: GNU ld (GNU Binutils for Ubuntu) 2.30  
 
 [GNU Project debugger ohjetta](http://sourceware.org/gdb/download/onlinedocs/gdb/index.html)  
-[The CDT stand-alone debugger](https://www.eclipse.org/cdt/downloads.php)  
+[Eclipse Stand-alone C/C++ GDB Graphical Debugger](https://www.eclipse.org/cdt/downloads.php)  
 
 ### Dokumentit  
 
 [Sample nasm programs](https://www.csee.umbc.edu/portal/help/nasm/sample.shtml )  
 
 [Agner Fog blogi](https://www.agner.org/optimize/)  
-[System V Application Binary Interface] (https://github.com/hjl-tools/x86-psABI/wiki/X86-psABI)  
+[System V Application Binary Interface](https://github.com/hjl-tools/x86-psABI/wiki/X86-psABI)  
 [AMD](https://www.amd.com/en/support/tech-docs)  
 [Intel](https://software.intel.com/en-us/articles/intel-sdm)
 
+
+# Eclipse Stand-alone C/C++ GDB Graphical Debugger
+
+![Kuva debuggerista](./image-cdt-debug.png)
+
+Toimii, hieman tahmea käynnistys; Java-pohjainen??  
+Konfiguroitavissa: värit, ikkunat, ...  
+Toimii parhaiten käynnistämällä ilman parametreja, ja hakee binäärin käynnistysdialogiin. Debuggerissa avataan lähdekoodi lisäksi. 
+Lähdekoodin hakupolkuja voi määritellä myös.
+
+Intel-syntaksi GDB:ssä:  
+Kotihakemistoon tiedosto .gdbinit, johon rivi: set disassembly-flavor intel  
+
+Intel-syntaksi myös Eclipsen C/C++ debuggeriin:  
+Window: Preferences, sieltä C/C++: Debug: GDB. Debug Configuration Defaults, kenttä: GDB command file. 
+Browse:lla haetaan .gdbinit. Ilmestyy koko polku tiedostoon. Pelkkä .gdbinit kentässä ei riitä.
+
+
+Koko [Eclpse CDT](https://www.eclipse.org/cdt/) softan debuggeri toiminnee samoin.
 
 # 32-bittinen kehitys 64-bittisellä alustalla
 
