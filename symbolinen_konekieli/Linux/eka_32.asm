@@ -5,7 +5,7 @@ stdout                      EQU     1
 loppu_hyvin                 EQU     0
 lopetus                     EQU     1
 
-                            SECTION .data
+                            SECTION .rodata
 
 viesti                      db      "Ääkköset äöåÄÖÅ. Хорошо Müller Straße",10,0
 viestin_pituus              EQU     $ - viesti

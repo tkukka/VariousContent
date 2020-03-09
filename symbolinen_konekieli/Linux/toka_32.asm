@@ -7,7 +7,7 @@ lopetus                     EQU     1
 AT_SYSINFO                  EQU     32
 AT_SYSINFO_EHDR             EQU     33
 
-                            SECTION .data
+                            SECTION .rodata
 
 viesti                      db      "Ääkköset äöåÄÖÅ toimii. Ohjelma suoritettu.",10
 viestin_pituus              EQU     $ - viesti
