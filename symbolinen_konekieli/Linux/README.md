@@ -73,4 +73,29 @@ Hyödylliset linkit:
 [The Definitive Guide to Linux System Calls](https://blog.packagecloud.io/eng/2016/04/05/the-definitive-guide-to-linux-system-calls/)  
 The flat assembler Message Board: [[Linux32] vDSO, auxv, vsyscall, int 0x80, calling the kernel](https://board.flatassembler.net/topic.php?t=20926)
 
+### kolmas_32.asm kolmas_funktio_32.asm
+
+Käytetään aliohjelmia, samasta lähdekooditiedostosta ja toisesta .asm-tiedostosta. Kokeillaan parametrien välitystä pinon kautta. 
+Paluuarvo EAX- tai st0-rekisteriin. Kokeillaan x87 liukulukuyksikköä. Ei käytetä GNU C-kirjastoa glibc.
+
+**GDB**  
+```gdb ./binääri```  
+komennot   
+   * file <binääri>  # lataa uudestaan jos koodi käännetty uusiksi session aikana
+   * directory <dir>  # lähdekoodin sijainti
+   * break <funktio>  # pysäytä funktion alussa
+   * disassembly <funktio> # näkyykö sopivia rivejä breakpointin sijoitteluun
+   * break *funktio + N   # breakpoint funktiossa riville N. disassembly näyttää.
+   * break osoite  # osoite disassemblystä
+   * run   # suorita alusta
+   * delete N  # poista breakpoint nro N
+   * info breakpoints  # lista breakpointeista
+   * n  # askella
+   * continue  # suorita. seuraavaan breakpointiin tai loppuun normaalisti
+   * info registers [all]  # yleisrekisterit ( tai kaikki )
+   * p(rint) /x $esp  # ESP heksana
+   * p /d $eax  # EAX 10-järjestelmän lukuna
+   * p /f (double) symboli  # double-tyypin 'symboli' desimaalilukuna
+   * p /d *($ebx)  # EBX:n osoittaman muistipaikan sisältö 10-järj.
+   * p /d *($ebx + N) # EBX:n osoittaman muistipaikan arvoon + N tavua, ja sisältö 10-järj.
 
