@@ -1,0 +1,19 @@
+# loggaa breakpointeissa pino-osoittimen ja SSE:n xmm0-rekisterin sisällön
+set pagination off
+set logging file gdb.output
+set logging on
+directory ..
+break _start
+# toimii, jos assembly-koodi pysyy samana:
+break *_start + 20
+run
+print /x $esp
+print /f $xmm0
+continue
+# oltava sama kuin alussa:
+print /x $esp
+print /f $xmm0
+continue
+set logging off
+quit
+

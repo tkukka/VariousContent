@@ -99,3 +99,17 @@ komennot
    * p /d *($ebx)  # EBX:n osoittaman muistipaikan sisältö 10-järj.
    * p /d *($ebx + N) # EBX:n osoittaman muistipaikan arvoon + N tavua, ja sisältö 10-järj.
 
+### neljas.asm
+
+Lasketaan ympyrän pinta-ala SSE2 (Streaming SIMD Extensions) -(skalaari)käskyillä aliohjelmassa. Käskyjen operandi: 
+64-bittinen, C-kielen double. Laskentaparametrit pinon kautta ja muistista. Paluuarvo xmm0-rekisteriin. Skriptataan GDB-debuggeria 
+komentotiedostolla ja shell-komennoilla. Ei käytetä GNU C-kirjastoa glibc.  
+
+Hyödylliset linkit:  
+[x86/x64 SIMD Instruction List (SSE to AVX512)](https://www.officedaytime.com/simd512e/)  
+[Gem #119 : GDB Scripting— Part 1](https://www.adacore.com/gems/gem-119-gdb-scripting-part-1)  
+[Core Dumped - Scripting GDB](https://amazingdim.wordpress.com/2014/02/01/gdb-script/)
+
+
+
+
