@@ -42,8 +42,7 @@ tulosta:                    push    ebp                     ;ABI: rekisterin til
 laske_ala:                  push    ebp                     ;ABI: rekisterin tila säilytettävä
                             mov     ebp, esp                ;funktion pinokehys
                             movsd   xmm0, [esp + 8]         ;säde pinosta
-                            movsd   xmm1, xmm0              ;kopioidaan säde
-                            mulsd   xmm0, xmm1              ;xmm0 = säde²
+                            mulsd   xmm0, xmm0              ;xmm0 = säde²
                             mulsd   xmm0, [vakio_pii]       ;π otetaan muistivakioista, xmm0 = π * säde²
                             leave                           ;funktion pinon kehyksen purku
                             ret
