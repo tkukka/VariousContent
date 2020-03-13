@@ -83,10 +83,10 @@ Paluuarvo EAX- tai st0-rekisteriin. Kokeillaan x87 liukulukuyksikköä. Ei käyt
 komennot   
    * file <binääri>  # lataa uudestaan jos koodi käännetty uusiksi session aikana
    * directory <dir>  # lähdekoodin sijainti
-   * break <funktio>  # pysäytä funktion alussa
+   * b <funktio>  # breakpoint: pysäytä funktion alussa
    * disassembly <funktio> # näkyykö sopivia rivejä breakpointin sijoitteluun
-   * break *funktio + N   # breakpoint funktiossa riville N. disassembly näyttää.
-   * break osoite  # osoite disassemblystä
+   * b *funktio + N   # breakpoint funktiossa riville N. disassembly näyttää.
+   * b osoite  # breakpoint. Osoite esim. disassemblystä.
    * run   # suorita alusta
    * delete N  # poista breakpoint nro N
    * info breakpoints  # lista breakpointeista
@@ -110,6 +110,29 @@ Hyödylliset linkit:
 [Gem #119 : GDB Scripting— Part 1](https://www.adacore.com/gems/gem-119-gdb-scripting-part-1)  
 [Core Dumped - Scripting GDB](https://amazingdim.wordpress.com/2014/02/01/gdb-script/)
 
+### viides.asm
 
+Haetaan funktio __kernel_vsyscall() AT_SYSINFO-tunnisteen avulla. Verrataan funktion osoitetta GNU C kirjaston (glibc) 
+säiekohtaiseen dataan (TCB) kirjoittaman osoitteen kanssa. Nyt on **int 80h**:n lisäksi kaksi muuta tapaa tehdä 
+systeemikutsuja 32-bittisessä suoritusympäristössä.  
 
+ld-linkkerille uusi parametri: -lc  
+(linkitetään GNU C-kirjastoon)
+
+```Shell Session
+$ ldd viides_32
+  	linux-gate.so.1 (0xf7f57000)
+	libc.so.6 => /lib32/libc.so.6 (0xf7d53000)
+	/lib/ld-linux.so.2 (0xf7f59000)
+```
+
+Hyödylliset linkit:  
+[Linux syscall ABI](http://esec-lab.sogeti.com/posts/2011/07/05/linux-syscall-abi.html)  
+[The Definitive Guide to Linux System Calls](https://blog.packagecloud.io/eng/2016/04/05/the-definitive-guide-to-linux-system-calls/)  
+[Sysenter Based System Call Mechanism in Linux 2.6](http://articles.manugarg.com/systemcallinlinux2_6.html)  
+[GNU C Library. Native POSIX Thread Library (NPTL). i386](https://github.molgen.mpg.de/git-mirror/glibc/tree/master/sysdeps/i386/nptl)  
+[GNU C Library. Definition for thread-local data handling. nptl i386 version.](https://github.molgen.mpg.de/git-mirror/glibc/blob/master/sysdeps/i386/nptl/tls.h)  
+[GNU C Library. Linux i386 macros](https://github.molgen.mpg.de/git-mirror/glibc/blob/master/sysdeps/unix/sysv/linux/i386/sysdep.h)  
+[Porting the GNU C Library to Unix Systems](https://www.gnu.org/software/libc/manual/html_node/Porting-to-Unix.html)  
+[The GS segment and stack smashing protection](https://www.software-architect.net/blog/article/date/2015/03/31/the-gs-segment-and-stack-smashing-protection-1.html)
 
