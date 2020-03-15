@@ -41,7 +41,7 @@ tulosta:                    push    ebp                     ;ABI: rekisterin til
 ;vastaa: double laske_ala(double). xmm0 = ympyrän pinta-ala
 laske_ala:                  push    ebp                     ;ABI: rekisterin tila säilytettävä
                             mov     ebp, esp                ;funktion pinokehys
-                            movsd   xmm0, [esp + 8]         ;säde pinosta
+                            movsd   xmm0, [ebp + 8]         ;säde pinosta
                             mulsd   xmm0, xmm0              ;xmm0 = säde²
                             mulsd   xmm0, [vakio_pii]       ;π otetaan muistivakioista, xmm0 = π * säde²
                             leave                           ;funktion pinon kehyksen purku
