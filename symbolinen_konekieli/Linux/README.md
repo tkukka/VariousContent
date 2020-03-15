@@ -3,6 +3,7 @@
 Ubuntu 18.04 LTS (64-bit)  
 Netwide Assembler [NASM](https://nasm.us/ "nasm") v. 2.14.02 Stable  
 Linkkeri: GNU ld (GNU Binutils for Ubuntu) 2.30  
+C-kääntäjä: GCC 7.5 tai 8.3  
 
 [GNU Project debugger ohjetta](http://sourceware.org/gdb/download/onlinedocs/gdb/index.html)  
 [Eclipse Stand-alone C/C++ GDB Graphical Debugger](https://www.eclipse.org/cdt/downloads.php)  
@@ -39,11 +40,12 @@ Koko [Eclpse CDT](https://www.eclipse.org/cdt/) softan debuggeri toiminnee samoi
 # 32-bittinen kehitys 64-bittisellä alustalla
 
 Systeemikutsujen numerot: /usr/include/x86_64-linux-gnu/asm/unistd_32.h  
-Paketit: gcc-multilib libc6-dev-i386  
+Paketit: gcc-multilib libc6-dev-i386 (gcc-8: gcc-8-multilib, jos oletus gcc on 7.x)  
 
 Komentoriviparametrit:  
 1. assembler nasm: -w +all -f elf32 -g -F dwarf -l listaus.lst -o objektitiedosto.o lähdekoodi.asm  
 2. linker ld: -m elf_i386 objektitiedosto(t) -o binääri --Map tiedosto.map -dynamic-linker /lib/ld-linux.so.2
+3. gcc: -m32 (jos gcc myös 'linkkerinä', niin muuta ei tarvitse C+asm -projekteissa )
 
 ### eka_32.asm
 
@@ -73,7 +75,7 @@ Hyödylliset linkit:
 [The Definitive Guide to Linux System Calls](https://blog.packagecloud.io/eng/2016/04/05/the-definitive-guide-to-linux-system-calls/)  
 The flat assembler Message Board: [[Linux32] vDSO, auxv, vsyscall, int 0x80, calling the kernel](https://board.flatassembler.net/topic.php?t=20926)
 
-### kolmas_32.asm kolmas_funktio_32.asm
+### kolmas_32.asm, kolmas_funktio_32.asm
 
 Käytetään aliohjelmia, samasta lähdekooditiedostosta ja toisesta .asm-tiedostosta. Kokeillaan parametrien välitystä pinon kautta. 
 Paluuarvo EAX- tai st0-rekisteriin. Kokeillaan x87 liukulukuyksikköä. Ei käytetä GNU C-kirjastoa glibc.
@@ -98,6 +100,9 @@ komennot
    * p /f (double) symboli  # double-tyypin 'symboli' desimaalilukuna
    * p /d *($ebx)  # EBX:n osoittaman muistipaikan sisältö 10-järj.
    * p /d *($ebx + N) # EBX:n osoittaman muistipaikan arvoon + N tavua, ja sisältö 10-järj.
+
+Hyödylliset linkit:  
+[GNU GDB Debugger Command Cheat Sheet](http://www.yolinux.com/TUTORIALS/GDB-Commands.html)
 
 ### neljas.asm
 
@@ -135,4 +140,13 @@ Hyödylliset linkit:
 [GNU C Library. Linux i386 macros](https://github.molgen.mpg.de/git-mirror/glibc/blob/master/sysdeps/unix/sysv/linux/i386/sysdep.h)  
 [Porting the GNU C Library to Unix Systems](https://www.gnu.org/software/libc/manual/html_node/Porting-to-Unix.html)  
 [The GS segment and stack smashing protection](https://www.software-architect.net/blog/article/date/2015/03/31/the-gs-segment-and-stack-smashing-protection-1.html)
+
+### kuudes_sse_32.asm, kuudes_x87_32.asm, kuudes_c_fun_32.asm, kuudes_main_32.c
+
+C + asm-projekti. Kutsutaan funktioita C => asm => C (System V ABI i386). Lasketaan ympyrän ala x87- ja SSE2-käskyillä. 
+Kutsutaan assembly-koodissa standardi C funktiota strtoul tietylle merkkijonolle. 
+
+x87-versio: ```make```  
+SSE-versio: ```make USE_SSE=1```  
+
 
