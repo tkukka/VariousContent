@@ -149,4 +149,14 @@ Kutsutaan assembly-koodissa standardi C funktiota strtoul tietylle merkkijonolle
 x87-versio: ```make```  
 SSE-versio: ```make USE_SSE=1```  
 
+### seiska_32.asm, seiska_main_32.c
+
+C + asm-projekti. C-kielisessä ohjelman osassa on const char [] -teksti, jonka päälle assembler-koodissa yritetään kirjoittaa.  
+
+```Shell Session
+$ ./seiska_32
+C main: alkuperäinen teksti: ei voi muokata
+asm kirjoittaa...
+Segmentation fault (core dumped)
+```
 
