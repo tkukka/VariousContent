@@ -41,6 +41,7 @@ Koko [Eclpse CDT](https://www.eclipse.org/cdt/) softan debuggeri toiminnee samoi
 
 Systeemikutsujen numerot: /usr/include/x86_64-linux-gnu/asm/unistd_32.h  
 Paketit: gcc-multilib libc6-dev-i386 (gcc-8: gcc-8-multilib, jos oletus gcc on 7.x)  
+[System V Application Binary Interface - Intel386](https://github.com/hjl-tools/x86-psABI/wiki/X86-psABI)  
 
 Komentoriviparametrit:  
 1. assembler nasm: -w +all -f elf32 -g -F dwarf -l listaus.lst -o objektitiedosto.o lähdekoodi.asm  
@@ -159,4 +160,33 @@ C main: alkuperäinen teksti: ei voi muokata
 asm kirjoittaa...
 Segmentation fault (core dumped)
 ```
+
+# 64-bittinen kehitys 64-bittisellä alustalla
+
+Systeemikutsujen numerot: /usr/include/x86_64-linux-gnu/asm/unistd_64.h  
+Systeemikutsujen parametrit: man 2 <funktio> , esim. man 2 write  
+Paketit: oletuksena asennetut  
+[System V Application Binary Interface - AMD64](https://github.com/hjl-tools/x86-psABI/wiki/X86-psABI)  
+
+Komentoriviparametrit:  
+1. assembler nasm: -w +all -f elf64 -g -F dwarf -l listaus.lst -o objektitiedosto.o lähdekoodi.asm  
+2. linker ld: -o binääri --Map tiedosto.map  
+
+Kääntäminen:  
+```make BITS=64 ```
+
+Käännöksen (binäärit, objektit, listaukset,...) poisto  
+```make BITS=64 clean```
+
+### eka_64.asm
+
+Tulostetaan tekstiä (UTF-8) käyttäen syscall-käskyä.  
+Ei käytetä GNU C-kirjastoa glibc:  
+```Shell Session
+$ ldd eka64
+   not a dynamic executable
+```
+
+
+
 
