@@ -183,10 +183,18 @@ Käännöksen (binäärit, objektit, listaukset,...) poisto
 Tulostetaan tekstiä (UTF-8) käyttäen syscall-käskyä.  
 Ei käytetä GNU C-kirjastoa glibc:  
 ```Shell Session
-$ ldd eka64
+$ ldd eka_64
    not a dynamic executable
 ```
 
+### toka_64.asm, toka_funktio_64.asm
+Käytetään aliohjelmia, samasta lähdekooditiedostosta ja toisesta .asm-tiedostosta. 
+Kokeillaan parametrien välitystä rekisterien kautta (x64 API). Paluuarvo EAX- tai XMM0-rekisteriin. 
+Tehdään liukulukulaskentaa SSE2-skalaarikäskyillä.  
 
-
+Ei käytetä GNU C-kirjastoa glibc:  
+```Shell Session
+$ ldd toka_64
+   not a dynamic executable
+```
 

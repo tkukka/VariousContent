@@ -4,21 +4,26 @@ SHELL := /bin/sh
 OUT_DIR := ./bin
 BITS := 32
 AS := nasm
+
 ifeq ($(strip $(BITS)),32)
   ASFLAGS := -w +all -f elf32 -g -F dwarf
 else
   ASFLAGS := -w +all -f elf64 -g -F dwarf
 endif
+
 CC := gcc-8
 WARNINGS := -Wall -Wextra -pedantic -Wformat-security
 DEBUG_OPTIONS := -g -ggdb3 -fno-omit-frame-pointer -O0
+
 ifeq ($(strip $(BITS)),32)
   CFLAGS := -m32 -std=c11 $(DEBUG_OPTIONS) $(WARNINGS)
 else
   CFLAGS := -std=c11 $(DEBUG_OPTIONS) $(WARNINGS)
 endif
+
 LD := ld
 LDHARDENING := -z defs -z relro -z now -z notext -z noexecstack
+
 ifeq ($(strip $(BITS)),32)
   LDFLAGS := -m elf_i386 -dynamic-linker /lib/ld-linux.so.2
   TARGETS := $(OUT_DIR)/eka_32 $(OUT_DIR)/toka_32 $(OUT_DIR)/kolmas_32 $(OUT_DIR)/neljas_32 \
@@ -31,9 +36,9 @@ ifeq ($(strip $(BITS)),32)
 else
   LDFLAGS :=
 
-  TARGETS := $(OUT_DIR)/eka_64
+  TARGETS := $(OUT_DIR)/eka_64 $(OUT_DIR)/toka_64
 
-  ASM_SRCS := eka_64.asm
+  ASM_SRCS := eka_64.asm toka_funktio_64.asm toka_64.asm
   C_SRCS :=
 endif
 
@@ -123,9 +128,16 @@ else
 # 64-bit
 $(OUT_DIR)/eka_64.o: eka_64.asm
 
+$(OUT_DIR)/toka_64.o: toka_64.asm
+$(OUT_DIR)/toka_funktio_64.o: toka_funktio_64.asm
+
 $(OUT_DIR)/eka_64: $(OUT_DIR)/eka_64.o
 	@echo --- $(LD) linker $(BITS)-bit ---
 	$(LD) $(LDHARDENING) $< -o $@ --Map $@.map $(LDFLAGS)
+
+$(OUT_DIR)/toka_64: $(OUT_DIR)/toka_funktio_64.o $(OUT_DIR)/toka_64.o
+	@echo --- $(LD) linker $(BITS)-bit ---
+	$(LD) $(LDHARDENING) $^ -o $@ --Map $@.map $(LDFLAGS)
 
 endif
 
