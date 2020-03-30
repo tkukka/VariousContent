@@ -21,7 +21,7 @@ on_pituus                   EQU     $ - on_teksti
 
                             SECTION .text
 
-                            GLOBAL  _start
+                            GLOBAL  _start:function
 
 _start:                     mov     esi, 0                      ;silmukan laskuri (0...1)
                             mov     edi, 0                      ;siirtymä pinossa. 1. alkio: argumenttien määrä

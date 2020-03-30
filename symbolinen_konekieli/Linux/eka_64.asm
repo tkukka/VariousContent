@@ -15,7 +15,7 @@ toisen_viestin_pituus       EQU     $ - toinen_viesti
 
                             SECTION .text
 
-                            GLOBAL _start
+                            GLOBAL _start:function
 
 _start:                     mov     rdx, viestin_pituus
                             mov     rsi, viesti
