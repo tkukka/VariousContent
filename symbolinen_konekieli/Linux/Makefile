@@ -36,10 +36,10 @@ ifeq ($(strip $(BITS)),32)
 else
   LDFLAGS :=
 
-  TARGETS := $(OUT_DIR)/eka_64 $(OUT_DIR)/toka_64
+  TARGETS := $(OUT_DIR)/eka_64 $(OUT_DIR)/toka_64 $(OUT_DIR)/kolmas_64
 
-  ASM_SRCS := eka_64.asm toka_funktio_64.asm toka_64.asm
-  C_SRCS :=
+  ASM_SRCS := eka_64.asm toka_funktio_64.asm toka_64.asm kolmas_c_fun_64.asm kolmas_64.asm
+  C_SRCS := kolmas_main_64.c
 endif
 
 ASM_OBJS := $(addprefix $(OUT_DIR)/,$(ASM_SRCS:.asm=.o))
@@ -131,6 +131,10 @@ $(OUT_DIR)/eka_64.o: eka_64.asm
 $(OUT_DIR)/toka_64.o: toka_64.asm
 $(OUT_DIR)/toka_funktio_64.o: toka_funktio_64.asm
 
+$(OUT_DIR)/kolmas_c_fun_64.o: kolmas_c_fun_64.asm
+$(OUT_DIR)/kolmas_main_64.o: kolmas_main_64.c
+$(OUT_DIR)/kolmas_64.o: kolmas_64.asm
+
 $(OUT_DIR)/eka_64: $(OUT_DIR)/eka_64.o
 	@echo --- $(LD) linker $(BITS)-bit ---
 	$(LD) $(LDHARDENING) $< -o $@ --Map $@.map $(LDFLAGS)
@@ -138,6 +142,13 @@ $(OUT_DIR)/eka_64: $(OUT_DIR)/eka_64.o
 $(OUT_DIR)/toka_64: $(OUT_DIR)/toka_funktio_64.o $(OUT_DIR)/toka_64.o
 	@echo --- $(LD) linker $(BITS)-bit ---
 	$(LD) $(LDHARDENING) $^ -o $@ --Map $@.map $(LDFLAGS)
+
+$(OUT_DIR)/kolmas_64: LD := gcc-8
+$(OUT_DIR)/kolmas_64: LDHARDENING := -Wl,-z,defs,-z,relro,-z,now,-z,notext,-z,noexecstack
+
+$(OUT_DIR)/kolmas_64: $(OUT_DIR)/kolmas_c_fun_64.o $(OUT_DIR)/kolmas_main_64.o $(OUT_DIR)/kolmas_64.o
+	@echo --- $(LD) linking $(BITS)-bit ---
+	$(LD) $(LDHARDENING) $^ -o $@ -Wl,--Map,$@.map $(LDFLAGS)
 
 endif
 

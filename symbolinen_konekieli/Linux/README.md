@@ -198,3 +198,14 @@ $ ldd toka_64
    not a dynamic executable
 ```
 
+### kolmas_c_fun_64.asm, kolmas_64.asm, kolmas_main_64.c
+
+x64 C + asm-projekti. Kutsutaan funktioita C => asm => C (System V ABI x64). Lasketaan ympyrän ala liukuluvuilla (SSE). 
+Kutsutaan assembly-koodissa standardi C funktiota strtoul tietylle merkkijonolle.  
+
+Hyödylliset linkit:  
+[NASM Calling Procedures Outside the Library](https://www.nasm.us/xdoc/2.14.02/html/nasmdoc9.html#section-9.2.5)  
+[NASM REL & ABS: RIP-relative addressing](https://www.nasm.us/xdoc/2.14.02/html/nasmdoc6.html#section-6.2.1)  
+[NASM Position-Independent Code: macho Special Symbols and WRT](https://www.nasm.us/xdoc/2.14.02/html/nasmdoc7.html#section-7.9.3)  
+
+
