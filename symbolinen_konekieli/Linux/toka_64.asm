@@ -1,4 +1,5 @@
                             BITS    64
+                            DEFAULT REL
 
 laitetulostus               EQU     1
 stdout                      EQU     1
