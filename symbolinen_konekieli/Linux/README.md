@@ -208,4 +208,12 @@ Hyödylliset linkit:
 [NASM REL & ABS: RIP-relative addressing](https://www.nasm.us/xdoc/2.14.02/html/nasmdoc6.html#section-6.2.1)  
 [NASM Position-Independent Code: macho Special Symbols and WRT](https://www.nasm.us/xdoc/2.14.02/html/nasmdoc7.html#section-7.9.3)  
 
+### laske_ala_64.c
+
+GNU Assemblerin koodi .s-tiedostoon (laske_ala_64.s):  
+``` gcc -std=c11 -Og -fPIE -mfpmath=sse -masm=intel -S ./laske_ala_64.c ```  
+
+-mfpmath=sse:n sijasta -march=native: tuottaa AVX-koodia (Haswell CPU).
+
+
 
