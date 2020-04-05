@@ -13,6 +13,7 @@ Visual Studio 2019
 [Agner Fog blogi](https://www.agner.org/optimize/)  
 [AMD](https://www.amd.com/en/support/tech-docs)  
 [Intel](https://software.intel.com/en-us/articles/intel-sdm)  
+[Windows API Index](https://docs.microsoft.com/en-us/windows/win32/apiindex/windows-api-list)
 
 # 64-bittinen kehitys 64-bittisellä alustalla
 
