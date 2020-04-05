@@ -53,4 +53,15 @@ Contents
 * Linux: Added C & C++ unit tests plus linking tests 
 * Windows: Added support to build the C++ sources with LLVM, MSYS2/mingw-w64 or Visual Studio 2019
 
+## symbolinen_konekieli (x86 Assembly Language)
+Sisältö
+* vanhat MSDOS 16-bit assembly -kurssin koodit
+* Linux konsolille 32-bit ja 64-bit koodauksia 
+* Windows konsolille 32-bit ja 64-bit koodauksia
+
+Contents
+* Old MSDOS 16-bit assembly sources. Borland TASM, TLINK, TD
+* Linux assembly experiments (32 bit / 64 bit) for a console and a debugger. NASM, GDB
+* Windows assembly experiments (32 bit / 64 bit) for a console and a debugger. MASM, Visual Studio
+
 
