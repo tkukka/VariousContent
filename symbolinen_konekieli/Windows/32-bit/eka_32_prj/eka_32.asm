@@ -1,6 +1,7 @@
 ; Visual Studio koodisivu 1252
                             .386
                             .MODEL  FLAT, STDCALL               ;stdcall: 32-bit WinAPI kutsutapa oletukseksi
+                            OPTION  CASEMAP:NONE                ;erottele ISOT ja pienet kirjaimet tunnuksissa
 
 ;Esittelyt vasta käskykannan ja mallin jälkeen
 ;funktio@N: vapauta N tavua automaattisesti funktiosta palatessa: ret N generoituu ( = stdcall)
