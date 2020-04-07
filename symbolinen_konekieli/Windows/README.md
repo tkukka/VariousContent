@@ -74,6 +74,12 @@ Muita asm-apuja
 Tulostetaan tekstiä WriteConsoleA-funktiota käyttäen (ANSI teksti, koodisivu 1252). Ei käytetä standardi C/C++ -funktioita. 
 Ääkköset: Windowsin komentokehotteeseen komento: ```chcp 1252``` ja exe:n suoritus.
 
+### toka_32.asm
+
+Sama kuin edellinen mutta käytään Windows API kutsuihin PROTO ja INVOKE-direktiivejä. Generoitunut koodi tarkasteltavissa debuggerissa.  
+
+![disassembly](./toka_32.png "disassembly")
+
 # 64-bittinen kehitys 64-bittisellä alustalla
 
 [x64 software conventions](https://docs.microsoft.com/en-us/cpp/build/x64-software-conventions)  
