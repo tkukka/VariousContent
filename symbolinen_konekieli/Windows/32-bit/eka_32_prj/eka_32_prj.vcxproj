@@ -116,7 +116,7 @@
     </Link>
     <MASM>
       <EnableAssemblyGeneratedCodeListing>true</EnableAssemblyGeneratedCodeListing>
-      <AssembledCodeListingFile>eka_32.lst</AssembledCodeListingFile>
+      <AssembledCodeListingFile>%(Filename).lst</AssembledCodeListingFile>
     </MASM>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

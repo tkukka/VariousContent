@@ -110,7 +110,7 @@
     <MASM>
       <ListAllAvailableInformation>true</ListAllAvailableInformation>
       <EnableAssemblyGeneratedCodeListing>true</EnableAssemblyGeneratedCodeListing>
-      <AssembledCodeListingFile>eka_64.lst</AssembledCodeListingFile>
+      <AssembledCodeListingFile>%(FileName).lst</AssembledCodeListingFile>
     </MASM>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
