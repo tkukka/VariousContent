@@ -17,12 +17,13 @@ Visual Studio 2019
 [NASM](https://nasm.us/)  
 [Open Watcom Assembler](http://openwatcom.org/download.php)  
 [Pelles Macro Assembler](http://www.smorgasbordet.com/pellesc/)  
+[Solar Assembler](http://www.oby.ro/sol_asm/)  
 [UASM](http://www.terraspace.co.uk/uasm.html)  
 
 [Easy Code - Visual Assembler](http://www.easycode.cat/English/Help/EasyCode.htm)  
 [Visual MASM](http://www.visualmasm.com/)  
 
-Kykenevät luomaan .exen ilman linkeriä: Asmc, EuroAssembler, flat assembler, JWasm, UASM
+Kykenevät luomaan .exen ilman linkeriä: Asmc, EuroAssembler, flat assembler, JWasm, Solar Assembler, UASM
 
 ### Muita linkereitä
 
