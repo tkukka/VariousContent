@@ -26,7 +26,7 @@ funktio                     dd      0                       ;__kernel_vsyscall:n
                             SECTION .text
 
                             GLOBAL  _start:function
-;gs = 99 63h
+
 _start:                     mov     eax, esp
                             ;mov     dword [funktio], hae_vsyscall
                             ;call    [funktio]               ;epäsuora funktiokutsu
