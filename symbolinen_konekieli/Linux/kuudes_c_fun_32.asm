@@ -17,7 +17,7 @@ vakioteksti                 db      "12345", 0
 
 muunna:                     push    ebp                     ;ABI: rekisterin tila säilytettävä
                             mov     ebp, esp                ;funktion pinokehys
-                            sub     esp, 4 * 4              ;varataan tilaa parametreille ja osoittimelle á 4 tavua
+                            sub     esp, 4                  ;varataan pinosta tilaa osoittimelle (4 tavua)
                             call    reset_errno
                             mov     eax, -1                 ;jokin testiarvo != 0
                             call    get_errno
@@ -25,10 +25,10 @@ muunna:                     push    ebp                     ;ABI: rekisterin til
                             je      .nolla
                             xor     eax, eax                ;virhetilanne. paluuarvoksi NULL
                             jmp     .loppu
-.nolla:                     mov     dword [esp + 8], 10
-                            lea     eax, [esp + 12]
-                            mov     [esp + 4], eax
-                            mov     dword [esp], vakioteksti
+.nolla:                     push    dword 10                ;kantaluku
+                            lea     eax, [ebp - 4]          ;osoite merkkiin, johon muunnos pysähtyi
+                            push    eax
+                            push    dword vakioteksti
                             xor     eax, eax
                             call    strtoul                 ;standardi C funktio
                             mov     edx, eax                ;EDX = muunnoksen tulos
@@ -38,7 +38,7 @@ muunna:                     push    ebp                     ;ABI: rekisterin til
                             xor     eax, eax                ;virhetilanne. paluuarvoksi NULL
                             jmp     .loppu
 .toinen_tarkistus:          mov     dword eax, vakioteksti
-                            mov     ecx, [esp + 12]
+                            mov     ecx, [ebp - 4]
                             cmp     eax, ecx                ;tekstin pointterien vertailu
                             jne     .kolmas_tarkistus
                             xor     eax, eax                ;muunnos pysähtyi ekaan merkkin
@@ -48,9 +48,8 @@ muunna:                     push    ebp                     ;ABI: rekisterin til
                             xor     eax, eax                ;muunnos pysähtyi välille
                             jmp     .loppu
 .muunnos_ok:                mov     ecx, [ebp + 8]          ;ECX = osoite lukuarvomuuttujaan ('pointteri')
-                            mov     dword [ecx], edx        ;*pointteri = EDX
+                            mov     dword [ecx], edx        ;unsigned long *pointteri = EDX
                             mov     dword eax, vakioteksti
-.loppu:                     add     esp, 4 * 4
-                            leave
+.loppu:                     leave
                             ret
 
