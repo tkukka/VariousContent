@@ -215,5 +215,29 @@ GNU Assemblerin koodi .s-tiedostoon (laske_ala_64.s):
 
 -mfpmath=sse:n sijasta -march=native: tuottaa AVX-koodia (Haswell CPU).
 
+### ikuinen_kalenteri_64.asm
+
+Laskee viikonpäivän annetulle päivämäärälle (taulukkohaut). 
+
+
+```Shell Session
+$ ./ikuinen_kalenteri_64
+Ikuinen kalenteri. Määrittää viikonpäivän (Ma-Su).
+
+Anna päivä (01-28...31):31
+Anna kuukausi (01-12):12
+Anna vuosi (1500-3499):2019
+
+Antamasi päivämäärä: 31.12.2019
+
+Viikonpäivä on tiistai
+```
+
+Linkit:  
+[Determination of the day of the week](https://en.wikipedia.org/wiki/Determination_of_the_day_of_the_week)  
+[Zeller's congruence](https://en.wikipedia.org/wiki/Zeller%27s_congruence)  
+
+
+
 
 
