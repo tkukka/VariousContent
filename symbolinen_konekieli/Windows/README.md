@@ -37,11 +37,13 @@ Kykenevät luomaan .exen ilman linkeriä: Asmc, EuroAssembler, flat assembler, J
 ### Muita debuggereita
 
 [Eclipse CDT/Standalone Debugger](https://www.eclipse.org/cdt/downloads.php)  
+[edb](https://github.com/eteran/edb-debugger)  
 [GDB the GNU Debugger, MSYS2](https://www.msys2.org/)  
+[gdbgui](https://www.gdbgui.com/)  
 [GoBug ](http://www.godevtool.com/)  
 [OllyDbg](http://www.ollydbg.de/)  
 [Open Watcom Debugger](http://openwatcom.org/download.php)  
-[x64dbg](https://x64dbg.com/)
+[x64dbg](https://x64dbg.com/)  
 
 ### Muut
 

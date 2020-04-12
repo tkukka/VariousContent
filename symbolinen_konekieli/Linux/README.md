@@ -15,7 +15,9 @@ C-kääntäjä: GCC 7.5 tai 8.3
 [Agner Fog blogi](https://www.agner.org/optimize/)  
 [System V Application Binary Interface](https://github.com/hjl-tools/x86-psABI/wiki/X86-psABI)  
 [AMD](https://www.amd.com/en/support/tech-docs)  
-[Intel](https://software.intel.com/en-us/articles/intel-sdm)
+[Intel](https://software.intel.com/en-us/articles/intel-sdm)  
+
+[Where do you find the syscall table for Linux?](https://unix.stackexchange.com/questions/421750/where-do-you-find-the-syscall-table-for-linux)  
 
 
 # Eclipse Stand-alone C/C++ GDB Graphical Debugger
@@ -34,8 +36,13 @@ Intel-syntaksi myös Eclipsen C/C++ debuggeriin:
 Window: Preferences, sieltä C/C++: Debug: GDB. Debug Configuration Defaults, kenttä: GDB command file. 
 Browse:lla haetaan .gdbinit. Ilmestyy koko polku tiedostoon. Pelkkä .gdbinit kentässä ei riitä.
 
-
 Koko [Eclpse CDT](https://www.eclipse.org/cdt/) softan debuggeri toiminnee samoin.
+
+# Muita debuggereita
+
+[edb](https://github.com/eteran/edb-debugger)  
+[gdbgui](https://www.gdbgui.com/)
+
 
 # 32-bittinen kehitys 64-bittisellä alustalla
 
