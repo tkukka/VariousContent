@@ -9,7 +9,7 @@ PVOID                       TYPEDEF PTR
 
 ;Esittelyt vasta käskykannan ja mallin jälkeen
 ;PROTO, INVOKE  vain 32-bit MASM
-;EXTERN ei tarvita 
+;EXTERN ei tarvita
 GetStdHandle                PROTO   STDCALL StdHandle:DWORD
 ExitProcess                 PROTO   STDCALL ExitCode:DWORD
 WriteConsoleA               PROTO   STDCALL handle:DWORD, buffer:PBYTE, NumberOfCharsToWrite:DWORD,
@@ -34,7 +34,7 @@ hConsole                    DWORD   ?
 
                             .CODE
 
-start                       PROC    C                           ;C kutsutapa
+_start                      PROC    C                           ;C kutsutapa
                             INVOKE  GetStdHandle, STD_OUTPUT_HANDLE
                             cmp     eax, 0
                             je      lopeta
@@ -50,5 +50,5 @@ start                       PROC    C                           ;C kutsutapa
                             je      lopeta                      ;tapahtui virhe
                             INVOKE  WriteConsoleA, [hConsole], ADDR teksti2, SIZEOF teksti2, 0, 0
 lopeta:                     INVOKE  ExitProcess, 0
-start                       ENDP
-                            END     start
+_start                      ENDP
+                            END     _start

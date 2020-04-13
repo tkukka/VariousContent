@@ -28,7 +28,7 @@ hConsole                    DWORD   ?
 
                             .CODE
 
-start                       PROC    C                           ;C kutsutapa
+_start                      PROC    C                           ;C kutsutapa
                             push    STD_OUTPUT_HANDLE
                             call    GetStdHandle@4              ;stdcall: 32-bit WinAPI kutsutapa
                             cmp     eax, 0
@@ -55,5 +55,5 @@ start                       PROC    C                           ;C kutsutapa
                             call    WriteConsoleA@20
 lopeta:                     push    0                           ;palauta nolla
                             call    ExitProcess@4
-start                       ENDP
-                            END     start
+_start                      ENDP
+                            END     _start

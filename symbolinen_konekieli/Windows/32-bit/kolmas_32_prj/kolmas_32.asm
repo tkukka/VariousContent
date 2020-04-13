@@ -9,7 +9,7 @@ PVOID                       TYPEDEF PTR
 
 ;Esittelyt vasta käskykannan ja mallin jälkeen
 ;PROTO, INVOKE vain 32-bit MASM
-;EXTERN ei tarvita 
+;EXTERN ei tarvita
 
 GetConsoleOutputCP          PROTO   STDCALL
 GetStdHandle                PROTO   STDCALL StdHandle:DWORD
@@ -45,7 +45,7 @@ hConsole                    DWORD   ?
 
                             .CODE
 
-start                       PROC    C                           ;C kutsutapa
+_start                      PROC    C                           ;C kutsutapa
                             INVOKE  GetStdHandle, STD_OUTPUT_HANDLE
                             cmp     eax, 0
                             je      poistu
@@ -90,5 +90,5 @@ sivun_vaihto:               INVOKE  SetConsoleOutputCP, KOODISIVU_1252
 vaihto_epaonnistunut:       INVOKE  WriteConsoleA, [hConsole], ADDR koodisivu_vaihto_virhe, SIZEOF koodisivu_vaihto_virhe, 0, 0
 lopeta:                     INVOKE  WriteConsoleA, [hConsole], ADDR lopputeksti, SIZEOF lopputeksti, 0, 0
 poistu:                     INVOKE  ExitProcess, 0
-start                       ENDP
-                            END     start
+_start                      ENDP
+                            END     _start
