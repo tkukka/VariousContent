@@ -129,6 +129,86 @@ lopeta:
 Vaihtaa konsolin koodisivua tekstin tulostusta varten. Toimii ainakin komentokehotteessa (fontiksi Lucida Console). 
 Visual Studion debuggerissa ilmestyvän konsolin fontiksi Lucida Console, ja uusi suoritus Debug-tilassa.
 
+### nelonen_32.asm
+
+Tutkitaan MASM-direktiivien vaikutusta funktioiden koodiin. Tehdään eri tavoilla funktiokutsuja (käsin koodattu kutsu tai INVOKE). 
+
+1. PROC  USES edx, kerrottava:DWORD, kertoja:DWORD   
+```asm
+  push        ebp  
+  mov         ebp,esp  
+  push        edx  
+  mov         eax,dword ptr [kerrottava]  
+  mul         eax,dword ptr [kertoja]  
+  pop         edx  
+  leave  
+  ret
+```
+
+Ilman symboleja  
+```asm
+  push        ebp  
+  mov         ebp,esp  
+  push        edx  
+  mov         eax,dword ptr [ebp+8]  
+  mul         eax,dword ptr [ebp+0Ch]  
+  pop         edx  
+  leave  
+  ret
+```
+
+2. PROC  
+   LOCAL   lukuA:DWORD, lukuB:DWORD  
+```asm
+  push        ebp  
+  mov         ebp,esp  
+  add         esp,0FFFFFFF8h  
+  mov         dword ptr [lukuA],2  
+  mov         dword ptr [lukuB],3  
+  mov         eax,dword ptr [lukuA]  
+  add         eax,dword ptr [lukuB]  
+  leave  
+  ret
+```
+
+Ilman symboleja  
+```asm
+  push        ebp  
+  mov         ebp,esp  
+  add         esp,0FFFFFFF8h  
+  mov         dword ptr [ebp-4],2  
+  mov         dword ptr [ebp-8],3  
+  mov         eax,dword ptr [ebp-4]  
+  add         eax,dword ptr [ebp-8]  
+  leave  
+  ret
+```
+
+3. PROC  jaettava:DWORD, jakaja:DWORD  
+```asm
+  push        ebp  
+  mov         ebp,esp  
+  xor         edx,edx  
+  mov         eax,dword ptr [jaettava]  
+  div         eax,dword ptr [jakaja]  
+  leave  
+  ret
+```
+
+Ilman symboleja  
+```asm
+  push        ebp  
+  mov         ebp,esp  
+  xor         edx,edx  
+  mov         eax,dword ptr [ebp+8]  
+  div         eax,dword ptr [ebp+0Ch]  
+  leave  
+  ret
+```
+
+Linkit:  
+[PROC](https://docs.microsoft.com/en-us/cpp/assembler/masm/proc)  
+[Procedures](http://www.c-jump.com/CIS77/ASM/Procedures/lecture.html)  
 
 # 64-bittinen kehitys 64-bittisellä alustalla
 
