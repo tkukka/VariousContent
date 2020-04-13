@@ -36,7 +36,7 @@ ifeq ($(strip $(BITS)),32)
 else
   LDFLAGS :=
 
-  TARGETS := $(OUT_DIR)/eka_64 $(OUT_DIR)/toka_64 $(OUT_DIR)/kolmas_64 $(OUT_DIR)/ikuinen_kalenteri_64
+  TARGETS := $(OUT_DIR)/eka_64 $(OUT_DIR)/toka_64 $(OUT_DIR)/kolmas_64 $(OUT_DIR)/laske_ala_64.s $(OUT_DIR)/ikuinen_kalenteri_64
 
   ASM_SRCS := eka_64.asm toka_funktio_64.asm toka_64.asm kolmas_c_fun_64.asm kolmas_64.asm ikuinen_kalenteri_64.asm
   C_SRCS := kolmas_main_64.c
@@ -151,6 +151,10 @@ $(OUT_DIR)/kolmas_64: LDHARDENING := -Wl,-z,defs,-z,relro,-z,now,-z,notext,-z,no
 $(OUT_DIR)/kolmas_64: $(OUT_DIR)/kolmas_c_fun_64.o $(OUT_DIR)/kolmas_main_64.o $(OUT_DIR)/kolmas_64.o
 	@echo --- $(LD) linking $(BITS)-bit ---
 	$(LD) $(LDHARDENING) $^ -o $@ -Wl,--Map,$@.map $(LDFLAGS)
+
+$(OUT_DIR)/laske_ala_64.s: laske_ala_64.c
+	@echo --- $(CC) asm dump $(BITS)-bit ---
+	$(CC) -std=c11 -Og -fPIE -mfpmath=sse -masm=intel -S $< -o $@
 
 $(OUT_DIR)/ikuinen_kalenteri_64: $(OUT_DIR)/ikuinen_kalenteri_64.o
 	@echo --- $(LD) linker $(BITS)-bit ---
