@@ -5,6 +5,23 @@ Visual Studio 2019
    * 32-bit: Microsoft Macro Assembler Version 14.24.28316.0
    * 64-bit: Microsoft Macro Assembler (x64) Version 14.24.28316.0
 
+**Projektin perusasetukset**  
+Oletus: Debug-moodi (x86 tai x64).  
+Kohdat 2-3: projektin on oltava valittu aktiiviseksi Solution Explorer:ssa. Epäaktiivinen -> valikkovalintoja piiloutuu.  
+Kohdat 4-7: Project Properties  
+1. New Empty Project (Windows, C++, Console)  
+2. .asm tuki: valikosta Project, Build Customization. Rastitaan masm.  
+3. Project, Add New Item (C++ ,.cpp tiedosto). Lisää .asm tiedosto ja tallenna  (pikanäppäin Ctrl-Shift-A)  
+4. Linker : Debugging: Generate Map File:Yes (/MAP)  
+5. 64 bit-koodin pinon koko. Linker: System (oletuspino 1M)  
+6. Microsoft Macro Assembler: Listing File. Enable Assembly Generated Code Listing: Yes (/Sq)  
+7. Microsoft Macro Assembler: Listing File. Assembled Code Listing File: $(IntDir)%(FileName).lst  
+
+Linkit:  
+[Add an assembler-language file to a Visual Studio C++ project](https://docs.microsoft.com/en-us/cpp/assembler/masm/masm-for-x64-ml64-exe?view=vs-2019#add-an-assembler-language-file-to-a-visual-studio-c-project)  
+[/STACK (Stack Allocations)](https://docs.microsoft.com/en-us/cpp/build/reference/stack-stack-allocations)  
+[.STACK (32-bit MASM)](https://docs.microsoft.com/en-us/cpp/assembler/masm/dot-stack)  
+
 ### Muita assemblereita
 
 [as - the GNU assembler, MSYS2](https://www.msys2.org/)  
@@ -75,7 +92,7 @@ Muita asm-apuja
 ### eka_32.asm
 
 Tulostetaan tekstiä WriteConsoleA-funktiota käyttäen (ANSI teksti, koodisivu 1252). Ei käytetä standardi C/C++ -funktioita. 
-Ääkköset: Windowsin komentokehotteeseen komento: ```chcp 1252``` ja exe:n suoritus.
+Ääkköset: Windowsin komentokehotteeseen komento: ```chcp 1252``` ja exe:n suoritus. Fontiksi Lucida Console.
 
 ### toka_32.asm
 
@@ -107,6 +124,11 @@ lopeta:
 00831057  push        0  
 00831059  call        _ExitProcess@4 (0831077h)
 ```
+### kolmas_32.asm
+
+Vaihtaa konsolin koodisivua tekstin tulostusta varten. Toimii ainakin komentokehotteessa (fontiksi Lucida Console). 
+Visual Studion debuggerissa ilmestyvän konsolin fontiksi Lucida Console, ja uusi suoritus Debug-tilassa.
+
 
 # 64-bittinen kehitys 64-bittisellä alustalla
 
