@@ -79,9 +79,34 @@ Tulostetaan tekstiä WriteConsoleA-funktiota käyttäen (ANSI teksti, koodisivu 
 
 ### toka_32.asm
 
-Sama kuin edellinen mutta käytään Windows API kutsuihin PROTO ja INVOKE-direktiivejä. Generoitunut koodi tarkasteltavissa debuggerissa.  
-
-![disassembly](./toka_32.png "disassembly")
+Sama kuin edellinen mutta käytetään Windows API kutsuihin PROTO ja INVOKE-direktiivejä. Generoitunut koodi tarkasteltavissa debuggerissa.  
+```asm
+_start:
+00831010  push        0FFFFFFF5h  
+00831012  call        _GetStdHandle@4 (0831071h)  
+00831017  cmp         eax,0  
+0083101A  je          lopeta (0831057h)  
+0083101C  cmp         eax,0FFFFFFFFh  
+0083101F  je          lopeta (0831057h)  
+00831021  mov         dword ptr [hConsole (0834000h)],eax  
+00831026  push        0  
+00831028  push        0  
+0083102A  push        1Bh  
+0083102C  push        offset teksti (0833000h)  
+00831031  push        dword ptr [hConsole (0834000h)]  
+00831037  call        _WriteConsoleA@20 (083107Dh)  
+0083103C  cmp         eax,0  
+0083103F  je          lopeta (0831057h)  
+00831041  push        0  
+00831043  push        0  
+00831045  push        22h  
+00831047  push        offset teksti2 (083301Bh)  
+0083104C  push        dword ptr [hConsole (0834000h)]  
+00831052  call        _WriteConsoleA@20 (083107Dh)  
+lopeta:
+00831057  push        0  
+00831059  call        _ExitProcess@4 (0831077h)
+```
 
 # 64-bittinen kehitys 64-bittisellä alustalla
 
