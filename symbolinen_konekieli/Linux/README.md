@@ -224,8 +224,8 @@ GNU Assemblerin koodi .s-tiedostoon (laske_ala_64.s):
 
 ### ikuinen_kalenteri_64.asm
 
-Laskee viikonpäivän annetulle päivämäärälle (taulukkohaut). 
-
+Määrittää viikonpäivän annetulle päivämäärälle (taulukkohauilla). 
+Katso [taulukot](./ikuinen_kalenteri.pdf) (pdf-tiedosto).  
 
 ```Shell Session
 $ ./ikuinen_kalenteri_64
