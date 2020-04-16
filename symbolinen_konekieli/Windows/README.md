@@ -97,6 +97,11 @@ Tulostetaan tekstiä WriteConsoleA-funktiota käyttäen (ANSI teksti, koodisivu 
 ### toka_32.asm
 
 Sama kuin edellinen mutta käytetään Windows API kutsuihin PROTO ja INVOKE-direktiivejä. Generoitunut koodi tarkasteltavissa debuggerissa.  
+
+INVOKE  GetStdHandle, STD_OUTPUT_HANDLE  
+INVOKE  WriteConsoleA, [hConsole], ADDR teksti, SIZEOF teksti, 0, 0  
+INVOKE  WriteConsoleA, [hConsole], ADDR teksti2, SIZEOF teksti2, 0, 0  
+
 ```asm
 _start:
 00831010  push        0FFFFFFF5h  
@@ -202,6 +207,38 @@ Ilman symboleja
   xor         edx,edx  
   mov         eax,dword ptr [ebp+8]  
   div         eax,dword ptr [ebp+0Ch]  
+  leave  
+  ret
+```
+
+4. PROC    USES eax ebx, parametri:DWORD
+   LOCAL   pinomuuttujaA:DWORD
+```asm
+  push        ebp  
+  mov         ebp,esp  
+  add         esp,0FFFFFFFCh  
+  push        eax  
+  push        ebx  
+  mov         dword ptr [pinomuuttujaA],63h  
+  mov         eax,dword ptr [pinomuuttujaA]  
+  mov         ebx,dword ptr [parametri]  
+  pop         ebx  
+  pop         eax  
+  leave  
+  ret
+```
+Ilman symboleja  
+```asm
+  push        ebp  
+  mov         ebp,esp  
+  add         esp,0FFFFFFFCh  
+  push        eax  
+  push        ebx  
+  mov         dword ptr [ebp-4],63h  
+  mov         eax,dword ptr [ebp-4]  
+  mov         ebx,dword ptr [ebp+8]  
+  pop         ebx  
+  pop         eax  
   leave  
   ret
 ```

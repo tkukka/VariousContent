@@ -25,7 +25,7 @@ WriteConsoleA               PROTO   STDCALL handle:DWORD, buffer:PBYTE, NumberOf
 ;omat funktiot
 _kerro                      PROTO   C kerrottava:DWORD, kertoja:DWORD
 ;_jaa                        PROTO   C jaettava:DWORD, jakaja:DWORD
-
+_jaa_qword                  PROTO   C jaettava:QWORD, jakaja:DWORD
 
                             .STACK  4096
 
@@ -39,10 +39,15 @@ funktio_1_teksti_2          DB      'Kertolasku-funktio tehty. [K‰sintehty kutsu
 funktio_2_teksti            DB      'summa 5-funktio tehty.', 13, 10
 funktio_3_teksti            DB      'Jakolasku-funktio tehty. [K‰sintehty kutsu].', 13, 10
 funktio_4_teksti            DB      'Pariton-funktio tehty. [K‰sintehty kutsu].', 13, 10
+funktio_5_teksti            DB      'QWORDin jako-funktio tehty.', 13, 10
 
                             .DATA?
 
 hConsole                    DWORD   ?
+
+                            .DATA
+
+iso_luku                    QWORD   125000000005
 
 ;----------------------------------------------------------------------------
                             .CODE
@@ -82,6 +87,7 @@ _start                      PROC    C                           ;C kutsutapa
                             push    30
                             call    _jaa
                             add     esp, 8
+
 ;--- loppu --
                             INVOKE  WriteConsoleA, [hConsole], ADDR funktio_3_teksti, SIZEOF funktio_3_teksti, 0, 0
 ;parittomuuden tutkinta
@@ -89,6 +95,9 @@ _start                      PROC    C                           ;C kutsutapa
                             call    _pariton
                             add     esp, 4
                             INVOKE  WriteConsoleA, [hConsole], ADDR funktio_4_teksti, SIZEOF funktio_4_teksti, 0, 0
+
+                            INVOKE  _jaa_qword, [iso_luku], 100
+                            INVOKE  WriteConsoleA, [hConsole], ADDR funktio_5_teksti, SIZEOF funktio_5_teksti, 0, 0
 ;--- Funktiokokeilut loppu ---
                             jmp     lopeta
 vaihto_epaonnistunut:       INVOKE  WriteConsoleA, [hConsole], ADDR koodisivu_vaihto_virhe, SIZEOF koodisivu_vaihto_virhe, 0, 0
@@ -158,5 +167,35 @@ _pariton                    PROC    C
                             leave
                             ret
 _pariton                    ENDP
+;----------------------------------------------------------------------------
+;Kutsumaton testifunktio, jossa
+; - parametri
+; - USES
+; - LOCAL
+;vastaa: void kaikki(int parametri)
+;out: ei mit‰‰n
+
+_kaikki                     PROC    C USES eax ebx, parametri:DWORD
+                            LOCAL   pinomuuttujaA:DWORD
+                            mov     [pinomuuttujaA], 99
+                            mov     eax, [pinomuuttujaA]
+                            mov     ebx, [parametri]
+                            ret
+_kaikki                     ENDP
+;----------------------------------------------------------------------------
+;Etumerkitˆn QWORDin jakolasku. Parametrit pinosta.
+;vastaa: int jaa(long long jaettava, int jakaja)
+;K‰ytt‰‰ EDX rekisteri‰ EAX:n lis‰ksi. EDX vanha arvo ylikirjoitetaan.
+;Jakoj‰‰nnˆksen on mahduttava EDX-rekisteriin. Muutoin ylivuotopoikkeus.
+;Generoiko MASM mit‰‰n?
+;out: EAX : osam‰‰r‰
+
+_jaa_qword                  PROC    C USES ebx, jaettava:QWORD, jakaja:DWORD
+                            lea     ebx, [jaettava]
+                            mov     edx, [ebx + 4]
+                            mov     eax, [ebx]
+                            div     [jakaja]
+                            ret
+_jaa_qword                  ENDP
 ;----------------------------------------------------------------------------
                             END     _start
