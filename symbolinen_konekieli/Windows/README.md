@@ -247,6 +247,10 @@ Linkit:
 [PROC](https://docs.microsoft.com/en-us/cpp/assembler/masm/proc)  
 [Procedures](http://www.c-jump.com/CIS77/ASM/Procedures/lecture.html)  
 
+### vitonen_32.asm
+
+Funktiot konsoli-I/O:n käyttämiseksi.
+
 # 64-bittinen kehitys 64-bittisellä alustalla
 
 [x64 software conventions](https://docs.microsoft.com/en-us/cpp/build/x64-software-conventions)  
