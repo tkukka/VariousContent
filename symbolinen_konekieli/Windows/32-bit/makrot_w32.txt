@@ -1,0 +1,25 @@
+                            .NOLIST
+STD_INPUT_HANDLE            EQU     -10
+STD_OUTPUT_HANDLE           EQU     -11
+INVALID_HANDLE_VALUE        EQU     -1
+
+
+;Määritellään tyyppejä
+PBYTE                       TYPEDEF PTR BYTE
+PDWORD                      TYPEDEF PTR DWORD
+PVOID                       TYPEDEF PTR
+
+GetStdHandle                PROTO   STDCALL StdHandle:DWORD
+ExitProcess                 PROTO   STDCALL ExitCode:DWORD
+FlushConsoleInputBuffer     PROTO   STDCALL handle:DWORD
+;GetLastError                PROTO   STDCALL
+ReadConsoleA                PROTO   STDCALL handle:DWORD, Buffer:PVOID, NumberOfCharsToRead:DWORD,
+                                            NumberOfCharsRead:PDWORD, InputControl:PVOID
+
+SetConsoleCP                PROTO   STDCALL CodePageID:DWORD
+SetConsoleOutputCP          PROTO   STDCALL CodePageID:DWORD
+WriteConsoleA               PROTO   STDCALL handle:DWORD, buffer:PBYTE, NumberOfCharsToWrite:DWORD,
+                                            NumberOfCharsWritten:PDWORD, Reserved:PVOID
+
+                            .NOLISTMACRO
+                            .LIST

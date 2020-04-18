@@ -1,0 +1,29 @@
+                            .NOLIST
+
+CRLF                        EQU     <13, 10>
+
+LOG_OK                      EQU     0
+LOG_VIRHE_NOLLA             EQU     1
+LOG_VIRHE_NEG               EQU     2
+
+KOMPLEKSILUKU               STRUCT
+re                          REAL8   ?
+im                          REAL8   ?
+KOMPLEKSILUKU               ENDS
+
+PKOMPL                      TYPEDEF PTR KOMPLEKSILUKU
+
+;omat funktiot
+_valmistele_konsoli         PROTO   C
+
+_lue_konsolilta             PROTO   C  Buffer:PVOID, NumberOfCharsToRead:DWORD,
+                                       NumberOfCharsRead:PDWORD
+
+_tulosta_konsoliin          PROTO   C  Buffer:PVOID, NumberOfChars:DWORD
+
+_log10                      PROTO   C  luku:REAL8, virhekoodi:PDWORD
+_ln                         PROTO   C  luku:REAL8, virhekoodi:PDWORD
+_lnz                        PROTO   C  luku:PKOMPL, tulos:PKOMPL, virhekoodi:PDWORD
+
+                            .NOLISTMACRO
+                            .LIST
