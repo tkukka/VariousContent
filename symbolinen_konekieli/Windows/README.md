@@ -260,7 +260,17 @@ Linkit:
 [Exponential_function Complex_plane](https://en.wikipedia.org/wiki/Exponential_function#Complex_plane)  
 [KAlgebra](https://en.wikipedia.org/wiki/KAlgebra)  
 
-# 64-bittinen kehitys 64-bittisellä alustalla
+### seiska_32.asm
+
+Linkitetään DLL-kirjasto ajon aikana. Kutsutaan haluttua funktiota. Sovelluksena vakioveikkauksen rivin ja lottorivin arvonta.
+
+Linkit:  
+[RtlGenRandom function](https://docs.microsoft.com/en-us/windows/win32/api/ntsecapi/nf-ntsecapi-rtlgenrandom)  
+[GetProcAddress function](https://docs.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-getprocaddress)  
+[LoadLibraryA function](https://docs.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-loadlibrarya)  
+[FreeLibrary function](https://docs.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-freelibrary)  
+
+# 64-bittinen kehitys
 
 [x64 software conventions](https://docs.microsoft.com/en-us/cpp/build/x64-software-conventions)  
 [x64 calling convention](https://docs.microsoft.com/en-us/cpp/build/x64-calling-convention)  

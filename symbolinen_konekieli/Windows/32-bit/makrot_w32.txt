@@ -9,10 +9,17 @@ PBYTE                       TYPEDEF PTR BYTE
 PDWORD                      TYPEDEF PTR DWORD
 PVOID                       TYPEDEF PTR
 
+FUNC_RtlGenRandom           TYPEDEF PROTO STDCALL RandomBuffer:PVOID, RandomBufferLength:DWORD
+RANDFUNCPTR                 TYPEDEF PTR   FUNC_RtlGenRandom
+
+;Windows API funktiot
 GetStdHandle                PROTO   STDCALL StdHandle:DWORD
 ExitProcess                 PROTO   STDCALL ExitCode:DWORD
 FlushConsoleInputBuffer     PROTO   STDCALL handle:DWORD
+FreeLibrary                 PROTO   STDCALL handle:DWORD
 ;GetLastError                PROTO   STDCALL
+GetProcAddress              PROTO   STDCALL hModule:DWORD, ProcName:PBYTE
+LoadLibraryA                PROTO   STDCALL LibFileName:PBYTE
 ReadConsoleA                PROTO   STDCALL handle:DWORD, Buffer:PVOID, NumberOfCharsToRead:DWORD,
                                             NumberOfCharsRead:PDWORD, InputControl:PVOID
 
