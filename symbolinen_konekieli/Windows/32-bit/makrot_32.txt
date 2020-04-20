@@ -6,6 +6,10 @@ LOG_OK                      EQU     0
 LOG_VIRHE_NOLLA             EQU     1
 LOG_VIRHE_NEG               EQU     2
 
+POWZ_OK                     EQU     0
+POWZ_VIRHE                  EQU     1
+
+
 KOMPLEKSILUKU               STRUCT
 re                          REAL8   ?
 im                          REAL8   ?
@@ -27,6 +31,7 @@ _lnz                        PROTO   C  luku:PKOMPL, tulos:PKOMPL, virhekoodi:PDW
 _exp                        PROTO   C  potenssi:REAL8
 _expz                       PROTO   C  potenssi:PKOMPL, tulos:PKOMPL
 _mulz                       PROTO   C  lukuA:PKOMPL, lukuB:PKOMPL, tulos:PKOMPL
+_powz                       PROTO   C  luku:PKOMPL, potenssi:PKOMPL, tulos:PKOMPL, virhekoodi:PDWORD
 
                             .NOLISTMACRO
                             .LIST

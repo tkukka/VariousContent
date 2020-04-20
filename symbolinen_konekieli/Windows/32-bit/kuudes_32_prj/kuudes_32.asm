@@ -23,32 +23,32 @@ ei_ole_karkausvuosi         BYTE    'ei ole karkausvuosi', CRLF
 
 palaute_ok                  BYTE    CRLF, 'LOG laskettu.'
 palaute_virhe               BYTE    CRLF, 'LOG virhe.'
-
-palaute_lnz_ok              BYTE    CRLF, 'LN(z) laskettu.'
-palaute_lnz_virhe           BYTE    CRLF, 'LN(z) virhe.'
+palaute_lnz_ok              BYTE    CRLF, 'lnz(z) laskettu.'
+palaute_lnz_virhe           BYTE    CRLF, 'lnz(z) virhe.'
 palaute_exp_tehty           BYTE    CRLF, 'exp(x) laskettu.'
 palaute_expz_tehty          BYTE    CRLF, 'expz(z) laskettu.'
-
-                            .DATA?
-
-merkit                      BYTE    10 DUP(?)
-merkki_lkm                  DWORD   ?
-logstatus                   DWORD   ?
+palaute_powz_tehty          BYTE    CRLF, 'powz(z,z) laskettu.'
+palaute_powz_virhe          BYTE    CRLF, 'powz(z,z) virhe.'
 
                             .DATA
 
-testiluku                   REAL8         101.0
-reaali_log_tulos            REAL8         ?
-testilukuz                  KOMPLEKSILUKU {5.0, 7.0}
-tuloslnz                    KOMPLEKSILUKU {}
-tulosexpz                   KOMPLEKSILUKU {}
-exp_p                       REAL8         -0.4
-exp_p2                      REAL8         -0.1
-exp_p3                      REAL8         0.5
+testiluku                   REAL8           101.0
+reaali_log_tulos            REAL8           ?
+logstatus                   DWORD           ?
+testilukuz                  KOMPLEKSILUKU   {5.0, 7.0}
+tuloslnz                    KOMPLEKSILUKU   {}
+tulosexpz                   KOMPLEKSILUKU   {}
+exp_p                       REAL8           -0.4
+exp_p2                      REAL8           -0.1
+exp_p3                      REAL8           0.5
 exp_tulos                   REAL8           ?
-tekija1                     KOMPLEKSILUKU {2.0, -1.0}
-tekija2                     KOMPLEKSILUKU {10.0, 3.0}
-tulo_z                      KOMPLEKSILUKU {}
+tekija1                     KOMPLEKSILUKU   {2.0, -1.0}
+tekija2                     KOMPLEKSILUKU   {10.0, 3.0}
+tulo_z                      KOMPLEKSILUKU   {}
+powz_tulos                  KOMPLEKSILUKU   {}
+powz_luku                   KOMPLEKSILUKU   {3.0, 1.0}
+powz_potenssi               KOMPLEKSILUKU   {2.0, 2.0}
+powz_status                 DWORD           ?
 
                             .CODE
 ;----------------------------------------------------------------------------
@@ -114,6 +114,13 @@ exp_reaali:                 INVOKE  _exp, [exp_p]
                             INVOKE  _expz, ADDR tuloslnz, ADDR tulosexpz
                             INVOKE  _tulosta_konsoliin, ADDR palaute_expz_tehty, SIZEOF palaute_expz_tehty
                             INVOKE  _mulz, ADDR tekija1, ADDR tekija2, ADDR tulo_z
+                            INVOKE  _powz, ADDR powz_luku, ADDR powz_potenssi, ADDR powz_tulos, ADDR powz_status
+                            cmp     [powz_status], POWZ_OK
+                            jne     powz_virhe
+                            INVOKE  _tulosta_konsoliin, ADDR palaute_powz_tehty, SIZEOF palaute_powz_tehty
+                            jmp     lopeta
+powz_virhe:                 INVOKE  _tulosta_konsoliin, ADDR palaute_powz_virhe, SIZEOF palaute_powz_virhe
+
 lopeta:                     INVOKE  _tulosta_konsoliin, ADDR lopputeksti, SIZEOF lopputeksti
 poistu:                     INVOKE  ExitProcess, 0
 start                       ENDP
@@ -318,7 +325,7 @@ _expz                       PROC    C potenssi:PKOMPL, tulos:PKOMPL
 _expz                       ENDP
 ;----------------------------------------------------------------------------
 ; Kompleksilukujen kertolasku
-; C-kieli: void _mulz(const KOMPLEKSILUKU_STR *lukuA, const KOMPLEKSILUKU_STR *lukuB, KOMPLEKSILUKU_STR *tulos)
+; C-kieli: void mulz(const KOMPLEKSILUKU_STR *lukuA, const KOMPLEKSILUKU_STR *lukuB, KOMPLEKSILUKU_STR *tulos)
 
 _mulz                       PROC    C USES ebx esi, lukuA:PKOMPL, lukuB:PKOMPL, tulos:PKOMPL
                             mov     eax, [lukuA]
@@ -329,7 +336,7 @@ _mulz                       PROC    C USES ebx esi, lukuA:PKOMPL, lukuB:PKOMPL, 
                             fld     REAL8 PTR [eax + (SIZEOF REAL8)]    ;A.Im
                             fld     REAL8 PTR [ebx + (SIZEOF REAL8)]    ;B.Im
                             fmulp
-                            fsubp
+                            fsubp                                       ;A.Re * B.Re - A.Im * B.Im
                             mov     esi, [tulos]
                             fstp    REAL8 PTR [esi]             ;tulon Re-osa
                             fld     REAL8 PTR [eax]             ;A.Re
@@ -338,9 +345,28 @@ _mulz                       PROC    C USES ebx esi, lukuA:PKOMPL, lukuB:PKOMPL, 
                             fld     REAL8 PTR [eax + (SIZEOF REAL8)]    ;A.Im
                             fld     REAL8 PTR [ebx]             ;B.Re
                             fmulp
-                            faddp
+                            faddp                                       ;A.Re * B.Im + A.Im * B.Re
                             fstp    REAL8 PTR [esi + (SIZEOF REAL8)]    ;tulon Im-osa
                             ret
 _mulz                       ENDP
+;----------------------------------------------------------------------------
+; Kompleksilukujen potenssi z1 ^ z2 = expz(z2*lnz(z1))
+; C-kieli: void powz(const KOMPLEKSILUKU_STR *luku, const KOMPLEKSILUKU_STR *potenssi, 
+;                    KOMPLEKSILUKU_STR *tulos, int *status)
+
+_powz                       PROC    C luku:PKOMPL, potenssi:PKOMPL, tulos:PKOMPL, virhekoodi:PDWORD
+                            LOCAL   mulz_tulos:KOMPLEKSILUKU, lnz_tulos:KOMPLEKSILUKU, lnz_status:DWORD
+                            INVOKE  _lnz, luku, ADDR lnz_tulos, ADDR lnz_status
+                            cmp     [lnz_status], LOG_OK
+                            je      jatkolasku
+                            mov     eax, [virhekoodi]
+                            mov     DWORD PTR [eax], POWZ_VIRHE
+                            ret
+jatkolasku:                 INVOKE  _mulz, potenssi, ADDR lnz_tulos, ADDR mulz_tulos
+                            INVOKE  _expz, ADDR mulz_tulos, tulos
+                            mov     eax, [virhekoodi]
+                            mov     DWORD PTR [eax], POWZ_OK
+                            ret
+_powz                       ENDP
 ;----------------------------------------------------------------------------
                             END     start
