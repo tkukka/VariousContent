@@ -46,6 +46,9 @@ exp_p                       REAL8         -0.4
 exp_p2                      REAL8         -0.1
 exp_p3                      REAL8         0.5
 exp_tulos                   REAL8           ?
+tekija1                     KOMPLEKSILUKU {2.0, -1.0}
+tekija2                     KOMPLEKSILUKU {10.0, 3.0}
+tulo_z                      KOMPLEKSILUKU {}
 
                             .CODE
 ;----------------------------------------------------------------------------
@@ -110,7 +113,7 @@ exp_reaali:                 INVOKE  _exp, [exp_p]
                             INVOKE  _tulosta_konsoliin, ADDR palaute_exp_tehty, SIZEOF palaute_exp_tehty
                             INVOKE  _expz, ADDR tuloslnz, ADDR tulosexpz
                             INVOKE  _tulosta_konsoliin, ADDR palaute_expz_tehty, SIZEOF palaute_expz_tehty
-
+                            INVOKE  _mulz, ADDR tekija1, ADDR tekija2, ADDR tulo_z
 lopeta:                     INVOKE  _tulosta_konsoliin, ADDR lopputeksti, SIZEOF lopputeksti
 poistu:                     INVOKE  ExitProcess, 0
 start                       ENDP
@@ -232,7 +235,7 @@ _ln                         PROC    C luku:REAL8, virhekoodi:PDWORD
 _ln                         ENDP
 ;----------------------------------------------------------------------------
 ; Laskee e-kantaisen luonnollisen logaritmin kompleksiluvulle.
-; C-kieli: void exp(const KOMPLEKSILUKU_STR *luku, KOMPLEKSILUKU_STR *tulos, int *status)
+; C-kieli: void lnz(const KOMPLEKSILUKU_STR *luku, KOMPLEKSILUKU_STR *tulos, int *status)
 ; in : luku != (0, 0)
 ; out: virhekoodi, 0 = OK
 ; out: muistipaikkaan lnz(luku)
@@ -299,7 +302,7 @@ _exp                        ENDP
 ; Eksponenttifunktio e^z
 ; C-kieli: void expz(const KOMPLEKSILUKU_STR *potenssi, KOMPLEKSILUKU_STR *tulos)
 
-_expz                       PROC    C  potenssi:PKOMPL, tulos:PKOMPL
+_expz                       PROC    C potenssi:PKOMPL, tulos:PKOMPL
                             mov     eax, [potenssi]
                             INVOKE  _exp, [eax]                 ;e^Re -> st(0)
                             fld     REAL8 PTR [eax + (SIZEOF REAL8)]    ;Im -> st(0)
@@ -313,5 +316,31 @@ _expz                       PROC    C  potenssi:PKOMPL, tulos:PKOMPL
                             fstp    REAL8 PTR [eax + (SIZEOF REAL8)]    ;tuloksen Im-osa
                             ret
 _expz                       ENDP
+;----------------------------------------------------------------------------
+; Kompleksilukujen kertolasku
+; C-kieli: void _mulz(const KOMPLEKSILUKU_STR *lukuA, const KOMPLEKSILUKU_STR *lukuB, KOMPLEKSILUKU_STR *tulos)
+
+_mulz                       PROC    C USES ebx esi, lukuA:PKOMPL, lukuB:PKOMPL, tulos:PKOMPL
+                            mov     eax, [lukuA]
+                            mov     ebx, [lukuB]
+                            fld     REAL8 PTR [eax]             ;A.Re
+                            fld     REAL8 PTR [ebx]             ;B.Re
+                            fmulp
+                            fld     REAL8 PTR [eax + (SIZEOF REAL8)]    ;A.Im
+                            fld     REAL8 PTR [ebx + (SIZEOF REAL8)]    ;B.Im
+                            fmulp
+                            fsubp
+                            mov     esi, [tulos]
+                            fstp    REAL8 PTR [esi]             ;tulon Re-osa
+                            fld     REAL8 PTR [eax]             ;A.Re
+                            fld     REAL8 PTR [ebx + (SIZEOF REAL8)]    ;B.Im
+                            fmulp
+                            fld     REAL8 PTR [eax + (SIZEOF REAL8)]    ;A.Im
+                            fld     REAL8 PTR [ebx]             ;B.Re
+                            fmulp
+                            faddp
+                            fstp    REAL8 PTR [esi + (SIZEOF REAL8)]    ;tulon Im-osa
+                            ret
+_mulz                       ENDP
 ;----------------------------------------------------------------------------
                             END     start
