@@ -25,6 +25,7 @@ _log10                      PROTO   C  luku:REAL8, virhekoodi:PDWORD
 _ln                         PROTO   C  luku:REAL8, virhekoodi:PDWORD
 _lnz                        PROTO   C  luku:PKOMPL, tulos:PKOMPL, virhekoodi:PDWORD
 _exp                        PROTO   C  potenssi:REAL8
+_expz                       PROTO   C  potenssi:PKOMPL, tulos:PKOMPL
 
                             .NOLISTMACRO
                             .LIST

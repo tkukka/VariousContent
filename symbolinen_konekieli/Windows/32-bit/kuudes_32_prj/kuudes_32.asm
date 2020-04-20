@@ -27,6 +27,7 @@ palaute_virhe               BYTE    CRLF, 'LOG virhe.'
 palaute_lnz_ok              BYTE    CRLF, 'LN(z) laskettu.'
 palaute_lnz_virhe           BYTE    CRLF, 'LN(z) virhe.'
 palaute_exp_tehty           BYTE    CRLF, 'exp(x) laskettu.'
+palaute_expz_tehty          BYTE    CRLF, 'expz(z) laskettu.'
 
                             .DATA?
 
@@ -39,7 +40,8 @@ logstatus                   DWORD   ?
 testiluku                   REAL8         101.0
 reaali_log_tulos            REAL8         ?
 testilukuz                  KOMPLEKSILUKU {5.0, 7.0}
-tulosz                      KOMPLEKSILUKU {}
+tuloslnz                    KOMPLEKSILUKU {}
+tulosexpz                   KOMPLEKSILUKU {}
 exp_p                       REAL8         -0.4
 exp_p2                      REAL8         -0.1
 exp_p3                      REAL8         0.5
@@ -92,7 +94,7 @@ seuraava:                   INVOKE  _log10, [testiluku], ADDR logstatus
                             INVOKE  _tulosta_konsoliin, ADDR palaute_ok, SIZEOF palaute_ok
                             jmp     kompleksi_log
 yli2:                       INVOKE  _tulosta_konsoliin, ADDR palaute_virhe, SIZEOF palaute_virhe
-kompleksi_log:              INVOKE  _lnz,  ADDR testilukuz,  ADDR tulosz, ADDR logstatus
+kompleksi_log:              INVOKE  _lnz,  ADDR testilukuz,  ADDR tuloslnz, ADDR logstatus
                             cmp     [logstatus], LOG_OK
                             jne     yli3
                             INVOKE  _tulosta_konsoliin, ADDR palaute_lnz_ok, SIZEOF palaute_lnz_ok
@@ -106,6 +108,8 @@ exp_reaali:                 INVOKE  _exp, [exp_p]
                             INVOKE  _exp, [exp_p3]
                             fstp    REAL8 PTR [exp_tulos]
                             INVOKE  _tulosta_konsoliin, ADDR palaute_exp_tehty, SIZEOF palaute_exp_tehty
+                            INVOKE  _expz, ADDR tuloslnz, ADDR tulosexpz
+                            INVOKE  _tulosta_konsoliin, ADDR palaute_expz_tehty, SIZEOF palaute_expz_tehty
 
 lopeta:                     INVOKE  _tulosta_konsoliin, ADDR lopputeksti, SIZEOF lopputeksti
 poistu:                     INVOKE  ExitProcess, 0
@@ -228,7 +232,7 @@ _ln                         PROC    C luku:REAL8, virhekoodi:PDWORD
 _ln                         ENDP
 ;----------------------------------------------------------------------------
 ; Laskee e-kantaisen luonnollisen logaritmin kompleksiluvulle.
-; C-kieli: void exp(const KOMPLEKSILUKU_STR *, KOMPLEKSILUKU_STR *, int *)
+; C-kieli: void exp(const KOMPLEKSILUKU_STR *luku, KOMPLEKSILUKU_STR *tulos, int *status)
 ; in : luku != (0, 0)
 ; out: virhekoodi, 0 = OK
 ; out: muistipaikkaan lnz(luku)
@@ -291,5 +295,23 @@ _exp                        PROC    C potenssi:REAL8
                             ffree   st(1)
                             ret
 _exp                        ENDP
+;----------------------------------------------------------------------------
+; Eksponenttifunktio e^z
+; C-kieli: void expz(const KOMPLEKSILUKU_STR *potenssi, KOMPLEKSILUKU_STR *tulos)
+
+_expz                       PROC    C  potenssi:PKOMPL, tulos:PKOMPL
+                            mov     eax, [potenssi]
+                            INVOKE  _exp, [eax]                 ;e^Re -> st(0)
+                            fld     REAL8 PTR [eax + (SIZEOF REAL8)]    ;Im -> st(0)
+                            fld     st                          ;kahdennus
+                            fcos
+                            fmul    st(0), st(2)                ;e^Re * cos(Im)
+                            mov     eax, [tulos]
+                            fstp    REAL8 PTR [eax]             ;tuloksen Re-osa
+                            fsin
+                            fmulp                               ;e^Re * sin(Im)
+                            fstp    REAL8 PTR [eax + (SIZEOF REAL8)]    ;tuloksen Im-osa
+                            ret
+_expz                       ENDP
 ;----------------------------------------------------------------------------
                             END     start
