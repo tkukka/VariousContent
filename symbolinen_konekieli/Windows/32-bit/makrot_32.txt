@@ -24,6 +24,7 @@ _tulosta_konsoliin          PROTO   C  Buffer:PVOID, NumberOfChars:DWORD
 _log10                      PROTO   C  luku:REAL8, virhekoodi:PDWORD
 _ln                         PROTO   C  luku:REAL8, virhekoodi:PDWORD
 _lnz                        PROTO   C  luku:PKOMPL, tulos:PKOMPL, virhekoodi:PDWORD
+_exp                        PROTO   C  potenssi:REAL8
 
                             .NOLISTMACRO
                             .LIST

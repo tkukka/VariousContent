@@ -21,13 +21,12 @@ vuosi_1900                  BYTE    CRLF, 'Vuosi 1900 '
 on_karkausvuosi             BYTE    'on karkausvuosi', CRLF
 ei_ole_karkausvuosi         BYTE    'ei ole karkausvuosi', CRLF
 
-;kehote                      BYTE    CRLF, 'Syötä tekstiä:'
-;kehote2                     BYTE    CRLF, 'Syötä lisää:'
 palaute_ok                  BYTE    CRLF, 'LOG laskettu.'
 palaute_virhe               BYTE    CRLF, 'LOG virhe.'
 
 palaute_lnz_ok              BYTE    CRLF, 'LN(z) laskettu.'
 palaute_lnz_virhe           BYTE    CRLF, 'LN(z) virhe.'
+palaute_exp_tehty           BYTE    CRLF, 'exp(x) laskettu.'
 
                             .DATA?
 
@@ -38,8 +37,13 @@ logstatus                   DWORD   ?
                             .DATA
 
 testiluku                   REAL8         101.0
+reaali_log_tulos            REAL8         ?
 testilukuz                  KOMPLEKSILUKU {5.0, 7.0}
 tulosz                      KOMPLEKSILUKU {}
+exp_p                       REAL8         -0.4
+exp_p2                      REAL8         -0.1
+exp_p3                      REAL8         0.5
+exp_tulos                   REAL8           ?
 
                             .CODE
 ;----------------------------------------------------------------------------
@@ -73,31 +77,18 @@ tutki_1985:                 INVOKE  _tulosta_konsoliin, ADDR vuosi_1985, SIZEOF 
                             jmp     liukulukulaskut
 ei_kv_1985:                 INVOKE  _tulosta_konsoliin, ADDR ei_ole_karkausvuosi, SIZEOF ei_ole_karkausvuosi
 
-                            ;INVOKE  _tulosta_konsoliin, ADDR kehote, SIZEOF kehote
-                            ;INVOKE  _lue_konsolilta, ADDR merkit, SIZEOF merkit, ADDR merkki_lkm
-                            ;cmp     eax, 0
-                            ;je      lopeta
-
-                            ;mov     eax, 80000001h
-                            ;cpuid
-                            ;and     ecx, 1
-                            
-                            ;fxam
-                            ;fstsw   ax
-                            ;sahf
-                            ;INVOKE  _tulosta_konsoliin, ADDR merkit, [merkki_lkm]
-                            
-                            
 liukulukulaskut:            finit
                             INVOKE  _ln, [testiluku], ADDR logstatus
                             cmp     [logstatus], LOG_OK
                             jne      yli
+                            fstp    REAL8 PTR [reaali_log_tulos]
                             INVOKE  _tulosta_konsoliin, ADDR palaute_ok, SIZEOF palaute_ok
                             jmp     seuraava
 yli:                        INVOKE  _tulosta_konsoliin, ADDR palaute_virhe, SIZEOF palaute_virhe
 seuraava:                   INVOKE  _log10, [testiluku], ADDR logstatus
                             cmp     [logstatus], LOG_OK
                             jne      yli2
+                            fstp    REAL8 PTR [reaali_log_tulos]
                             INVOKE  _tulosta_konsoliin, ADDR palaute_ok, SIZEOF palaute_ok
                             jmp     kompleksi_log
 yli2:                       INVOKE  _tulosta_konsoliin, ADDR palaute_virhe, SIZEOF palaute_virhe
@@ -105,13 +96,23 @@ kompleksi_log:              INVOKE  _lnz,  ADDR testilukuz,  ADDR tulosz, ADDR l
                             cmp     [logstatus], LOG_OK
                             jne     yli3
                             INVOKE  _tulosta_konsoliin, ADDR palaute_lnz_ok, SIZEOF palaute_lnz_ok
-                            jmp     lopeta
+                            jmp     exp_reaali
 yli3:                       INVOKE  _tulosta_konsoliin, ADDR palaute_lnz_virhe, SIZEOF palaute_lnz_virhe
+exp_reaali:                 INVOKE  _exp, [exp_p]
+                            fstp    REAL8 PTR [exp_tulos]
+                            INVOKE  _exp, [exp_p2]
+                            fstp    REAL8 PTR [exp_tulos]
+                            ;finit
+                            INVOKE  _exp, [exp_p3]
+                            fstp    REAL8 PTR [exp_tulos]
+                            INVOKE  _tulosta_konsoliin, ADDR palaute_exp_tehty, SIZEOF palaute_exp_tehty
+
 lopeta:                     INVOKE  _tulosta_konsoliin, ADDR lopputeksti, SIZEOF lopputeksti
 poistu:                     INVOKE  ExitProcess, 0
 start                       ENDP
 ;----------------------------------------------------------------------------
 ;Tutkii, onko annettu vuosi karkausvuosi.
+; C-kieli: int tutki_karkausvuosi(int vuosi)
 ;in : vuosi
 ;out: EAX = 1, jos karkausvuosi, muutoin EAX = 0
 
@@ -137,8 +138,8 @@ _tutki_karkausvuosi         ENDP
 
 logaritmi                   PROC    C PRIVATE luku:REAL8, virhekoodi:PDWORD, valinta:DWORD
                             lea     eax, [luku]
-                            or      DWORD PTR [eax], 0
-                            jnz     tarkista_neg
+                            cmp     DWORD PTR [eax], 0
+                            jne     tarkista_neg
                             test    DWORD PTR [eax + 4], 0fffffffh
                             jnz     tarkista_neg
                             mov     eax, [virhekoodi]
@@ -157,12 +158,13 @@ log2_e:                     fldl2e                              ;log2(e)
 loppulaskut:                fld1                                ;1.0 -> Y
                             fld     [luku]                      ;X
                             fyl2x                               ;Y*log2(X)
-                            fdiv    st, st(1)                   ;log2(X)/log2() = log(X)
+                            fdivrp                              ;log2(X)/log2() = log(X)
                             mov     DWORD PTR [eax], LOG_OK
                             ret
 logaritmi                   ENDP
 ;----------------------------------------------------------------------------
 ; Laskee 10-kantaisen Briggsin logaritmin positiiviselle reaaliluvulle.
+; C-kieli: double log10(double x, int *status)
 ; in : luku > 0
 ; out: virhekoodi, 0 = OK
 ; out: st0 = log10(luku)
@@ -172,8 +174,8 @@ _log10                      PROC    C luku:REAL8, virhekoodi:PDWORD
                             INVOKE logaritmi, luku, virhekoodi, 0
 
 ;                            lea     eax, [luku]
-;                            or      DWORD PTR [eax], 0
-;                            jnz     tarkista_neg
+;                            cmp     DWORD PTR [eax], 0
+;                            jne     tarkista_neg
 ;                            test    DWORD PTR [eax + 4], 0fffffffh
 ;                            jnz     tarkista_neg
 ;                            mov     eax, [virhekoodi]
@@ -188,12 +190,13 @@ _log10                      PROC    C luku:REAL8, virhekoodi:PDWORD
 ;                            fld1                                ;1.0 -> Y
 ;                            fld     [luku]                      ;X
 ;                            fyl2x                               ;Y*log2(X)
-;                            fdiv    st, st(1)                   ;log2(X)/log2(10) = log10(X)
+;                            fdivrp                              ;log2(X)/log2(10) = log10(X)
 ;                            mov     DWORD PTR [eax], LOG_OK
                             ret
 _log10                      ENDP
 ;----------------------------------------------------------------------------
 ; Laskee e-kantaisen luonnollisen logaritmin positiiviselle reaaliluvulle.
+; C-kieli: double ln(double x, int *status)
 ; in : luku > 0
 ; out: virhekoodi, 0 = OK
 ; out: st0 = ln(luku)
@@ -203,8 +206,8 @@ _ln                         PROC    C luku:REAL8, virhekoodi:PDWORD
                             INVOKE logaritmi, luku, virhekoodi, 1
 
 ;                            lea     eax, [luku]
-;                            or      DWORD PTR [eax], 0
-;                            jnz     tarkista_neg
+;                            cmp     DWORD PTR [eax], 0
+;                            jne     tarkista_neg
 ;                            test    DWORD PTR [eax + 4], 0fffffffh
 ;                            jnz     tarkista_neg
 ;                            mov     eax, [virhekoodi]
@@ -219,23 +222,24 @@ _ln                         PROC    C luku:REAL8, virhekoodi:PDWORD
 ;                            fld1                                ;1.0 -> Y
 ;                            fld     [luku]                      ;X
 ;                            fyl2x                               ;Y*log2(X)
-;                            fdiv    st, st(1)                   ;log2(X)/log2(e) = ln(X)
+;                            fdivrp                              ;log2(X)/log2(e) = ln(X)
 ;                            mov     DWORD PTR [eax], LOG_OK
                             ret
 _ln                         ENDP
 ;----------------------------------------------------------------------------
 ; Laskee e-kantaisen luonnollisen logaritmin kompleksiluvulle.
+; C-kieli: void exp(const KOMPLEKSILUKU_STR *, KOMPLEKSILUKU_STR *, int *)
 ; in : luku != (0, 0)
 ; out: virhekoodi, 0 = OK
-; out: muistipaikkaan ln(luku)
+; out: muistipaikkaan lnz(luku)
 
 _lnz                        PROC    C USES esi ecx, luku:PKOMPL, tulos:PKOMPL, virhekoodi:PDWORD
 ;tutkitaan annettu luku
                             xor     esi, esi
                             xor     ecx, ecx
                             mov     eax, [luku]
-tutkinta:                   or      DWORD PTR [eax + esi], 0
-                            jnz     laskenta
+tutkinta:                   cmp     DWORD PTR [eax + esi], 0
+                            jne     laskenta
                             test    DWORD PTR [eax + esi + ((SIZEOF KOMPLEKSILUKU)/4)], 0fffffffh
                             jnz     laskenta
                             add     esi, SIZEOF REAL8           ; +8 tavua
@@ -265,5 +269,27 @@ laskenta:                   fldl2e                              ;log2(e)
                             mov     DWORD PTR [eax], LOG_OK
                             ret
 _lnz                        ENDP
+;----------------------------------------------------------------------------
+; Eksponenttifunktio e^x
+; C-kieli: double exp(double x)
+;
+
+_exp                        PROC    C potenssi:REAL8
+                            fld     [potenssi]
+                            fldl2e                              ;log2(e) -> st(0)
+                            fmulp                               ;skaalataan log2(e):lla
+                            fld     st                          ;kahdennetaan
+                            frndint                             ;int(st(0))
+                            fsubr   st(0), st(1)                ;vähennetään kokonainen luku
+                            f2xm1                               ;2^st(0)-1 -> st(0)
+                            fld1                                ;1.0
+                            faddp                               ;2^x-1 + 1 -> 2^x
+                            fxch
+                            frndint                             ;skaalauksen pyöristys -> n
+                            fxch
+                            fscale                              ;(2^x) * 2^n -> exp(X)
+                            ffree   st(1)
+                            ret
+_exp                        ENDP
 ;----------------------------------------------------------------------------
                             END     start
