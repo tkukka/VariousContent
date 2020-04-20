@@ -7,6 +7,8 @@
                             INCLUDE ..\makrot_32.txt
 
 _tutki_karkausvuosi         PROTO    C  vuosi:DWORD
+_ympyran_ala                PROTO    C  sade:REAL8
+_pallon_tilavuus            PROTO    C  sade:REAL8
 
                             .STACK  4096
 
@@ -50,6 +52,11 @@ powz_luku                   KOMPLEKSILUKU   {3.0, 1.0}
 powz_potenssi               KOMPLEKSILUKU   {2.0, 2.0}
 powz_status                 DWORD           ?
 
+vec                         VEKTORI         {3.0, 0.0, 4.0}
+vpituus                     REAL8           ?
+ala                         REAL8           ?
+tilavuus                    REAL8           ?
+
                             .CODE
 ;----------------------------------------------------------------------------
 start                       PROC    C
@@ -90,6 +97,7 @@ liukulukulaskut:            finit
                             INVOKE  _tulosta_konsoliin, ADDR palaute_ok, SIZEOF palaute_ok
                             jmp     seuraava
 yli:                        INVOKE  _tulosta_konsoliin, ADDR palaute_virhe, SIZEOF palaute_virhe
+
 seuraava:                   INVOKE  _log10, [testiluku], ADDR logstatus
                             cmp     [logstatus], LOG_OK
                             jne      yli2
@@ -97,12 +105,14 @@ seuraava:                   INVOKE  _log10, [testiluku], ADDR logstatus
                             INVOKE  _tulosta_konsoliin, ADDR palaute_ok, SIZEOF palaute_ok
                             jmp     kompleksi_log
 yli2:                       INVOKE  _tulosta_konsoliin, ADDR palaute_virhe, SIZEOF palaute_virhe
+
 kompleksi_log:              INVOKE  _lnz,  ADDR testilukuz,  ADDR tuloslnz, ADDR logstatus
                             cmp     [logstatus], LOG_OK
                             jne     yli3
                             INVOKE  _tulosta_konsoliin, ADDR palaute_lnz_ok, SIZEOF palaute_lnz_ok
                             jmp     exp_reaali
 yli3:                       INVOKE  _tulosta_konsoliin, ADDR palaute_lnz_virhe, SIZEOF palaute_lnz_virhe
+
 exp_reaali:                 INVOKE  _exp, [exp_p]
                             fstp    REAL8 PTR [exp_tulos]
                             INVOKE  _exp, [exp_p2]
@@ -111,6 +121,7 @@ exp_reaali:                 INVOKE  _exp, [exp_p]
                             INVOKE  _exp, [exp_p3]
                             fstp    REAL8 PTR [exp_tulos]
                             INVOKE  _tulosta_konsoliin, ADDR palaute_exp_tehty, SIZEOF palaute_exp_tehty
+
                             INVOKE  _expz, ADDR tuloslnz, ADDR tulosexpz
                             INVOKE  _tulosta_konsoliin, ADDR palaute_expz_tehty, SIZEOF palaute_expz_tehty
                             INVOKE  _mulz, ADDR tekija1, ADDR tekija2, ADDR tulo_z
@@ -118,8 +129,15 @@ exp_reaali:                 INVOKE  _exp, [exp_p]
                             cmp     [powz_status], POWZ_OK
                             jne     powz_virhe
                             INVOKE  _tulosta_konsoliin, ADDR palaute_powz_tehty, SIZEOF palaute_powz_tehty
-                            jmp     lopeta
+                            jmp     vektori_laskut
 powz_virhe:                 INVOKE  _tulosta_konsoliin, ADDR palaute_powz_virhe, SIZEOF palaute_powz_virhe
+
+vektori_laskut:             INVOKE  _vektorin_pituus, ADDR vec
+                            fstp    REAL8 PTR [vpituus]
+                            INVOKE  _ympyran_ala, [vpituus]
+                            fstp    REAL8 PTR [ala]
+                            INVOKE  _pallon_tilavuus, [vpituus]
+                            fstp    REAL8 PTR [tilavuus]
 
 lopeta:                     INVOKE  _tulosta_konsoliin, ADDR lopputeksti, SIZEOF lopputeksti
 poistu:                     INVOKE  ExitProcess, 0
@@ -149,6 +167,7 @@ karkaus:                    mov     eax, 1
                             ret
 _tutki_karkausvuosi         ENDP
 ;----------------------------------------------------------------------------
+; Apufunktio. Laskee ln- tai log10-logaritmin valinnan mukaan.
 
 logaritmi                   PROC    C PRIVATE luku:REAL8, virhekoodi:PDWORD, valinta:DWORD
                             lea     eax, [luku]
@@ -286,7 +305,6 @@ _lnz                        ENDP
 ;----------------------------------------------------------------------------
 ; Eksponenttifunktio e^x
 ; C-kieli: double exp(double x)
-;
 
 _exp                        PROC    C potenssi:REAL8
                             fld     [potenssi]
@@ -368,5 +386,54 @@ jatkolasku:                 INVOKE  _mulz, potenssi, ADDR lnz_tulos, ADDR mulz_t
                             mov     DWORD PTR [eax], POWZ_OK
                             ret
 _powz                       ENDP
+;----------------------------------------------------------------------------
+; Laskee vektorin (x,y,z) pituuden
+; C-kieli: double vektorin_pituus(const VEKTORI_STR *v)
+
+_vektorin_pituus            PROC    C vektori:PVEKTORI
+                            mov     eax, [vektori]
+                            fld     REAL8 PTR [eax]             ;v.x
+                            fmul    st, st
+                            fld     REAL8 PTR [eax + (SIZEOF REAL8)]    ;v.y
+                            fmul    st, st
+                            fld     REAL8 PTR [eax + 2*(SIZEOF REAL8)]  ;v.z
+                            fmul    st, st
+                            faddp
+                            faddp
+                            fsqrt
+                            ret
+_vektorin_pituus            ENDP
+;----------------------------------------------------------------------------
+; Laskee r-säteisen ympyrän alan
+; C-kieli: double ympyran_ala(double r)
+
+_ympyran_ala                PROC    C sade:REAL8
+                            fld     [sade]                      ;r
+                            fmul    st, st                      ;r^2
+                            fldpi                               ;3.14 -> st(0)
+                            fmulp                               ;pii*r^2
+                            ret
+_ympyran_ala                ENDP
+;----------------------------------------------------------------------------
+; Laskee r-säteisen pallon tilavuuden
+; C-kieli: double pallon_tilavuus(double r)
+
+_pallon_tilavuus            PROC    C sade:REAL8
+                            fld     [sade]                      ;r
+                            fld     st
+                            fmul    st, st                      ;r^2
+                            fmulp                               ;r^3
+                            fldpi                               ;3.14 -> st(0)
+                            fmulp                               ;pii*r^3
+                            fld1                                ;1.0 -> st(0)
+                            fadd    st, st                      ;2.0 -> st(0)
+                            fxch                                ;pii*r^3 -> st(0)
+                            fscale                              ;st(0)*2^2
+                            fxch                                ;2.0 -> st(0)
+                            fld1                                ;1.0 -> st(0)
+                            faddp                               ;3.0 -> st(0)
+                            fdivp                               ;4*pii*r^3 / 3
+                            ret
+_pallon_tilavuus            ENDP
 ;----------------------------------------------------------------------------
                             END     start

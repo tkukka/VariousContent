@@ -251,6 +251,15 @@ Linkit:
 
 Funktiot konsoli-I/O:n käyttämiseksi.
 
+### kuudes_32.asm, konsoli_io_32.asm
+
+Konsolin I/O-funktiot omaan tiedostoon. Makrot omiin tekstitiedostoihin. x87 liukulukuyksiköllä laskentaa ja funktioiden määrittelyjä.
+
+Linkit:  
+[Complex logarithm](https://en.wikipedia.org/wiki/Complex_logarithm)  
+[Exponential_function Complex_plane](https://en.wikipedia.org/wiki/Exponential_function#Complex_plane)  
+[KAlgebra](https://en.wikipedia.org/wiki/KAlgebra)  
+
 # 64-bittinen kehitys 64-bittisellä alustalla
 
 [x64 software conventions](https://docs.microsoft.com/en-us/cpp/build/x64-software-conventions)  

@@ -15,7 +15,14 @@ re                          REAL8   ?
 im                          REAL8   ?
 KOMPLEKSILUKU               ENDS
 
+VEKTORI                     STRUCT
+x                           REAL8   ?
+y                           REAL8   ?
+z                           REAL8   ?
+VEKTORI                     ENDS
+
 PKOMPL                      TYPEDEF PTR KOMPLEKSILUKU
+PVEKTORI                    TYPEDEF PTR VEKTORI
 
 ;omat funktiot
 _valmistele_konsoli         PROTO   C
@@ -32,6 +39,7 @@ _exp                        PROTO   C  potenssi:REAL8
 _expz                       PROTO   C  potenssi:PKOMPL, tulos:PKOMPL
 _mulz                       PROTO   C  lukuA:PKOMPL, lukuB:PKOMPL, tulos:PKOMPL
 _powz                       PROTO   C  luku:PKOMPL, potenssi:PKOMPL, tulos:PKOMPL, virhekoodi:PDWORD
+_vektorin_pituus            PROTO   C  vektori:PVEKTORI
 
                             .NOLISTMACRO
                             .LIST
