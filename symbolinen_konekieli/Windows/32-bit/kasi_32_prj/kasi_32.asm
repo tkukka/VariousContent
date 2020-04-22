@@ -26,6 +26,7 @@ _luo_aakkosindeksit         PROTO   C
 _pienaakkosiksi             PROTO   C jono:PBYTE, N_jono:DWORD
 _suuraakkosiksi             PROTO   C jono:PBYTE, N_jono:DWORD
 _sekoita                    PROTO   C teksti:PBYTE, tekstin_pituus:DWORD, avain:PBYTE, avaimen_pituus:DWORD, salattu:PBYTE, salattu_pituus:DWORD
+_pura                       PROTO   C teksti:PBYTE, tekstin_pituus:DWORD, avain:PBYTE, avaimen_pituus:DWORD, purettu:PBYTE, purettu_pituus:DWORD
 
                             .STACK  4096
 
@@ -35,21 +36,21 @@ alkuteksti                  BYTE    '--- Ohjelma 8 ---', CRLF
 lopputeksti                 BYTE    CRLF, 'Ohjelma suoritettu.', CRLF
 aakkoset                    BYTE    'ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ'
 N_aakkoset                  EQU     SIZEOF aakkoset
-alkusiirtyma                EQU     1
+alkusiirtyma                EQU     1                           ;1. rivin/sarakkeen siirros aakkosissa
 salattu_puskuri_pieni       BYTE    CRLF, 'Salauksen tulos ei mahdu annettuun muistialueeseen.'
 selko_puskuri_pieni         BYTE    CRLF, 'Salauksen purun tulos ei mahdu annettuun muistialueeseen.'
+selkoteksti                 BYTE    'LÄHETÄMEILLEHYVÄLUOTSI'
 purettava_teksti            BYTE    'ATWÅYRVWAÅEJÅEKTÅNTJÄÅ'
+salausavain                 BYTE    'RUOVESI'
 
                             .DATA
 
-sallitut_merkit             BYTE    1, 255 DUP(0)
-aakkosindeksit              BYTE    256 DUP(N_aakkoset)
+sallitut_merkit             BYTE    1, 255 DUP(0)               ;0/1 ei sallittu, merkki kohdallaan = sallittu
+aakkosindeksit              BYTE    256 DUP(N_aakkoset)         ;hakutaulu, A -> 0, B -> 1, ...
 mjono                       BYTE    'ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ'
 N_mjono                     EQU     SIZEOF mjono
 
-selkoteksti                 BYTE    'LÄHETÄMEILLEHYVÄLUOTSI'
-salausavain                 BYTE    'RUOVESI'
-sekoitettu                  BYTE    64 DUP(32)
+merkkipuskuri               BYTE    64 DUP(32)
 
                             .CODE
 ;----------------------------------------------------------------------------
@@ -65,7 +66,11 @@ start                       PROC    C
                             INVOKE  _pienaakkosiksi, ADDR mjono, N_mjono
                             INVOKE  _suuraakkosiksi, ADDR mjono, N_mjono
                             INVOKE  _sekoita, ADDR selkoteksti, SIZEOF selkoteksti, ADDR salausavain, SIZEOF salausavain, 
-                                              ADDR sekoitettu, SIZEOF sekoitettu
+                                              ADDR merkkipuskuri, SIZEOF merkkipuskuri
+
+                            INVOKE  _pura, ADDR purettava_teksti, SIZEOF purettava_teksti, ADDR salausavain, SIZEOF salausavain, 
+                                              ADDR merkkipuskuri, SIZEOF merkkipuskuri
+
 
 lopeta:                     INVOKE  _tulosta_konsoliin, ADDR lopputeksti, SIZEOF lopputeksti
 poistu:                     INVOKE  ExitProcess, 0
@@ -88,9 +93,9 @@ _luo_aakkosindeksit         PROC    C USES eax ebx ecx edx
                             mov     eax, OFFSET aakkosindeksit
                             mov     ebx, OFFSET aakkoset
                             xor     ecx, ecx
-silmukka:                   movzx   edx, BYTE PTR [ebx]       
+silmukka:                   movzx   edx, BYTE PTR [ebx]         ;'A', 'B',... -> EDX (indeksoi kirjaimella)
                             inc     ebx
-                            mov     [eax + edx], cl
+                            mov     [eax + edx], cl             ;A:lle 0, B:lle 1, ... Ö:lle 28
                             inc     ecx                            
                             cmp     ecx, N_aakkoset
                             jne     silmukka
@@ -106,7 +111,7 @@ silmukka:                   movzx   edx, BYTE PTR [eax]
                             jb      seuraava
                             cmp     edx, 'Z'
                             ja      skandit
-                            or      edx, 20h
+                            or      edx, 20h                    ;muunna
                             mov     [eax], dl
                             jmp     seuraava
 skandit:                    cmp     edx, 0c4h                   ;Ä
@@ -132,7 +137,7 @@ silmukka:                   movzx   edx, BYTE PTR [eax]
                             jb      seuraava
                             cmp     edx, 'z'
                             ja      skandit
-                            and     edx, 0dfh
+                            and     edx, 0dfh                   ;muunna
                             mov     [eax], dl
                             jmp     seuraava
 skandit:                    cmp     edx, 0e4h                   ;ä
@@ -163,10 +168,10 @@ _sekoita                    PROC    C USES eax ebx ecx edx edi esi, teksti:PBYTE
 silmukka:                   mov     ebx, OFFSET aakkosindeksit
                             movzx   eax, BYTE PTR [esi]
                             xlat                                ;lähdetekstin merkin indeksi
-                            mov     [avainrivi], eax
+                            mov     [selkosarake], eax
                             movzx   eax, BYTE PTR [edi]
                             xlat                                ;avaimen merkin indeksi
-                            mov     [selkosarake], eax
+                            mov     [avainrivi], eax
                             mov     eax, alkusiirtyma           ;1. rivin/sarakkeen siirros aakkosissa
                             add     eax, [avainrivi]
                             add     eax, [selkosarake]
@@ -182,7 +187,7 @@ silmukka:                   mov     ebx, OFFSET aakkosindeksit
                             inc     ecx
                             mov     [salattu_lkm], ecx
                             jmp     normitilanne
-virhe:                      mov     eax, -1                     ;ei voida edetä. merkki.
+virhe:                      mov     eax, -1                     ;ei voida edetä. merkitään.
 normitilanne:               pop     ecx
                             cmp     eax, -1
                             je      virheilmoitus
@@ -199,5 +204,60 @@ virheilmoitus:              INVOKE  _tulosta_konsoliin, ADDR salattu_puskuri_pie
                             xor     eax, eax
 ulos:                       ret
 _sekoita                    ENDP
+;----------------------------------------------------------------------------
+_pura                       PROC    C USES eax ebx ecx edx edi esi, teksti:PBYTE, 
+                                    tekstin_pituus:DWORD, avain:PBYTE, avaimen_pituus:DWORD, 
+                                    purettu:PBYTE, purettu_pituus:DWORD
+                            LOCAL   salatun_indeksi:DWORD, avainrivi:DWORD, purettu_lkm:DWORD
+                            mov     [purettu_lkm], 0
+                            mov     esi, [teksti]
+                            mov     ecx, [tekstin_pituus]
+                            mov     edi, [avain]
+                            mov     edx, [avaimen_pituus]
+                            lea     ecx, [esi + ecx]            ;tekstin loppu
+                            lea     edx, [edi + edx]            ;avaimen loppu
+silmukka:                   mov     ebx, OFFSET aakkosindeksit
+                            movzx   eax, BYTE PTR [esi]
+                            xlat                                ;salatun tekstin merkin indeksi
+                            mov     [salatun_indeksi], eax
+                            movzx   eax, BYTE PTR [edi]
+                            xlat                                ;avaimen merkin indeksi
+                            mov     [avainrivi], eax
+                            mov     eax, alkusiirtyma           ;1. rivin/sarakkeen siirros aakkosissa
+                            add     eax, [avainrivi]
+                            modulo  eax, N_aakkoset
+                            mov     ebx, N_aakkoset
+                            add     ebx, [salatun_indeksi]
+                            sub     ebx, eax
+                            mov     eax, ebx
+                            modulo  eax, N_aakkoset
+                            lea     eax, [aakkoset + eax]       ;merkin osoite
+                            movzx   eax, BYTE PTR [eax]         ;merkki
+                            mov     ebx, [purettu]
+                            push    ecx
+                            mov     ecx, [purettu_lkm]
+                            cmp     ecx, [purettu_pituus]       ;mahtuuko purettu merkki?
+                            je      virhe
+                            mov     [ebx + ecx], al
+                            inc     ecx
+                            mov     [purettu_lkm], ecx
+                            jmp     normitilanne
+virhe:                      mov     eax, -1                     ;ei voida edetä. merkitään.
+normitilanne:               pop     ecx
+                            cmp     eax, -1
+                            je      virheilmoitus
+                            inc     edi
+                            cmp     edi, edx                    ;avain lopussa?
+                            jne     ohi
+                            mov     edi, [avain]
+ohi:                        inc     esi
+                            cmp     esi, ecx                    ;lähdeteksti lopussa?
+                            jne     silmukka
+                            mov     eax, [purettu_lkm]          ;palauta montako merkkiä purettiin
+                            jmp     ulos
+virheilmoitus:              INVOKE  _tulosta_konsoliin, ADDR selko_puskuri_pieni, SIZEOF selko_puskuri_pieni
+                            xor     eax, eax
+ulos:                       ret
+_pura                       ENDP
 ;----------------------------------------------------------------------------
                             END     start
