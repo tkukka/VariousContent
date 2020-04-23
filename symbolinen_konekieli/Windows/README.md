@@ -270,6 +270,15 @@ Linkit:
 [LoadLibraryA function](https://docs.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-loadlibrarya)  
 [FreeLibrary function](https://docs.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-freelibrary)  
 
+### kasi_32.asm
+
+Tehdään tekstin sekoitusta ja sekoituksen purkua käyttäen Tritheimin taulukkoa ja juoksevaa avainta.
+
+Linkit:  
+[Tabula recta](https://en.wikipedia.org/wiki/Tabula_recta)  
+[Running key cipher](https://en.wikipedia.org/wiki/Running_key_cipher)  
+[Vigenère cipher](https://en.wikipedia.org/wiki/Vigen%C3%A8re_cipher)  
+
 # 64-bittinen kehitys
 
 [x64 software conventions](https://docs.microsoft.com/en-us/cpp/build/x64-software-conventions)  

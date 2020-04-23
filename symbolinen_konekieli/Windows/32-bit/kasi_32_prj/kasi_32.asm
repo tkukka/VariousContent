@@ -1,4 +1,7 @@
 ;Visual Studio, koodisivu 1252
+;sivu 185 teoksesta
+;Antero Vipunen : arvoitusten ja ongelmien, leikkien ja pelien sekä eri harrastelualojen pikkujättiläinen.
+;Toimittanut Yrjö Karilas. WSOY, 1990. 15. painos. ISBN:9510121770
                             .686                                ;uudemmat x87-käskyt, CPUID
                             .MODEL  FLAT, STDCALL               ;stdcall: 32-bit WinAPI kutsutapa oletukseksi
                             OPTION  CASEMAP:NONE                ;erottele ISOT ja pienet kirjaimet tunnuksissa
