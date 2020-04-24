@@ -18,19 +18,19 @@ toisen_viestin_pituus       EQU     $ - toinen_viesti
 
                             GLOBAL _start:function
 
-_start:                     mov     rdx, viestin_pituus
+_start:                     mov     edx, viestin_pituus         ;RDX yläosa = 0
                             mov     rsi, viesti
-                            mov     rdi, stdout
-                            mov     rax, laitetulostus
+                            mov     edi, stdout                 ;RDI yläosa = 0
+                            mov     eax, laitetulostus          ;RAX yläosa = 0
                             syscall
 
-                            mov     rdx, toisen_viestin_pituus
+                            mov     edx, toisen_viestin_pituus  ;RDX yläosa = 0
                             mov     rsi, toinen_viesti
-                            mov     rdi, stdout
-                            mov     rax, laitetulostus
+                            mov     edi, stdout                 ;RDI yläosa = 0
+                            mov     eax, laitetulostus          ;RAX yläosa = 0
                             syscall
 
-                            mov     rdi, loppu_hyvin
-                            mov     rax, lopetus
+                            mov     edi, loppu_hyvin            ;RDI yläosa = 0
+                            mov     eax, lopetus                ;RAX yläosa = 0
                             syscall
 

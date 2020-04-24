@@ -8,12 +8,12 @@ lopetus                     EQU     60
 
                             SECTION .rodata
 
-vakio_pii                   dq      3.141592654             ;const double pii = 3.14...                            
-sade                        dq      5.0                     ;const double sade = 5.0
-viesti                      db      "Ohjelma suoritettu.", 10 ;const char viesti[], '\0'-merkitön
+vakio_pii                   dq      3.141592654                 ;const double pii = 3.14...
+sade                        dq      5.0                         ;const double sade = 5.0
+viesti                      db      "Ohjelma suoritettu.", 10   ;const char viesti[], '\0'-merkitön
 viestin_pituus              EQU     $ - viesti
-luvut                       dq      5, 6, 0, -1, 2, 1       ;const long luvut[]
-luvut_kpl                   EQU     ($ - luvut) / 8         ;long: 8 tavua per luku
+luvut                       dq      5, 6, 0, -1, 2, 1           ;const long luvut[]
+luvut_kpl                   EQU     ($ - luvut) / 8             ;long: 8 tavua per luku
 
                             SECTION .text
 
@@ -21,29 +21,29 @@ luvut_kpl                   EQU     ($ - luvut) / 8         ;long: 8 tavua per l
                             GLOBAL  _start:function
 
 _start:                     movsd   xmm0, [sade]
-                            call    laske_ala               ;ympyrän ala
+                            call    laske_ala                   ;ympyrän ala
                             mov     rdi, luvut
                             mov     rsi, luvut_kpl
-                            call    pienin                  ;pienimmän haku
+                            call    pienin                      ;pienimmän haku
                             mov     rdi, viesti
-                            mov     rsi, viestin_pituus
+                            mov     esi, viestin_pituus         ;RSI yläosa = 0
                             call    tulosta
-                            mov     rdi, loppu_hyvin
-                            mov     rax, lopetus
+                            mov     edi, loppu_hyvin            ;RDI yläosa = 0
+                            mov     eax, lopetus                ;RAX yläosa = 0
                             syscall
 ;vastaa: void tulosta(const char *, size_t)
 ;in: RDI: tekstin osoite
 ;in: RSI: tekstin pituus
-tulosta:                    mov     rdx, rsi
+tulosta:                    mov     edx, esi                    ;RDX yläosa nolla?
                             mov     rsi, rdi
-                            mov     rdi, stdout
-                            mov     rax, laitetulostus
+                            mov     edi, stdout                 ;RDI yläosa = 0
+                            mov     eax, laitetulostus          ;RAX yläosa = 0
                             syscall
                             ret
 ;vastaa: double laske_ala(double).
 ;in: XMM0 = säde
 ;out: XMM0 = ympyrän pinta-ala
-laske_ala:                  mulsd   xmm0, xmm0              ;XMM0 = säde²
-                            mulsd   xmm0, [vakio_pii]       ;π otetaan muistivakioista, XMM0 = π * säde²
+laske_ala:                  mulsd   xmm0, xmm0                  ;XMM0 = säde²
+                            mulsd   xmm0, [vakio_pii]           ;π otetaan muistivakioista, XMM0 = π * säde²
                             ret
 
