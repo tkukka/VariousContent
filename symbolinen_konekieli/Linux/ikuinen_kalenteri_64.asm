@@ -365,6 +365,7 @@ lue:                        push    rbp
 ;in  : RSI : ascii numeroiden lukumäärä (tavuja)
 ;out : RDX : lukuarvon osoite
 ;out : RAX : 0 = OK, -1 = virhe
+%ifdef ASC_NUM_1
 muunna_asc_num:             push    rbx
                             push    r11
                             push    r12
@@ -398,6 +399,52 @@ muunna_asc_num:             push    rbx
                             pop     r11
                             pop     rbx
                             ret
+%else   ;Hornerin metodi
+muunna_asc_num:             push    r11
+                            push    rbx
+                            push    rcx
+                            push    rdx
+                            mov     r11, rdx                    ;kopio tulosluvun osoitteesta
+                            lea     rsi, [rdi + rsi]            ;loppuosoite
+                            mov     ebx, 10
+                            mov     eax, -1                     ;summa
+                            cmp     rdi, rsi
+                            je      .tyhja_mjono
+                            movzx   eax, byte [rdi]
+                            cmp     eax, 30h                    ;ascii-lukualueella (30h-39h)?
+                            jb      .virhe
+                            cmp     eax, 39h
+                            ja      .virhe
+                            and     eax, 0fh                    ;häivytetään '3'
+.alku:                      inc     rdi
+                            cmp     rdi, rsi
+                            je      .loppu
+                            movzx   ecx, byte [rdi]
+                            cmp     ecx, 30h                    ;ascii-lukualueella (30h-39h)?
+                            jb      .virhe
+                            cmp     ecx, 39h
+                            ja      .virhe
+                            and     ecx, 0fh                    ;häivytetään '3'
+                            mul     ebx                         ;summa*10
+                            add     eax, ecx                    ;summa*10 + 0...9
+                            jmp     .alku
+.virhe:                     mov     rdi, virhe_ei_luku
+                            mov     esi, virhe_ei_luku_pituus
+                            call    tulosta
+                            mov     eax, -1
+                            pop     rdx
+                            pop     rcx
+                            pop     rbx
+                            pop     r11
+                            ret
+.loppu:                     mov     [r11], eax
+                            xor     eax, eax
+.tyhja_mjono:               pop     rdx
+                            pop     rcx
+                            pop     rbx
+                            pop     r11
+                            ret
+%endif
 ;----------------------------------------------------------------------------
 ;muuntaa binääriluvun ascii-esitykseksi (ascii-luvuiksi 30h - 39h)
 ;in  : RDI : lukuarvo
@@ -470,7 +517,8 @@ tarkista_vuosi:             cmp     edi, ALIN_VUOSI
 ;----------------------------------------------------------------------------
 ;in : RDI : vuosi (numeerinen)
 ;out: RAX = 1, jos karkausvuosi, muutoin RAX = 0
-tutki_karkausvuosi:         push    rbx
+tutki_karkausvuosi:         push    rdx
+                            push    rbx
                             xor     edx, edx                    ;jaettavan yläosa = 0
                             mov     eax, edi                    ;jaettava (vuosi)
                             mov     ebx, 100
@@ -487,6 +535,7 @@ tutki_karkausvuosi:         push    rbx
                             jmp     .loppu
 .karkaus:                   mov     eax, 1
 .loppu:                     pop     rbx
+                            pop     rdx
                             ret
 ;----------------------------------------------------------------------------
 ;tarkistaa päivä-kuukausi -yhdistelmän
@@ -514,10 +563,12 @@ tarkista_paivamaara:        dec     esi                         ; 0 = tammikuu, 
 ;in : RDI : jaettava
 ;in : RSI : jakaja
 ;out: RAX : jakojäännös
-modulo:                     mov     eax, edi
+modulo:                     push    rdx
+                            mov     eax, edi
                             xor     edx, edx
-                            div     esi                         ;-> EDX: jakojäännöd
+                            div     esi                         ;-> EDX: jakojäännös
                             mov     eax, edx
+                            pop     rdx
                             ret
 ;----------------------------------------------------------------------------
 ;hakee taulukoidun apuluvun kuukauden perusteella
