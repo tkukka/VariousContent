@@ -37,19 +37,35 @@ palaute_powz_virhe          BYTE    CRLF, 'powz(z,z) virhe.'
 testiluku                   REAL8           101.0
 reaali_log_tulos            REAL8           ?
 logstatus                   DWORD           ?
-testilukuz                  KOMPLEKSILUKU   {5.0, 7.0}
-tuloslnz                    KOMPLEKSILUKU   {}
-tulosexpz                   KOMPLEKSILUKU   {}
+;testilukuz                  KOMPLEKSILUKU   {{5.0}, {7.0}}
+testilukuz                  REAL10          5.0, 7.0
+                            TARKKUUST       1
+
+tuloslnz                    KOMPLEKSILUKU   {{}, {}, 1 }
+
+tulosexpz                   KOMPLEKSILUKU   {{}, {}, 0}
 exp_p                       REAL8           -0.4
 exp_p2                      REAL8           -0.1
 exp_p3                      REAL8           0.5
 exp_tulos                   REAL8           ?
-tekija1                     KOMPLEKSILUKU   {2.0, -1.0}
-tekija2                     KOMPLEKSILUKU   {10.0, 3.0}
-tulo_z                      KOMPLEKSILUKU   {}
-powz_tulos                  KOMPLEKSILUKU   {}
-powz_luku                   KOMPLEKSILUKU   {3.0, 1.0}
-powz_potenssi               KOMPLEKSILUKU   {2.0, 2.0}
+
+;tekija1                     KOMPLEKSILUKU   {{2.0}, {-1.0}}
+tekija1                     REAL10          2.0, -1.0
+                            TARKKUUST       1
+
+;tekija2                     KOMPLEKSILUKU   {{10.0}, {3.0}}
+tekija2                     REAL10          10.0, 3.0
+                            TARKKUUST       1
+
+tulo_z                      KOMPLEKSILUKU   {{}, {}, 1 }
+
+powz_tulos                  KOMPLEKSILUKU   {{}, {}, }
+powz_luku                   KOMPLEKSILUKU   {{3.0}, {1.0}}
+
+;powz_luku                   REAL10          3.0, 1.0
+;                            TARKKUUST       1
+
+powz_potenssi               KOMPLEKSILUKU   {{2.0}, {2.0}}
 powz_status                 DWORD           ?
 
 vec                         VEKTORI         {3.0, 0.0, 4.0}
@@ -266,48 +282,83 @@ _ln                         ENDP
 ; out: virhekoodi, 0 = OK
 ; out: muistipaikkaan lnz(luku)
 
-_lnz                        PROC    C USES esi ecx, luku:PKOMPL, tulos:PKOMPL, virhekoodi:PDWORD
+_lnz                        PROC    C USES ebx esi ecx, luku:PKOMPL, tulos:PKOMPL, virhekoodi:PDWORD
 ;tutkitaan annettu luku
                             xor     esi, esi
+                            mov     eax, [luku]                 ;annetun luvun osoite
                             xor     ecx, ecx
-                            mov     eax, [luku]
-tutkinta:                   cmp     DWORD PTR [eax + esi], 0
+                            movzx   ebx, TARKKUUST PTR [eax + ((SIZEOF KOMPLEKSILUKU.Reosa) + (SIZEOF KOMPLEKSILUKU.Imosa))]
+                            test    ebx, ebx
+                            jnz     tutki_10tavua
+tutki_8tavua:               cmp     DWORD PTR [eax + esi], 0
                             jne     laskenta
-                            test    DWORD PTR [eax + esi + ((SIZEOF KOMPLEKSILUKU)/4)], 0fffffffh
+                            test    DWORD PTR [eax + esi + ((SIZEOF REAL8)/2)], 7fffffffh
                             jnz     laskenta
-                            add     esi, SIZEOF REAL8           ; +8 tavua
+                            add     esi, SIZEOF KOMPLEKSILUKU.Reosa
                             inc     ecx
                             cmp     ecx, 2                      ;re-osa ja im-osa, 2 kpl tutkittavaa
-                            jne     tutkinta
+                            jne     tutki_8tavua
                             mov     eax, [virhekoodi]
                             mov     DWORD PTR [eax], LOG_VIRHE_NOLLA    ;z = 0 + 0*i
                             ret
+tutki_10tavua:              cmp     DWORD PTR [eax + esi], 0
+                            jne     laskenta
+                            cmp     DWORD PTR [eax + esi + 4], 0
+                            jne     laskenta
+                            test    WORD PTR [eax + esi + 8], 7fffh
+                            jnz     laskenta
+                            add     esi, SIZEOF KOMPLEKSILUKU.Reosa
+                            inc     ecx
+                            cmp     ecx, 2                      ;re-osa ja im-osa, 2 kpl tutkittavaa
+                            jne     tutki_10tavua
+                            mov     eax, [virhekoodi]
+                            mov     DWORD PTR [eax], LOG_VIRHE_NOLLA    ;z = 0 + 0*i
+                            ret
+
 laskenta:                   fldl2e                              ;log2(e)
                             fld1                                ;1.0 -> Y
+                            test    ebx, ebx
+                            jnz     lataa_10t_re
                             fld     REAL8 PTR [eax]
-                            fmul    st, st                      ;Re^2
-                            fld     REAL8 PTR [eax + (SIZEOF REAL8)]
-                            fmul    st, st                      ;Im^2
+                            jmp     kerro
+lataa_10t_re:               fld     REAL10 PTR [eax]
+kerro:                      fmul    st, st                      ;Re^2
+                            test    ebx, ebx
+                            jnz     lataa_10t_imosa
+                            fld     REAL8 PTR [eax + (SIZEOF KOMPLEKSILUKU.Reosa)]
+                            jmp     kerro_im
+lataa_10t_imosa:            fld     REAL10 PTR [eax + (SIZEOF KOMPLEKSILUKU.Reosa)]
+kerro_im:                   fmul    st, st                      ;Im^2
                             faddp                               ;Re^2 + Im^2
                             fsqrt                               ;r = |z| = |Re + i*Im|
                             fyl2x                               ;Y*log2(r)
                             fdivrp                              ;Re{ln(z)}
                             mov     esi, [tulos]
+                            movzx   ecx, TARKKUUST PTR [esi + ((SIZEOF KOMPLEKSILUKU.Reosa) + (SIZEOF KOMPLEKSILUKU.Imosa))]
+                            test    ecx, ecx
+                            jnz     tallenna_10t_reosa
                             fstp    REAL8 PTR [esi]             ;tuloksen reaaliosan tallennus
-                            fld     REAL8 PTR [eax + (SIZEOF REAL8)]    ;Im
-                            fld     REAL8 PTR [eax]                     ;Re
-                            fpatan                                      ;Arg(z) = Im{ln(z)}
-                            fstp    REAL8 PTR [esi + (SIZEOF REAL8)]    ;tuloksen imaginaariosan tallennus
-                            mov     eax, [virhekoodi]
+                            jmp     laske_imosa
+tallenna_10t_reosa:         fstp    REAL10 PTR [esi]            ;tuloksen reaaliosan tallennus
+laske_imosa:                test    ebx, ebx
+                            jnz     lataa_10tavut
+                            fld     REAL8 PTR [eax +  (SIZEOF KOMPLEKSILUKU.Reosa)]    ;Im
+                            fld     REAL8 PTR [eax]                                    ;Re
+                            jmp     vaihekulma
+lataa_10tavut:              fld     REAL10 PTR [eax +  (SIZEOF KOMPLEKSILUKU.Reosa)]    ;Im
+                            fld     REAL10 PTR [eax]                                    ;Re
+vaihekulma:                 fpatan                              ;Arg(z) = Im{ln(z)}
+                            test    ecx, ecx
+                            jnz     tallenna_10t_imosa
+                            fstp    REAL8 PTR [esi + (SIZEOF KOMPLEKSILUKU.Reosa)]    ;tuloksen imaginaariosan tallennus
+                            jmp     loppu
+tallenna_10t_imosa:         fstp    REAL10 PTR [esi + (SIZEOF KOMPLEKSILUKU.Reosa)]   ;tuloksen imaginaariosan tallennus
+loppu:                      mov     eax, [virhekoodi]
                             mov     DWORD PTR [eax], LOG_OK
                             ret
 _lnz                        ENDP
 ;----------------------------------------------------------------------------
-; Eksponenttifunktio e^x
-; C-kieli: double exp(double x)
-
-_exp                        PROC    C potenssi:REAL8
-                            fld     [potenssi]
+_exp_priv                   PROC    C PRIVATE
                             fldl2e                              ;log2(e) -> st(0)
                             fmulp                               ;skaalataan log2(e):lla
                             fld     st                          ;kahdennetaan
@@ -322,49 +373,123 @@ _exp                        PROC    C potenssi:REAL8
                             fscale                              ;(2^x) * 2^n -> exp(X)
                             ffree   st(1)
                             ret
+_exp_priv                   ENDP
+;----------------------------------------------------------------------------
+; Eksponenttifunktio e^x
+; C-kieli: double exp(double x)
+
+_exp                        PROC    C potenssi:REAL8
+                            fld     [potenssi]
+                            call    _exp_priv
+                            ret
 _exp                        ENDP
+;----------------------------------------------------------------------------
+_exp_10t_priv               PROC    C PRIVATE potenssi:REAL10
+                            fld     [potenssi]
+                            call    _exp_priv
+                            ret
+_exp_10t_priv               ENDP
 ;----------------------------------------------------------------------------
 ; Eksponenttifunktio e^z
 ; C-kieli: void expz(const KOMPLEKSILUKU_STR *potenssi, KOMPLEKSILUKU_STR *tulos)
 
-_expz                       PROC    C potenssi:PKOMPL, tulos:PKOMPL
+_expz                       PROC    C USES ebx, potenssi:PKOMPL, tulos:PKOMPL
                             mov     eax, [potenssi]
+                            movzx   ebx, TARKKUUST PTR [eax + ((SIZEOF KOMPLEKSILUKU.Reosa) + (SIZEOF KOMPLEKSILUKU.Imosa))]
+                            test    ebx, ebx
+                            jnz     laske_10t_exp
                             INVOKE  _exp, [eax]                 ;e^Re -> st(0)
-                            fld     REAL8 PTR [eax + (SIZEOF REAL8)]    ;Im -> st(0)
-                            fld     st                          ;kahdennus
+                            jmp     imosa
+laske_10t_exp:              INVOKE  _exp_10t_priv, [eax]        ;e^Re -> st(0)
+                            fld     REAL10 PTR [eax + (SIZEOF KOMPLEKSILUKU.Reosa)]    ;Im -> st(0)
+                            jmp     kahdennus
+imosa:                      fld     REAL8 PTR [eax + (SIZEOF KOMPLEKSILUKU.Reosa)]     ;Im -> st(0)
+kahdennus:                  fld     st                          ;kahdennus
                             fcos
                             fmul    st(0), st(2)                ;e^Re * cos(Im)
                             mov     eax, [tulos]
+                            movzx   ebx, TARKKUUST PTR [eax + ((SIZEOF KOMPLEKSILUKU.Reosa) + (SIZEOF KOMPLEKSILUKU.Imosa))]
+                            test    ebx, ebx
+                            jnz     tallenna_10t
                             fstp    REAL8 PTR [eax]             ;tuloksen Re-osa
-                            fsin
+                            jmp     laske_sin
+tallenna_10t:               fstp    REAL10 PTR [eax]            ;tuloksen Re-osa
+laske_sin:                  fsin
                             fmulp                               ;e^Re * sin(Im)
-                            fstp    REAL8 PTR [eax + (SIZEOF REAL8)]    ;tuloksen Im-osa
+                            test    ebx, ebx
+                            jnz     tallenna_10t_imosa
+                            fstp    REAL8 PTR [eax + (SIZEOF KOMPLEKSILUKU.Reosa)]    ;tuloksen Im-osa
+                            ret
+tallenna_10t_imosa:         fstp    REAL10 PTR [eax + (SIZEOF KOMPLEKSILUKU.Reosa)]   ;tuloksen Im-osa
                             ret
 _expz                       ENDP
 ;----------------------------------------------------------------------------
 ; Kompleksilukujen kertolasku
 ; C-kieli: void mulz(const KOMPLEKSILUKU_STR *lukuA, const KOMPLEKSILUKU_STR *lukuB, KOMPLEKSILUKU_STR *tulos)
 
-_mulz                       PROC    C USES ebx esi, lukuA:PKOMPL, lukuB:PKOMPL, tulos:PKOMPL
+_mulz                       PROC    C USES ebx ecx edx edi esi, lukuA:PKOMPL, lukuB:PKOMPL, tulos:PKOMPL
                             mov     eax, [lukuA]
                             mov     ebx, [lukuB]
+                            movzx   ecx, TARKKUUST PTR [eax + ((SIZEOF KOMPLEKSILUKU.Reosa) + (SIZEOF KOMPLEKSILUKU.Imosa))]
+                            movzx   edx, TARKKUUST PTR [ebx + ((SIZEOF KOMPLEKSILUKU.Reosa) + (SIZEOF KOMPLEKSILUKU.Imosa))]
+                            test    ecx, ecx
+                            jnz     lataa_A_10t_re
                             fld     REAL8 PTR [eax]             ;A.Re
+                            jmp     tutki_B
+lataa_A_10t_re:             fld     REAL10 PTR [eax]            ;A.Re
+tutki_B:                    test    edx, edx
+                            jnz     lataa_B_10t_re
                             fld     REAL8 PTR [ebx]             ;B.Re
-                            fmulp
-                            fld     REAL8 PTR [eax + (SIZEOF REAL8)]    ;A.Im
-                            fld     REAL8 PTR [ebx + (SIZEOF REAL8)]    ;B.Im
-                            fmulp
-                            fsubp                                       ;A.Re * B.Re - A.Im * B.Im
+                            jmp     kerro
+lataa_B_10t_re:             fld     REAL10 PTR [ebx]            ;B.Re
+kerro:                      fmulp
+                            test    ecx, ecx
+                            jnz     lataa_A_10t_im
+                            fld     REAL8 PTR [eax + (SIZEOF KOMPLEKSILUKU.Reosa)]    ;A.Im
+                            jmp     tutki_B2
+lataa_A_10t_im:             fld     REAL10 PTR [eax + (SIZEOF KOMPLEKSILUKU.Reosa)]   ;A.Im
+tutki_B2:                   test    edx, edx
+                            jnz     lataa_B_10t_im
+                            fld     REAL8 PTR [ebx + (SIZEOF KOMPLEKSILUKU.Reosa)]    ;B.Im
+                            jmp     kerro2
+lataa_B_10t_im:             fld     REAL10 PTR [ebx + (SIZEOF KOMPLEKSILUKU.Reosa)]   ;B.Im
+kerro2:                     fmulp
+                            fsubp                               ;A.Re * B.Re - A.Im * B.Im
                             mov     esi, [tulos]
+                            movzx   edi, TARKKUUST PTR [esi + ((SIZEOF KOMPLEKSILUKU.Reosa) + (SIZEOF KOMPLEKSILUKU.Imosa))]
+                            test    edi, edi
+                            jnz     tallenna_10t_re
                             fstp    REAL8 PTR [esi]             ;tulon Re-osa
+                            jmp     loppuosa
+tallenna_10t_re:            fstp    REAL10 PTR [esi]            ;tulon Re-osa
+loppuosa:                   test    ecx, ecx
+                            jnz     lataa_A_10t_re2
                             fld     REAL8 PTR [eax]             ;A.Re
-                            fld     REAL8 PTR [ebx + (SIZEOF REAL8)]    ;B.Im
-                            fmulp
-                            fld     REAL8 PTR [eax + (SIZEOF REAL8)]    ;A.Im
+                            jmp     tutki_B3
+lataa_A_10t_re2:            fld     REAL10 PTR [eax]            ;A.Re
+tutki_B3:                   test    edx, edx
+                            jnz     lataa_B_10t_im2
+                            fld     REAL8 PTR [ebx + (SIZEOF KOMPLEKSILUKU.Reosa)]    ;B.Im
+                            jmp     kerro3
+lataa_B_10t_im2:            fld     REAL10 PTR [ebx + (SIZEOF KOMPLEKSILUKU.Reosa)]   ;B.Im
+kerro3:                     fmulp
+                            test    ecx, ecx
+                            jnz     lataa_A_10t_im2
+                            fld     REAL8 PTR [eax + (SIZEOF KOMPLEKSILUKU.Reosa)]    ;A.Im
+                            jmp     tutki_B4
+lataa_A_10t_im2:            fld     REAL10 PTR [eax + (SIZEOF KOMPLEKSILUKU.Reosa)]   ;A.Im
+tutki_B4:                   test    edx, edx
+                            jnz     lataa_B_10t_re2
                             fld     REAL8 PTR [ebx]             ;B.Re
-                            fmulp
-                            faddp                                       ;A.Re * B.Im + A.Im * B.Re
-                            fstp    REAL8 PTR [esi + (SIZEOF REAL8)]    ;tulon Im-osa
+                            jmp     kerro4
+lataa_B_10t_re2:            fld     REAL10 PTR [ebx]            ;B.Re
+kerro4:                     fmulp
+                            faddp                               ;A.Re * B.Im + A.Im * B.Re
+                            test    edi, edi
+                            jnz     tallenna_10t_im
+                            fstp    REAL8 PTR [esi + (SIZEOF KOMPLEKSILUKU.Reosa)]    ;tulon Im-osa
+                            ret
+tallenna_10t_im:            fstp    REAL10 PTR [esi + (SIZEOF KOMPLEKSILUKU.Reosa)]   ;tulon Im-osa
                             ret
 _mulz                       ENDP
 ;----------------------------------------------------------------------------
@@ -374,6 +499,8 @@ _mulz                       ENDP
 
 _powz                       PROC    C luku:PKOMPL, potenssi:PKOMPL, tulos:PKOMPL, virhekoodi:PDWORD
                             LOCAL   mulz_tulos:KOMPLEKSILUKU, lnz_tulos:KOMPLEKSILUKU, lnz_status:DWORD
+                            mov     mulz_tulos.Tarkkuus, 1
+                            mov     lnz_tulos.Tarkkuus, 1
                             INVOKE  _lnz, luku, ADDR lnz_tulos, ADDR lnz_status
                             cmp     [lnz_status], LOG_OK
                             je      jatkolasku

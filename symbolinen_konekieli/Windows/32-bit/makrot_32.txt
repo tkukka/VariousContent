@@ -10,9 +10,23 @@ POWZ_OK                     EQU     0
 POWZ_VIRHE                  EQU     1
 
 
+;KOMPLEKSILUKU               STRUCT
+;re                          REAL8   ?
+;im                          REAL8   ?
+;KOMPLEKSILUKU               ENDS
+
+TARKKUUST                   TYPEDEF BYTE
+
 KOMPLEKSILUKU               STRUCT
-re                          REAL8   ?
-im                          REAL8   ?
+   UNION Reosa
+      Re8                   REAL8   ?
+      Re10                  REAL10  ?
+   ENDS
+   UNION Imosa
+      Im8                   REAL8   ?
+      Im10                  REAL10  ?
+   ENDS
+Tarkkuus                    TARKKUUST 0
 KOMPLEKSILUKU               ENDS
 
 VEKTORI                     STRUCT
