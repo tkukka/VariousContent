@@ -41,5 +41,18 @@ _mulz                       PROTO   C  lukuA:PKOMPL, lukuB:PKOMPL, tulos:PKOMPL
 _powz                       PROTO   C  luku:PKOMPL, potenssi:PKOMPL, tulos:PKOMPL, virhekoodi:PDWORD
 _vektorin_pituus            PROTO   C  vektori:PVEKTORI
 
+
+modulo                      MACRO   a:REQ, b:REQ
+                            push    edx
+                            push    ebx
+                            mov     ebx, b
+                            mov     eax, a
+                            xor     edx, edx
+                            div     ebx
+                            mov     eax, edx
+                            pop     ebx
+                            pop     edx
+                            ENDM
+
                             .NOLISTMACRO
                             .LIST

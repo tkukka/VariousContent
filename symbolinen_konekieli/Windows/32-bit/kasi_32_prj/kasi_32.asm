@@ -9,21 +9,6 @@
                             INCLUDE ..\makrot_w32.txt
                             INCLUDE ..\makrot_32.txt
 
-                            .NOLIST
-modulo                      MACRO   a:REQ, b:REQ
-                            push    edx
-                            push    ebx
-                            mov     ebx, b
-                            mov     eax, a
-                            xor     edx, edx
-                            div     ebx
-                            mov     eax, edx
-                            pop     ebx
-                            pop     edx
-                            ENDM
-                            .NOLISTMACRO
-                            .LIST
-
 _alusta_sallitut            PROTO   C sallitut:PBYTE, aakkoslista:PBYTE, N_lista:DWORD
 _luo_aakkosindeksit         PROTO   C
 _pienaakkosiksi             PROTO   C jono:PBYTE, N_jono:DWORD
