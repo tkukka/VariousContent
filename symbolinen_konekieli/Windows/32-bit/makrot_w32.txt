@@ -1,31 +1,38 @@
                             .NOLIST
+; https://docs.microsoft.com/en-us/windows/win32/winprog/windows-data-types
 STD_INPUT_HANDLE            EQU     -10
 STD_OUTPUT_HANDLE           EQU     -11
 INVALID_HANDLE_VALUE        EQU     -1
-
+HEAP_ZERO_MEMORY            EQU     8h
 
 ;Määritellään tyyppejä
 PBYTE                       TYPEDEF PTR BYTE
 PDWORD                      TYPEDEF PTR DWORD
 PVOID                       TYPEDEF PTR
+SIZE_T                      TYPEDEF DWORD
+HANDLE                      TYPEDEF DWORD
 
 FUNC_RtlGenRandom           TYPEDEF PROTO STDCALL RandomBuffer:PVOID, RandomBufferLength:DWORD
 RANDFUNCPTR                 TYPEDEF PTR   FUNC_RtlGenRandom
 
 ;Windows API funktiot
-GetStdHandle                PROTO   STDCALL StdHandle:DWORD
 ExitProcess                 PROTO   STDCALL ExitCode:DWORD
-FlushConsoleInputBuffer     PROTO   STDCALL handle:DWORD
+FlushConsoleInputBuffer     PROTO   STDCALL handle:HANDLE
 FreeLibrary                 PROTO   STDCALL handle:DWORD
 ;GetLastError                PROTO   STDCALL
 GetProcAddress              PROTO   STDCALL hModule:DWORD, ProcName:PBYTE
+GetProcessHeap              PROTO   STDCALL
+GetStdHandle                PROTO   STDCALL StdHandle:DWORD
+HeapAlloc                   PROTO   STDCALL heap:HANDLE, flags:DWORD, bytes:SIZE_T
+HeapCreate                  PROTO   STDCALL options:DWORD, init_size:SIZE_T, max_size:SIZE_T
+HeapFree                    PROTO   STDCALL heap:HANDLE, flags:DWORD, mem:PVOID
 LoadLibraryA                PROTO   STDCALL LibFileName:PBYTE
-ReadConsoleA                PROTO   STDCALL handle:DWORD, Buffer:PVOID, NumberOfCharsToRead:DWORD,
+ReadConsoleA                PROTO   STDCALL handle:HANDLE, Buffer:PVOID, NumberOfCharsToRead:DWORD,
                                             NumberOfCharsRead:PDWORD, InputControl:PVOID
 
 SetConsoleCP                PROTO   STDCALL CodePageID:DWORD
 SetConsoleOutputCP          PROTO   STDCALL CodePageID:DWORD
-WriteConsoleA               PROTO   STDCALL handle:DWORD, buffer:PBYTE, NumberOfCharsToWrite:DWORD,
+WriteConsoleA               PROTO   STDCALL handle:HANDLE, buffer:PBYTE, NumberOfCharsToWrite:DWORD,
                                             NumberOfCharsWritten:PDWORD, Reserved:PVOID
 
                             .NOLISTMACRO
