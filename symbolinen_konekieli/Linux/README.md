@@ -81,6 +81,7 @@ Hyödylliset linkit:
 [About ELF Auxiliary Vectors](http://articles.manugarg.com/aboutelfauxiliaryvectors.html)  
 [Anatomy of a system call, part 2](https://lwn.net/Articles/604515/)  
 [The Definitive Guide to Linux System Calls](https://blog.packagecloud.io/eng/2016/04/05/the-definitive-guide-to-linux-system-calls/)  
+[In-depth: ELF - The Extensible & Linkable Format](https://www.youtube.com/watch?v=nC1U1LJQL8o)  
 The flat assembler Message Board: [[Linux32] vDSO, auxv, vsyscall, int 0x80, calling the kernel](https://board.flatassembler.net/topic.php?t=20926)
 
 ### kolmas_32.asm, kolmas_funktio_32.asm
