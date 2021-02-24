@@ -13,9 +13,10 @@ SANITIZER :=
 SANITIZER_TYPE := leak
 .SUFFIXES:
 .SUFFIXES: .c .h .cpp .o .a .d
-CC = gcc-8 #clang-8
-CXX = g++-8 #clang-8
+CC = gcc
+CXX = g++
 CPP = $(CC) -E
+AWK = awk
 SIZE = size -B
 CPPFLAGS =
 WARNINGS = -pedantic -Wall -Wextra -Wformat-security -Werror=format-security
@@ -31,7 +32,7 @@ endif
 ifdef USE_CLANG
   WARNINGS += -Wtautological-compare -Wtautological-constant-in-range-compare -Wgnu
   DEBUG_INFO := -g3 -glldb -O0
-  LDFLAGS += -fuse-ld=lld-8
+  LDFLAGS += -fuse-ld=lld
   COV_FLAGS = -fprofile-instr-generate -fcoverage-mapping
   COV_LDFLAGS = -fprofile-instr-generate -fcoverage-mapping
 else
@@ -157,14 +158,14 @@ $(BUILD_DIR)/%.d: %.c
 	@echo --- Making C Dependency [$(BUILD)] ---
 	$(RM) $@
 	$(CPP) -MM $^ >> $@.tmp
-	gawk -v S="$(BUILD_DIR)/" -F: '{if (NF<2) {print $$0; next} else { printf "%s%s:%s\n",S,$$1,$$2} }' $@.tmp >> $@
+	$(AWK) -v S="$(BUILD_DIR)/" -F: '{if (NF<2) {print $$0; next} else { printf "%s%s:%s\n",S,$$1,$$2} }' $@.tmp >> $@
 	$(RM) $@.tmp
 
 $(BUILD_DIR)/%.d: %.cpp
 	@echo --- Making C++ Dependency [$(BUILD)] ---
 	$(RM) $@
 	$(CPP) -MM $^ >> $@.tmp
-	gawk -v S="$(BUILD_DIR)/" -F: '{if (NF<2) {print $$0; next} else { printf "%s%s:%s\n",S,$$1,$$2} }' $@.tmp >> $@
+	$(AWK) -v S="$(BUILD_DIR)/" -F: '{if (NF<2) {print $$0; next} else { printf "%s%s:%s\n",S,$$1,$$2} }' $@.tmp >> $@
 	$(RM) $@.tmp
 
 all: $(TARGET)
