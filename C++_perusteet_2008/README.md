@@ -20,10 +20,10 @@ Visual Studio 2019 solution & project files for the new C++17 implementation.
 
 # Build Platforms
 ### Linux (development platform)
-- Ubuntu 18.04 LTS
-- GNU Make 4.1
-- **GCC 8.3**, linker: GNU gold 1.15 (ld.gold), libstdc++ (libstdc++.so.6.0.25, GLIBCXX_3.4.25, CXXABI_1.3.11)
-- **Clang 8.0**, linker: LLD 8.0  (ld.lld-8) + libc++ 8.0
+- Ubuntu 20.04 LTS
+- GNU Make 4.2.1
+- **GCC 9.3**, linker: GNU gold 1.16 (ld.gold), libstdc++
+- **Clang 10.0**, linker: LLD 10.0 (ld.lld), libc++
 
 ### Windows 7 SP 1 x64
 
@@ -39,8 +39,8 @@ See the folders **KingsPath_EclipseCDT_Windows**, **MSYS2** and **VStudio_2019**
 
 Flag |Use Clang | Use GCC
 ----|----|----
-**CC**  | clang-8 | < undefined > or gcc-8
-**CXX**  | clang++-8 | < undefined > or g++-8
+**CC**  | clang | < undefined > or gcc
+**CXX**  | clang++ | < undefined > or g++
 
 Flag | Debug Build, the default | Release Build
 ----|----|----
@@ -54,17 +54,17 @@ $ make
 
 2. Build targeting Debug, use Clang
 ```Shell Session
-$ make CC=clang-8 CXX=clang++-8
+$ make CC=clang CXX=clang++
 ```
 
 3. Build targeting Release, use Clang
 ```Shell Session
-$ make CC=clang-8 CXX=clang++-8 BUILD=Release
+$ make CC=clang CXX=clang++ BUILD=Release
 ```
 
 4. Build targeting Release, use g++
 ```Shell Session
-$ make CC=gcc-8 CXX=g++-8 BUILD=Release
+$ make CC=gcc CXX=g++ BUILD=Release
 ```
 #### Cleaning up [Debug | Release]
 1. Cleaning up Debug builds:
