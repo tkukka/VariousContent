@@ -56,7 +56,7 @@ memsize: $(TARGET)
 depend: $(DEPEND)
 
 $(DEPEND): $(SRCS)
-	@echo --- Depencies ---
+	@echo --- Dependencies ---
 	$(RM) $(DEPEND)
 	$(CPP) -MM $^ >> $(DEPEND).tmp
 	gawk -v S="./$(BUILD)/" -F: '{printf "%s%s:%s\n",S,$$1,$$2}' $(DEPEND).tmp >> $(DEPEND)

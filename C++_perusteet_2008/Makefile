@@ -154,14 +154,14 @@ $(BUILD_DIR)/%.o: %.cpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
 $(BUILD_DIR)/%.d: %.c
-	@echo --- Making C Depency [$(BUILD)] ---
+	@echo --- Making C Dependency [$(BUILD)] ---
 	$(RM) $@
 	$(CPP) -MM $^ >> $@.tmp
 	gawk -v S="$(BUILD_DIR)/" -F: '{if (NF<2) {print $$0; next} else { printf "%s%s:%s\n",S,$$1,$$2} }' $@.tmp >> $@
 	$(RM) $@.tmp
 
 $(BUILD_DIR)/%.d: %.cpp
-	@echo --- Making C++ Depency [$(BUILD)] ---
+	@echo --- Making C++ Dependency [$(BUILD)] ---
 	$(RM) $@
 	$(CPP) -MM $^ >> $@.tmp
 	gawk -v S="$(BUILD_DIR)/" -F: '{if (NF<2) {print $$0; next} else { printf "%s%s:%s\n",S,$$1,$$2} }' $@.tmp >> $@
