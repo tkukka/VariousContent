@@ -10,7 +10,7 @@ Experimenting C++ compilation and linking with the MSYS2/mingw-w64 toolchain on 
 
 * Environment: PATH  
    * mingw-w64 in path e.g C:\msys64\mingw64\bin
-   * GCC 9.2.0, check from Windows Command Prompt: ```g++ -v```
+   * GCC 10.2.0, check from Windows Command Prompt: ```g++ -v```
 
 # Using the command-line
 
