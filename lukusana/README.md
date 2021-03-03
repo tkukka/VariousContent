@@ -10,7 +10,7 @@
 * **C**: C11 (compiler: -std=c11)
 * **C++**: C++17 (compiler: -std=c++17)
 
-# Build Platforms
+# Käännösympäristöt / Build Platforms
 ### Linux (development platform)
 - Ubuntu 18.04 LTS
 - GNU Make 4.1
@@ -20,9 +20,11 @@
 - optional: CodeLite 13.x IDE. Using Custom Makefile Project (the files lukusana.workspace, *.project).
 
 ### Windows 7 SP 1 x64
+
 Just experimenting how it builds with  
    1) LLVM Release 9.0
    2) Microsoft Visual Studio Community 2019.  
+   3) Mingw-w64/MSYS2
 
 See the folder **cplusplus**.
 
