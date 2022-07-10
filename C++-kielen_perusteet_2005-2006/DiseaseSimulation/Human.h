@@ -25,6 +25,7 @@ public:
 private:
     Immunity immune;
     Carrying carry;
+    Vaccine vaccine;
     int maxSpeed;
     double speed;
     int contactsWithVirus;

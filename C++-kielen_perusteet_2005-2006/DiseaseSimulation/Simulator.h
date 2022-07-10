@@ -60,15 +60,11 @@ int parse_int(const char* str);
 inline std::ostream& operator<<(std::ostream& o, const Parameters& p)
 {
 
-  o << "Area: " << p.area << " Humans: " << p.N_humans << " Sim.time: " << p.simulation_time;
+  o << "Area: " << p.area << " Humans: " << p.N_humans << " Sim.time: " << p.simulation_time << '\n';
 
   if (p.vaccine_used)
   {
-     o << " vaccine: " << p.vaccine_name << " doses: " << p.N_doses << " effectiveness: " << p.effectiveness << '\n';
-  }
-  else
-  {
-      o << '\n';
+     o << "vaccine: " << p.vaccine_name << " doses: " << p.N_doses << " effectiveness: " << p.effectiveness << '\n';
   }
  
   return o; 

@@ -4,6 +4,10 @@
 #include "Simulator.h"
 
 
+inline constexpr int SimulationStepsInHour = 4;
+inline constexpr int VaccinationStart = 1 * SimulationStepsInHour;
+inline constexpr int VaccinationSpacing = 2 * SimulationStepsInHour;
+
 Simulator::Simulator() : params{false, 0, 0, 0, "", 0, 0}, side{0}, totalSteps{0}, stepNum{0}
 {
 
@@ -20,9 +24,9 @@ void Simulator::Prepare()
     std::cout << "Area -> Side: " << side << '\n';
     humanFactory.CreateHumans(population, params.N_humans);
     population.Prepare(side);
-    totalSteps = params.simulation_time * 4;
+    totalSteps = params.simulation_time * SimulationStepsInHour;
     
-     population.AgeReport();
+    population.AgeReport();
     
     std::cout << "\nInitial population:\n";
     population.Report();
@@ -30,12 +34,32 @@ void Simulator::Prepare()
 
 void Simulator::Run()
 {
+    int vaccinationStep = 0;
+
     std::cout << "\nRunning the simulation...\n";
     for(stepNum = 0; stepNum < totalSteps; stepNum++)
     {
         population.DoSimulationStep();
+
+        if (params.vaccine_used && stepNum >= VaccinationStart)
+        {
+            if (vaccinationStep % VaccinationSpacing == 0)
+            {
+                std::vector<Vaccine> doses;
+                Vaccine v{params.vaccine_name, params.effectiveness};
+
+                for(int i = 0; i < params.N_doses; i++)
+                {
+                    doses.push_back(v);
+                }
+
+                population.Administer(doses);
+            }
+
+            vaccinationStep++;
+        }
     }
-    
+
     std::cout << "\nSimulation result:\n";
     population.Report();
 

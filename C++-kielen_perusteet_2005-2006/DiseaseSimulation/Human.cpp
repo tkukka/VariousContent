@@ -6,7 +6,10 @@
 #include "Randomizer.h"
 
 inline constexpr int stepMeters = 2;
-
+inline constexpr int ImmunityByChance = 5;
+inline constexpr int SpeedUp = 1.2;
+inline constexpr int SlowDown = 0.8;
+inline constexpr int SimulationHour = 4;
 
 static double infection_prob(Health state, int age, int n_virus_contacts);
 
@@ -130,18 +133,18 @@ void Human::EvaluateState()
         auto st = GetState();
 
         // immunity chance
-        if (timeInfected >= 4 && st != Health::Dead)
+        if (timeInfected >= SimulationHour && st != Health::Dead)
         {
             auto rnd = Randomizer::GetRandomizer();
             auto x = rnd->RandomNumber(0, 99);
-            if (x <= 4)
+            if (x < ImmunityByChance)
             {
                 GrantImmunity(Birdflu);
             }
         }
 
 
-        if(timeInfected % 4 == 0)
+        if(timeInfected % SimulationHour == 0)
         {
 
             if(!isImmuneTo(Birdflu) )
@@ -150,11 +153,11 @@ void Human::EvaluateState()
                 {
                     case(Health::Healthy):
                         SetState(Health::Sick);
-                        speed *= 0.8;
+                        speed *= SlowDown;
                         break;
                     case(Health::Sick):
                         SetState(Health::VerySick);
-                        speed *= 0.8;
+                        speed *= SlowDown;
                         break;
                     case(Health::VerySick):
                         SetState(Health::Dead);
@@ -173,11 +176,11 @@ void Human::EvaluateState()
                         break;
                     case(Health::Sick):
                         SetState(Health::Healthy);
-                        speed *= 1.2;
+                        speed *= SpeedUp;
                         break;
                     case(Health::VerySick):
                         SetState(Health::Sick);
-                        speed *= 1.2;
+                        speed *= SpeedUp;
                         break;
                     case(Health::Dead):
                         break;
@@ -190,6 +193,15 @@ void Human::EvaluateState()
 
 void Human::Administer(const Vaccine& aVaccine)
 {
+    hasBeenVaccinated = true;
+    vaccine = aVaccine;
+
+    auto rnd = Randomizer::GetRandomizer();
+    auto x = rnd->RandomNumber(0, 99);
+    if (x < vaccine.Effectiveness())
+    {
+        GrantImmunity(Birdflu);
+    }
 
 }
 

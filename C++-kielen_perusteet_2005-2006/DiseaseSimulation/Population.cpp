@@ -5,11 +5,11 @@
 #include "Population.h"
 #include "Randomizer.h"
 
-constexpr int weight_age_0_9 = 10;
-constexpr int weight_age_10_19 = 20;
-constexpr int weight_age_20_29 = 25;
-constexpr int weight_age_30_50 = 25;
-constexpr int weight_age_51_100 = 20;
+inline constexpr int weight_age_0_9 = 10;
+inline constexpr int weight_age_10_19 = 20;
+inline constexpr int weight_age_20_29 = 25;
+inline constexpr int weight_age_30_50 = 25;
+inline constexpr int weight_age_51_100 = 20;
 
 static const std::vector<double> WEIGHTS =
 {
@@ -26,20 +26,20 @@ struct AgeSpan
     int max;
 };
 
-constexpr const AgeSpan Age_Categories[] = { {0, 9}, {10, 19}, {20, 29}, {30, 50}, {51, 100} };
+inline constexpr const AgeSpan Age_Categories[] = { {0, 9}, {10, 19}, {20, 29}, {30, 50}, {51, 100} };
 
-constexpr int N_Sick = 100;
-constexpr int N_VerySick = 50;
-constexpr int N_Dead = 2;
+inline constexpr int N_Sick = 100;
+inline constexpr int N_VerySick = 50;
+inline constexpr int N_Dead = 2;
 
-constexpr int N_Infected = 79;
+inline constexpr int N_Infected = 79;
 
 static const std::string HumanText{"Human "};
 
-constexpr int AgeSpeedMin = 15;
-constexpr int AgeSpeedMax = 45;
-constexpr int InitialSpeedLow = 2;      // [km/h]
-constexpr int InitialSpeedHigh = 4;
+inline constexpr int AgeSpeedMin = 15;
+inline constexpr int AgeSpeedMax = 45;
+inline constexpr int InitialSpeedLow = 2;      // [km/h]
+inline constexpr int InitialSpeedHigh = 4;
 
 
 inline constexpr const std::array<Direction, 8> DIRECTIONS
@@ -60,7 +60,6 @@ inline constexpr const std::array<Direction, 8> DIRECTIONS
 
 void Population::Prepare(int side)
 {
-
 
     auto rnd = Randomizer::GetRandomizer();
 
@@ -137,6 +136,36 @@ void Population::Prepare(int side)
 
 void Population::Administer(std::vector<Vaccine>& doses)
 {
+    //std::cout << "Administering " << doses.size() << " vaccines\n";
+
+    std::vector<int> indices;
+
+    int id = 0;
+    for(const auto& hum : humans)
+    {
+        if(hum.GetState() != Health::Dead)
+        {
+            indices.push_back(id);
+        }
+
+        id++;
+    }
+
+    std::random_device rd{};
+    std::mt19937 gen(rd());
+    std::vector<int> selected;
+    std::sample(indices.cbegin(), indices.cend(), std::back_inserter(selected), doses.size(), gen);
+
+    for(const auto& ind : selected)
+    {
+        humans.at(ind).Administer(doses.back());
+        doses.pop_back();
+    }
+
+    if (!doses.empty())
+    {
+        std::cout << "*** Not all Vaccines used ***\n";
+    }
 
 }
 
