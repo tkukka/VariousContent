@@ -5,15 +5,15 @@
 Sisältö
 * wanhan C++ -kurssin harjoitustyön modernisointi (C++17)
 * Linux: Makefile lisätty
-* Linux:_Debug & Release käännökset (GCC 8.30, Clang 8.0)
-* Windows: Eclipse CDT (LLVM) ja Visual Studio 2019 -projektit luotu
-* Windows: MSYS2/mingw-w64 ja LLVM: komentoriviltä kääntö ja linkitys
+* Linux: Debug & Release käännökset (GCC 8.30, Clang 8.0)
+* Windows: Clang-tuki ja Visual Studio 2019 -projekti luotu
+* Windows: MSYS2/mingw-w64 ja Clang: komentoriviltä kääntö ja linkitys
 
 Contents
 * An old C++ -programming assignment revisited. Now implemented in C++17
 * Linux: Makefile written
 * Linux: Debug & Release builds (GCC 8.30, Clang 8.0)
-* Windows: building with Eclipse CDT, LLVM, MSYS2/mingw-w64 and Microsoft Visual Studio possible
+* Windows: building with Clang, MSYS2/mingw-w64 and Microsoft Visual Studio possible
 
 ## codelite
 

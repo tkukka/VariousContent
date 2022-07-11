@@ -3,8 +3,8 @@
 Modernisoitu versio (C++17) alkuperäisistä tiedostoista. 
 Modern C++17 implementation basing on the original files.
 
-**KingsPath_EclipseCDT_Windows** Eclipse CDT (C/C++ Development Tooling) -projektitiedostot. LLVM 9.0 (Clang, lld, libc++, C++17).
-Eclipse CDT project using LLVM 9.0 tools, libc++ and C++17.
+**Clang_Windows** LLVM 9.0 (Clang, lld, libc++, C++17).
+Using Clang 9.0, lld, libc++ and C++17.
 
 **MSYS2** MSYS2/mingw-w64 kääntö ja linkitys komentoriviltä. A command-line build with the MSYS2/mingw-w64.
 
@@ -32,7 +32,7 @@ Just experimenting how it builds with
    2) Microsoft Visual Studio Community 2019.  
    3) MSYS2/mingw-w64 GCC 9.2.0  
 
-See the folders **KingsPath_EclipseCDT_Windows**, **MSYS2** and **VStudio_2019**.
+See the folders **Clang_Windows**, **MSYS2** and **VStudio_2019**.
 
 # Linux: Build Flags for Makefile
 

@@ -11,10 +11,6 @@ A pure Microsoft Visual C++ project is also [available](../VStudio_2019).
    * C++ Clang-cl for v142 build tools (x64/x86)
    * C++ CMake Tools for Windows
 * [LLVM Release 9.0](http://releases.llvm.org/) (64 bit Clang compiler & tools for Windows x64)
-* [Eclipse IDE](https://www.eclipse.org/downloads/) for C/C++ Developers 2019-12 (Windows 64-bit)
-   * LLVM plugin(s)
-   * LLDB Debugger plugin
-* [Java Runtime x64](https://jdk.java.net/) for Eclipse
 * [Git](https://git-scm.com/) for Windows
 * [LLVM Project sources](http://llvm.org/docs/GettingStarted.html#checkout)
 * [Python 3.x](https://www.python.org/downloads/windows/)
@@ -79,8 +75,6 @@ Seems to work only for Windows 7, Debug:
 
 ```
 # Using Clang++ from the command-line
-
-Without any Eclipse CDT:  
 
 *Debug:*  
 ```
