@@ -314,6 +314,11 @@ void Population::Report() const
     int n_dead_immune = 0;
     int n_immune_infected = 0;
 
+    bool vaccine_used = false;
+    int n_infected_without_vaccine = 0;
+    int n_infected_with_vaccine = 0;
+
+
     for (const auto& hum : humans)
     {
         switch (hum.GetState())
@@ -335,6 +340,15 @@ void Population::Report() const
         if (hum.isCarrying(Birdflu))
         {
             n_infected++;
+
+            if (hum.isVaccinated())
+            {
+                n_infected_with_vaccine++;
+            }
+            else
+            {
+                n_infected_without_vaccine++;
+            }
 
             if (hum.GetState() == Health::Healthy)
             {
@@ -360,11 +374,23 @@ void Population::Report() const
                 n_immune_infected++;
             }
         }
+
+        if (hum.isVaccinated())
+        {
+            vaccine_used = true;
+        }
     }
 
     std::cout << "Healthy: " << n_healthy << " Sick: " << n_sick << " VerySick: " << n_verysick << " Dead: " << n_dead << '\n';
     std::cout << "Total: " << (n_healthy + n_sick + n_verysick + n_dead) << " [" << humans.size() << "]\n";
     std::cout << "Infected: " << n_infected << " of which healthy " << n_healthy_infected << " and dead " << n_dead_infected << '\n';
     std::cout << "Immune: " << n_immune << " of which infected " << n_immune_infected << " and dead " << n_dead_immune << '\n';
+
+    if (vaccine_used)
+    {
+        std::cout << "Infected without the vaccination: " << n_infected_without_vaccine << '\n';
+        std::cout << "Infected with the vaccination: " << n_infected_with_vaccine << '\n';
+        std::cout << "Vaccine effectiveness: " << (100.0 * (n_infected_without_vaccine - n_infected_with_vaccine) / n_infected_without_vaccine) << " %\n";
+    }
 
 }
