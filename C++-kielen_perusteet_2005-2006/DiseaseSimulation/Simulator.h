@@ -43,7 +43,7 @@ private:
     Simulator& operator=(const Simulator&) = delete;
     Simulator& operator=(Simulator&&) = delete;
 
-    void DoStep();
+    //void DoStep();
     void AddDoses(int amount);
 
     Parameters params;

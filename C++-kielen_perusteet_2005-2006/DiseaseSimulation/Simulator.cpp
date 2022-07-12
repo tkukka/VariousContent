@@ -14,7 +14,7 @@ Simulator::Simulator() : params{false, 0, 0, 0, "", 0, 0}, side{0}, totalSteps{0
 }
 
 void Simulator::SetParameters(Parameters p)
-{ 
+{
     params = p;
     side = static_cast<int>(std::lround(std::sqrt(params.area)));
 }
@@ -25,9 +25,9 @@ void Simulator::Prepare()
     humanFactory.CreateHumans(population, params.N_humans);
     population.Prepare(side);
     totalSteps = params.simulation_time * SimulationStepsInHour;
-    
+
     population.AgeReport();
-    
+
     std::cout << "\nInitial population:\n";
     population.Report();
 }
@@ -45,15 +45,7 @@ void Simulator::Run()
         {
             if (vaccinationStep % VaccinationSpacing == 0)
             {
-                std::vector<Vaccine> doses;
-                Vaccine v{params.vaccine_name, params.effectiveness};
-
-                for(int i = 0; i < params.N_doses; i++)
-                {
-                    doses.push_back(v);
-                }
-
-                population.Administer(doses);
+                AddDoses(params.N_doses);
             }
 
             vaccinationStep++;
@@ -63,6 +55,19 @@ void Simulator::Run()
     std::cout << "\nSimulation result:\n";
     population.Report();
 
+}
+
+void Simulator::AddDoses(int amount)
+{
+    std::vector<Vaccine> doses;
+    Vaccine v{params.vaccine_name, params.effectiveness};
+
+    for (int i = 0; i < amount; i++)
+    {
+        doses.push_back(v);
+    }
+
+    population.Administer(doses);
 }
 
 Simulator* Simulator::GetSimulator()
