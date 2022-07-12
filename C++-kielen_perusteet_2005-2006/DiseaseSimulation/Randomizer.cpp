@@ -29,7 +29,7 @@ int Randomizer::RandomNumber(int min, int max)
     return distrib(gen);
 }
 
-int Randomizer::RandomCategory(const std::vector<double>& weights)
+int Randomizer::WeighedNumber(const std::vector<double>& weights)
 {
      std::discrete_distribution<int> dist(weights.cbegin(), weights.cend());
      return dist(gen);

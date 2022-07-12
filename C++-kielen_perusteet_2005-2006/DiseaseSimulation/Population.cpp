@@ -71,7 +71,7 @@ void Population::Prepare(int side)
     for (auto& hum : humans)
     {
         hum.SetName(HumanText + std::to_string(hum_id));
-        const auto cat = rnd->RandomCategory(WEIGHTS);
+        const auto cat = rnd->WeighedNumber(WEIGHTS);
         auto age = rnd->RandomNumber(Age_Categories[cat].min, Age_Categories[cat].max);
         hum.SetAge(age);
         hum.SetMaxSpeed();

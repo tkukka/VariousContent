@@ -9,7 +9,7 @@ class Randomizer
 public:
     static Randomizer* GetRandomizer();
     int RandomNumber(int min, int max);
-    int RandomCategory(const std::vector<double>& weights);
+    int WeighedNumber(const std::vector<double>& weights);
     void RandomSample(const std::vector<int>& population, std::vector<int>& out, std::vector<int>::size_type size);
 
 private:
