@@ -21,7 +21,7 @@ void Simulator::SetParameters(Parameters p)
 
 void Simulator::Prepare()
 {
-    std::cout << "Area -> Side: " << side << '\n';
+    std::cout << "Side length of the given area: " << side << '\n';
     humanFactory.CreateHumans(population, params.N_humans);
     population.Prepare(side);
     totalSteps = params.simulation_time * SimulationStepsInHour;
