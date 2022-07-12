@@ -21,6 +21,7 @@ public:
     void SetCarrying(const Virus& aVirus);
     bool isImmuneTo(const Virus& aVirus) const;
     bool isCarrying(const Virus& aVirus) const;
+    bool isVaccinated() const { return hasBeenVaccinated; }
 
 private:
     Immunity immune;
