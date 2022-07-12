@@ -19,6 +19,7 @@ public:
     Humans::size_type Size() const;
     void AgeReport() const;
     void Report() const;
+    void DumpPopulation() const;
 
 private:
     void MoveCreatures();

@@ -22,6 +22,7 @@ public:
     bool isImmuneTo(const Virus& aVirus) const;
     bool isCarrying(const Virus& aVirus) const;
     bool isVaccinated() const { return hasBeenVaccinated; }
+    int nVirusContacts() const { return contactsWithVirus; }
 
 private:
     Immunity immune;

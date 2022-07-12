@@ -2,6 +2,8 @@
 #define CREATURE_H
 
 #include <string>
+#include <iostream>
+
 #include "Position.h"
 
 
@@ -12,6 +14,13 @@ enum class Health : int
     VerySick,
     Dead
 };
+
+inline std::ostream& operator<<(std::ostream& o, Health h)
+{
+    o << static_cast<int>(h);
+    return o;
+}
+
 
 enum class Direction : int
 {

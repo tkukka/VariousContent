@@ -31,7 +31,7 @@ inline bool isNear(const Position& pos1, const Position& pos2)
 
 inline std::ostream& operator<<(std::ostream& o, const Position& pos)
 {
-    o << "Pos (" << pos.XPos() << ", " << pos.YPos() << ")\n";
+    o << "P:(" << pos.XPos() << ", " << pos.YPos() << ')';
     return o;
 }
 

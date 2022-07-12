@@ -54,7 +54,7 @@ void Simulator::Run()
 
     std::cout << "\nSimulation result:\n";
     population.Report();
-
+    population.DumpPopulation();
 }
 
 void Simulator::AddDoses(int amount)

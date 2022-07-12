@@ -1,5 +1,7 @@
 #include <iostream>
 #include <array>
+#include <fstream>
+
 #include "Population.h"
 #include "Randomizer.h"
 
@@ -45,6 +47,8 @@ inline constexpr const std::array<Direction, 8> DIRECTIONS
     Direction::West,
     Direction::NorthWest
 };
+
+static const std::string OUT_FILE{"DS_humans.txt"};
 
 
 // ------------------------    code     ------------------------------------
@@ -379,4 +383,24 @@ void Population::Report() const
         std::cout << "Vaccine effectiveness: " << (100.0 * (n_infected_without_vaccine - n_infected_with_vaccine) / n_infected_without_vaccine) << " %\n";
     }
 
+}
+
+void Population::DumpPopulation() const
+{
+    std::ofstream outfile(OUT_FILE);
+
+    if (!outfile)
+    {
+        std::cout << "Couldn't open " << OUT_FILE << " for writing\n";
+        return;
+    }
+
+    for (const auto& hum : humans)
+    {
+        outfile << hum.Name() <<  " A: " << hum.Age() << " H: " << hum.GetState() << " Con: " << hum.nVirusContacts() << ' ' << hum.GetPosition() << '\n';
+    }
+
+    outfile.flush();
+    outfile.close();
+    std::cout << "Wrote population data to file: " << OUT_FILE << '\n';
 }
