@@ -34,12 +34,6 @@ inline constexpr int N_Infected = 79;
 
 static const std::string HumanText{"Human "};
 
-inline constexpr int AgeSpeedMin = 15;
-inline constexpr int AgeSpeedMax = 45;
-inline constexpr int InitialSpeedLow = 2;      // [km/h]
-inline constexpr int InitialSpeedHigh = 4;
-
-
 inline constexpr const std::array<Direction, 8> DIRECTIONS
 {
     Direction::North,
@@ -76,15 +70,7 @@ void Population::Prepare(int side)
         const auto cat = rnd->RandomCategory(WEIGHTS);
         auto age = rnd->RandomNumber(Age_Categories[cat].min, Age_Categories[cat].max);
         hum.SetAge(age);
-
-        if (age >= AgeSpeedMin && age <= AgeSpeedMax)
-        {
-            hum.SetMaxSpeed(InitialSpeedHigh);
-        }
-        else
-        {
-            hum.SetMaxSpeed(InitialSpeedLow);
-        }
+        hum.SetMaxSpeed();
 
         const auto x = rnd->RandomNumber(0, side - 1);
         const auto y = rnd->RandomNumber(0, side - 1);

@@ -5,15 +5,18 @@
 #include "Human.h"
 #include "Randomizer.h"
 
+inline constexpr int AgeMin = 15;
+inline constexpr int AgeMax = 45;
+inline constexpr int InitialSpeedLow = 2;
+inline constexpr int InitialSpeedHigh = 4;
 inline constexpr int stepMeters = 2;
-inline constexpr int ImmunityByChance = 5;
-inline constexpr int SpeedUp = 1.2;
-inline constexpr int SlowDown = 0.8;
+
+inline constexpr int ImmunityByChance = 5;  // %
+inline constexpr double SpeedUp = 1.2;
+inline constexpr double SlowDown = 0.8;
 inline constexpr int SimulationHour = 4;
 
 static double infection_prob(Health state, int age, int n_virus_contacts);
-
-
 
 Human::Human() :
     Creature(),
@@ -25,9 +28,17 @@ Human::Human() :
 {
 
 }
-void Human::SetMaxSpeed(int aSpeed)
+void Human::SetMaxSpeed()
 {
-    maxSpeed = aSpeed;
+    if (Age() >= AgeMin && Age() <= AgeMax)
+    {
+        maxSpeed = InitialSpeedHigh;
+    }
+    else
+    {
+        maxSpeed = InitialSpeedLow;
+    }
+
     speed = maxSpeed;
 }
 
@@ -35,7 +46,7 @@ void Human::Move(Direction aDirection)
 {
     double x_step = 0, y_step = 0;
 
-    switch(aDirection)
+    switch (aDirection)
     {
         default:
         case Direction::North:
@@ -107,7 +118,7 @@ void Human::Contact(Creature& other)
         return;
     }
 
-    if(isCarrying(Birdflu) && timeInfected > 0)
+    if (isCarrying(Birdflu) && timeInfected > 0)
     {
         auto p = 100 * infection_prob(o.GetState(), o.Age(), o.contactsWithVirus);
         auto rnd = Randomizer::GetRandomizer();
@@ -120,14 +131,12 @@ void Human::Contact(Creature& other)
 
         o.contactsWithVirus++;
     }
-
-
 }
 
 void Human::EvaluateState()
 {
 
-    if(isCarrying(Birdflu))
+    if (isCarrying(Birdflu))
     {
         timeInfected++;
         auto st = GetState();
@@ -144,12 +153,12 @@ void Human::EvaluateState()
         }
 
 
-        if(timeInfected % SimulationHour == 0)
+        if (timeInfected % SimulationHour == 0)
         {
 
-            if(!isImmuneTo(Birdflu) )
+            if (!isImmuneTo(Birdflu) )
             {
-                switch(st)
+                switch (st)
                 {
                     case(Health::Healthy):
                         SetState(Health::Sick);
@@ -161,6 +170,7 @@ void Human::EvaluateState()
                         break;
                     case(Health::VerySick):
                         SetState(Health::Dead);
+                        speed = 0;
                         break;
                     case(Health::Dead):
                         break;
@@ -168,7 +178,7 @@ void Human::EvaluateState()
             }
             else
             {
-                switch(st)
+                switch (st)
                 {
                     case(Health::Healthy):
                         carry.erase(Birdflu);
@@ -212,7 +222,7 @@ void Human::GrantImmunity(const Virus& aVirus)
 
 void Human::SetCarrying(const Virus& aVirus)
 {
-    if(!isImmuneTo(aVirus))
+    if (!isImmuneTo(aVirus))
     {
         carry.insert(aVirus);
     }

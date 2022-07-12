@@ -12,7 +12,7 @@ class Human : public Creature
 {
 public:
     Human();
-    void SetMaxSpeed(int aSpeed);
+    void SetMaxSpeed();
     virtual void Move(Direction aDirection) override;
     virtual void Contact(Creature& other) override;
     virtual void EvaluateState() override;
