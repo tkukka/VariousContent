@@ -1,5 +1,8 @@
 #include <memory>
 #include <iostream>
+#include <algorithm>
+#include <iterator>
+
 #include "Randomizer.h"
 
 Randomizer::Randomizer() : rd(), gen(rd())
@@ -30,4 +33,9 @@ int Randomizer::RandomCategory(const std::vector<double>& weights)
 {
      std::discrete_distribution<int> dist(weights.cbegin(), weights.cend());
      return dist(gen);
+}
+
+void Randomizer::RandomSample(const std::vector<int>& population, std::vector<int>& out, std::vector<int>::size_type size)
+{
+    std::sample(population.cbegin(), population.cend(), std::back_inserter(out), size, gen);
 }

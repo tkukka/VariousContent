@@ -1,6 +1,4 @@
 #include <iostream>
-#include <algorithm>
-#include <iterator>
 #include <array>
 #include "Population.h"
 #include "Randomizer.h"
@@ -87,8 +85,10 @@ void Population::Prepare(int side)
         {
             hum.SetMaxSpeed(InitialSpeedLow);
         }
+
         const auto x = rnd->RandomNumber(0, side - 1);
         const auto y = rnd->RandomNumber(0, side - 1);
+
         pos.SetPosition(x, y);
         hum.SetPosition(pos);
 
@@ -98,10 +98,8 @@ void Population::Prepare(int side)
 
     std::cout << "Setting up population health\n";
 
-    std::random_device rd{};
-    std::mt19937 gen(rd());
     std::vector<int> selected;
-    std::sample(indices.cbegin(), indices.cend(), std::back_inserter(selected), N_Sick + N_VerySick + N_Dead, gen);
+    rnd->RandomSample(indices, selected, N_Sick + N_VerySick + N_Dead);
 
     int processed = 0;
     for (const auto& ind : selected)
@@ -124,7 +122,8 @@ void Population::Prepare(int side)
     std::cout << "Setting up infected (" << N_Infected << ")\n";
 
     selected.clear();
-    std::sample(indices.cbegin(), indices.cend(), std::back_inserter(selected), N_Infected, gen);
+
+    rnd->RandomSample(indices, selected, N_Infected);
 
     for (const auto& ind : selected)
     {
@@ -181,10 +180,10 @@ void Population::Administer(std::vector<Vaccine>& doses)
         return;
     }
 
-    std::random_device rd{};
-    std::mt19937 gen(rd());
     std::vector<int> selected;
-    std::sample(indices.cbegin(), indices.cend(), std::back_inserter(selected), doses.size(), gen);
+
+    auto rnd = Randomizer::GetRandomizer();
+    rnd->RandomSample(indices, selected, doses.size());
 
     for (const auto& ind : selected)
     {
