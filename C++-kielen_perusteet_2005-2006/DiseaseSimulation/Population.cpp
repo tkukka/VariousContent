@@ -56,6 +56,7 @@ void Population::Prepare(int side)
 {
 
     auto rnd = Randomizer::GetRandomizer();
+    rnd->SetWeights(WEIGHTS);
 
     std::cout << "Population: " << humans.size() << " people\n";
     std::cout << "Setting up population ages, human positions, initial speeds\n";
@@ -68,7 +69,7 @@ void Population::Prepare(int side)
 
     for (auto& hum : humans)
     {
-        const auto cat = rnd->WeighedNumber(WEIGHTS);
+        const auto cat = rnd->WeighedNumber();
         auto age = rnd->RandomNumber(Age_Categories[cat].min, Age_Categories[cat].max);
         hum.SetAge(age);
         hum.SetMaxSpeed();

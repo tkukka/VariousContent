@@ -25,14 +25,20 @@ Randomizer* Randomizer::GetRandomizer()
 
 int Randomizer::RandomNumber(int min, int max)
 {
-    std::uniform_int_distribution<int> distrib(min, max);
-    return distrib(gen);
+    const std::uniform_int_distribution<int>::param_type params(min, max);
+
+    return distrib(gen, params);
 }
 
-int Randomizer::WeighedNumber(const std::vector<double>& weights)
+void Randomizer::SetWeights(const std::vector<double>& weights)
 {
-     std::discrete_distribution<int> dist(weights.cbegin(), weights.cend());
-     return dist(gen);
+    const std::discrete_distribution<int>::param_type params(weights.cbegin(), weights.cend());
+    wd_params = params;
+}
+
+int Randomizer::WeighedNumber()
+{
+     return w_disc_distrib(gen, wd_params);
 }
 
 void Randomizer::RandomSample(const std::vector<int>& population, std::vector<int>& out, std::vector<int>::size_type size)
