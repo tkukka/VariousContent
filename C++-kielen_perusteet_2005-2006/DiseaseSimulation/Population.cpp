@@ -1,5 +1,4 @@
 #include <iostream>
-#include <array>
 #include <fstream>
 
 #include "Population.h"
@@ -33,18 +32,6 @@ inline constexpr int N_VerySick = 50;
 inline constexpr int N_Dead = 2;
 
 inline constexpr int N_Infected = 79;
-
-inline constexpr const std::array<Direction, 8> DIRECTIONS
-{
-    Direction::North,
-    Direction::NorthEast,
-    Direction::East,
-    Direction::SouthEast,
-    Direction::South,
-    Direction::SouthWest,
-    Direction::West,
-    Direction::NorthWest
-};
 
 static const std::string OUT_FILE{"DS_humans.txt"};
 
@@ -205,14 +192,12 @@ Humans::size_type Population::Size() const
 
 void Population::MoveCreatures()
 {
-    auto rnd = Randomizer::GetRandomizer();
 
     for (auto& hum : humans)
     {
         if (hum.GetState() != Health::Dead)
         {
-            const auto dir = rnd->RandomNumber(0, DIRECTIONS.size() - 1);
-            hum.Move(DIRECTIONS[dir]);
+            hum.Move(RandomDirection());
         }
     }
 }

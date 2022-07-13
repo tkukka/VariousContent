@@ -5,7 +5,7 @@
 #include <iostream>
 
 #include "Position.h"
-
+#include "Direction.h"
 
 enum class Health : int
 {
@@ -21,18 +21,6 @@ inline std::ostream& operator<<(std::ostream& o, Health h)
     return o;
 }
 
-
-enum class Direction : int
-{
-    North = 0,
-    NorthEast,
-    East,
-    SouthEast,
-    South,
-    SouthWest,
-    West,
-    NorthWest
-};
 
 class Creature
 {
