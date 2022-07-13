@@ -19,7 +19,7 @@ inline constexpr int SimulationHour = 4;
 static double infection_prob(Health state, int age, int n_virus_contacts);
 
 Human::Human() :
-    Creature(),
+    Creature(std::string("Human ") + std::to_string(id++)),
     maxSpeed{0},
     speed{0},
     contactsWithVirus{0},
@@ -28,6 +28,7 @@ Human::Human() :
 {
 
 }
+
 void Human::SetMaxSpeed()
 {
     if (Age() >= AgeMin && Age() <= AgeMax)

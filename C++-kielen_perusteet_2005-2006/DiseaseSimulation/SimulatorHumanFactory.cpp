@@ -10,11 +10,10 @@ void SimulatorHumanFactory::CreateHumans(Population& toPopulation, int N) const
         std::cout << "Number of humans can't be less than 1\n";
         return;
     }
-    
-    Human h;
-    for(int k = 0; k < N; k++)
+
+    for (int k = 0; k < N; k++)
     {
-        toPopulation.Add(h);
+        toPopulation.Add(Human());
     }
 
     std::cout << "Created " << toPopulation.Size() << " humans\n";

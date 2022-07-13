@@ -8,7 +8,7 @@ class Virus : public Creature
 {
 public:
     Virus() : Creature() {}
-    Virus(const std::string& aName) : Creature{aName, 0, Health::Healthy} {}
+    Virus(const std::string& aName) : Creature{aName} {}
     virtual void Contact(Creature& other) override;
 
 private:

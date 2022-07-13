@@ -1,11 +1,6 @@
 
 #include "Creature.h"
 
-Creature::Creature() : Creature("", 0, Health::Healthy)
-{
-
-}
-
 Creature::Creature(const std::string& aName, int anAge, Health aState) : name{aName}, position(), age{anAge}, state{aState}
 {
 

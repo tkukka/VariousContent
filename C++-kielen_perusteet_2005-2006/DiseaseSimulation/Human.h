@@ -33,6 +33,7 @@ private:
     int contactsWithVirus;
     bool hasBeenVaccinated;
     int timeInfected;
+    inline static int id = 0;
 };
 
 #endif

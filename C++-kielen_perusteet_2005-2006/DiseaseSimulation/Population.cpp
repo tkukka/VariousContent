@@ -34,8 +34,6 @@ inline constexpr int N_Dead = 2;
 
 inline constexpr int N_Infected = 79;
 
-static const std::string HumanText{"Human "};
-
 inline constexpr const std::array<Direction, 8> DIRECTIONS
 {
     Direction::North,
@@ -70,7 +68,6 @@ void Population::Prepare(int side)
 
     for (auto& hum : humans)
     {
-        hum.SetName(HumanText + std::to_string(hum_id));
         const auto cat = rnd->WeighedNumber(WEIGHTS);
         auto age = rnd->RandomNumber(Age_Categories[cat].min, Age_Categories[cat].max);
         hum.SetAge(age);
