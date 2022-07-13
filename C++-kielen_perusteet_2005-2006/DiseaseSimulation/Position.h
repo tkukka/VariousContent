@@ -18,7 +18,7 @@ public:
 private:
     int iX = 0;
     int iY = 0;
-    static int max;
+    inline static int max = 0;
 };
 
 inline bool isNear(const Position& pos1, const Position& pos2)

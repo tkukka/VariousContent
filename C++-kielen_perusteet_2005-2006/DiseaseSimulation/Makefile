@@ -5,7 +5,7 @@ SHELL = /bin/sh
 # C/C++ settings
 BUILD =
 TARGET:= DiseaseSimulation
-SRCS_CXX = main.cpp Randomizer.cpp Simulator.cpp Vaccine.cpp Creature.cpp Virus.cpp Human.cpp Population.cpp SimulatorHumanFactory.cpp Position.cpp
+SRCS_CXX = main.cpp Randomizer.cpp Simulator.cpp Vaccine.cpp Creature.cpp Virus.cpp Human.cpp Population.cpp SimulatorHumanFactory.cpp
 OBJS_CXX = $(SRCS_CXX:.cpp=.o)
 DEPS := $(SRCS_CXX:.cpp=.d)
 CC = gcc
