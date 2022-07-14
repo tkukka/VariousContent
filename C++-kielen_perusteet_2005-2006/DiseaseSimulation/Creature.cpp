@@ -1,5 +1,6 @@
 
 #include "Creature.h"
+#include "Direction.h"
 
 Creature::Creature(const std::string& aName, int anAge, Health aState) : name{aName}, position(), age{anAge}, state{aState}
 {

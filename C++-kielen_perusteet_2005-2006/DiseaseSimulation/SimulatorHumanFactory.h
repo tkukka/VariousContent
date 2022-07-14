@@ -1,7 +1,7 @@
 #ifndef SIMULATOR_HUMAN_FACTORY_H
 #define SIMULATOR_HUMAN_FACTORY_H
 
-#include "Population.h"
+class Population;
 
 class SimulatorHumanFactory
 {

@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "Vaccine.h"
+
 #include "Population.h"
 #include "SimulatorHumanFactory.h"
 
@@ -30,7 +30,7 @@ struct Parameters
 class Simulator
 {
 public:
-    void SetParameters(Parameters p);
+    void SetParameters(const Parameters& p);
     void Prepare();
     void Run();
     int SimulationSteps() const  { return totalSteps; }

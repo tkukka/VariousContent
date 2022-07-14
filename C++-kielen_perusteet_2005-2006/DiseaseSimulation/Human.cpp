@@ -1,9 +1,10 @@
-//#include <iostream>
+#include <string>
 #include <algorithm>
 #include <cstdlib>
 #include <cmath>
 #include "Human.h"
 #include "Randomizer.h"
+#include "Direction.h"
 
 inline constexpr int AgeMin = 15;
 inline constexpr int AgeMax = 45;

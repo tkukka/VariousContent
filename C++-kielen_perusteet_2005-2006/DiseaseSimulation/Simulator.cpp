@@ -2,7 +2,7 @@
 #include <stdexcept>
 #include <cmath>
 #include "Simulator.h"
-
+#include "Vaccine.h"
 
 inline constexpr int SimulationStepsInHour = 4;
 inline constexpr int VaccinationStart = 1 * SimulationStepsInHour;
@@ -18,7 +18,7 @@ Simulator::Simulator() :
 
 }
 
-void Simulator::SetParameters(Parameters p)
+void Simulator::SetParameters(const Parameters& p)
 {
     params = p;
     side = static_cast<int>(std::lround(std::sqrt(params.area)));

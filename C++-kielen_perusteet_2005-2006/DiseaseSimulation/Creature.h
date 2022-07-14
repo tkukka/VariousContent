@@ -5,7 +5,8 @@
 #include <iostream>
 
 #include "Position.h"
-#include "Direction.h"
+
+enum class Direction : int;
 
 enum class Health : int
 {

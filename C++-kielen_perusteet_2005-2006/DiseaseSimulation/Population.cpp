@@ -2,7 +2,9 @@
 #include <fstream>
 
 #include "Population.h"
+#include "Virus.h"
 #include "Randomizer.h"
+#include "Direction.h"
 
 inline constexpr int weight_age_0_9 = 10;
 inline constexpr int weight_age_10_19 = 20;

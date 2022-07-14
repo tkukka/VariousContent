@@ -1,5 +1,6 @@
 #include <iostream>
 #include "SimulatorHumanFactory.h"
+#include "Population.h"
 #include "Human.h"
 
 void SimulatorHumanFactory::CreateHumans(Population& toPopulation, int N) const

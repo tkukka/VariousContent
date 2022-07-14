@@ -2,6 +2,7 @@
 #define HUMAN_H
 
 #include <unordered_set>
+#include "Creature.h"
 #include "Vaccine.h"
 #include "Virus.h"
 
