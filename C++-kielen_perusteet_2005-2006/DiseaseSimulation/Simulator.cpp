@@ -8,7 +8,12 @@ inline constexpr int SimulationStepsInHour = 4;
 inline constexpr int VaccinationStart = 1 * SimulationStepsInHour;
 inline constexpr int VaccinationSpacing = 2 * SimulationStepsInHour;
 
-Simulator::Simulator() : params{false, 0, 0, 0, "", 0, 0}, side{0}, totalSteps{0}, stepNum{0}
+Simulator::Simulator() :
+    params{false, 0, 0, 0, "", 0, 0},
+    side{0},
+    totalSteps{0},
+    stepNum{0},
+    administer_more_vaccines{true}
 {
 
 }
@@ -41,7 +46,7 @@ void Simulator::Run()
     {
         population.DoSimulationStep();
 
-        if (params.vaccine_used && stepNum >= VaccinationStart)
+        if (params.vaccine_used && administer_more_vaccines && stepNum >= VaccinationStart)
         {
             if (vaccinationStep % VaccinationSpacing == 0)
             {
@@ -67,7 +72,7 @@ void Simulator::AddDoses(int amount)
         doses.push_back(v);
     }
 
-    population.Administer(doses);
+    administer_more_vaccines = population.Administer(doses);
 }
 
 Simulator* Simulator::GetSimulator()

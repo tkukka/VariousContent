@@ -38,10 +38,16 @@ void Randomizer::SetWeights(const std::vector<double>& weights)
 
 int Randomizer::WeighedNumber()
 {
-     return w_disc_distrib(gen, wd_params);
+    return w_disc_distrib(gen, wd_params);
 }
 
 void Randomizer::RandomSample(const std::vector<int>& population, std::vector<int>& out, std::vector<int>::size_type size)
 {
     std::sample(population.cbegin(), population.cend(), std::back_inserter(out), size, gen);
+}
+
+bool Randomizer::SingleTrial(double prob)
+{
+    const std::bernoulli_distribution::param_type params{prob};
+    return bern_distrib(gen, params);
 }

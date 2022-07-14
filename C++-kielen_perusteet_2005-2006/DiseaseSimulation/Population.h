@@ -13,7 +13,7 @@ class Population
 public:
     Population() = default;
     void Prepare(int side);
-    void Administer(std::vector<Vaccine>& doses);
+    bool Administer(std::vector<Vaccine>& doses);
     void Add(const Human& aHuman);
     void DoSimulationStep();
     Humans::size_type Size() const;

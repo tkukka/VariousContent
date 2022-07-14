@@ -12,6 +12,7 @@ public:
     void SetWeights(const std::vector<double>& weights);
     int WeighedNumber();
     void RandomSample(const std::vector<int>& population, std::vector<int>& out, std::vector<int>::size_type size);
+    bool SingleTrial(double prob);
 
 private:
     Randomizer();
@@ -25,6 +26,7 @@ private:
     std::uniform_int_distribution<int> distrib;
     std::discrete_distribution<int> w_disc_distrib;
     std::discrete_distribution<int>::param_type wd_params;
+    std::bernoulli_distribution bern_distrib;
 };
 
 #endif

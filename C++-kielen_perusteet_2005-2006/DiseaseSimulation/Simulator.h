@@ -53,6 +53,7 @@ private:
     int side;
     int totalSteps;
     int stepNum;
+    bool administer_more_vaccines;
 };
 
 int parse_int(const char* str);

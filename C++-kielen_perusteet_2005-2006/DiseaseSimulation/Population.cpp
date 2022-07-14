@@ -108,13 +108,13 @@ void Population::Prepare(int side)
     std::cout << '\n';
 }
 
-void Population::Administer(std::vector<Vaccine>& doses)
+bool Population::Administer(std::vector<Vaccine>& doses)
 {
     static bool vaccines_needed = true;
 
     if (!vaccines_needed)
     {
-        return;
+        return vaccines_needed;
     }
 
     //std::cout << "Administering " << doses.size() << " vaccines\n";
@@ -152,12 +152,12 @@ void Population::Administer(std::vector<Vaccine>& doses)
     {
         vaccines_needed = false;
         std::cout << "There is no one suitable to receive a vaccine\n";
-        return;
+        return vaccines_needed;
     }
 
     std::vector<int> selected;
 
-    auto rnd = Randomizer::GetRandomizer();
+    static auto rnd = Randomizer::GetRandomizer();
     rnd->RandomSample(indices, selected, doses.size());
 
     for (const auto& ind : selected)
@@ -170,7 +170,7 @@ void Population::Administer(std::vector<Vaccine>& doses)
     {
         std::cout << "*** There were more vaccines than potential recipients ***\n";
     }
-
+    return vaccines_needed;
 }
 
 void Population::Add(const Human& aHuman)

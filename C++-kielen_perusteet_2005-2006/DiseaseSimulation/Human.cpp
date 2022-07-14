@@ -11,7 +11,7 @@ inline constexpr int InitialSpeedLow = 2;
 inline constexpr int InitialSpeedHigh = 4;
 inline constexpr int stepMeters = 2;
 
-inline constexpr int ImmunityByChance = 5;  // %
+inline constexpr double ImmunityByChance = 0.05;  // 5%
 inline constexpr double SpeedUp = 1.2;
 inline constexpr double SlowDown = 0.8;
 inline constexpr int SimulationHour = 4;
@@ -121,11 +121,11 @@ void Human::Contact(Creature& other)
 
     if (isCarrying(Birdflu) && timeInfected > 0)
     {
-        auto p = 100 * infection_prob(o.GetState(), o.Age(), o.contactsWithVirus);
-        auto rnd = Randomizer::GetRandomizer();
-        auto x = rnd->RandomNumber(1, 100);
+        static auto rnd = Randomizer::GetRandomizer();
+        auto prob = infection_prob(o.GetState(), o.Age(), o.contactsWithVirus);
+        bool infected = rnd->SingleTrial(prob);
 
-        if (x < p)
+        if (infected)
         {
             o.SetCarrying(Birdflu);
         }
@@ -145,9 +145,10 @@ void Human::EvaluateState()
         // immunity chance
         if (timeInfected >= SimulationHour && st != Health::Dead)
         {
-            auto rnd = Randomizer::GetRandomizer();
-            auto x = rnd->RandomNumber(0, 99);
-            if (x < ImmunityByChance)
+            static auto rnd = Randomizer::GetRandomizer();
+            bool immunized = rnd->SingleTrial(ImmunityByChance);
+
+            if (immunized)
             {
                 GrantImmunity(Birdflu);
             }
@@ -207,9 +208,10 @@ void Human::Administer(const Vaccine& aVaccine)
     hasBeenVaccinated = true;
     vaccine = aVaccine;
 
-    auto rnd = Randomizer::GetRandomizer();
-    auto x = rnd->RandomNumber(0, 99);
-    if (x < vaccine.Effectiveness())
+    static auto rnd = Randomizer::GetRandomizer();
+    bool immunized = rnd->SingleTrial(aVaccine.Effectiveness() / 100.0);
+
+    if (immunized)
     {
         GrantImmunity(Birdflu);
     }
