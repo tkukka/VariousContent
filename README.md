@@ -57,4 +57,7 @@ Contents
 * Linux assembly experiments (32 bit / 64 bit) for a console and a debugger. NASM, GDB
 * Windows assembly experiments (32 bit / 64 bit) for a console and a debugger. MASM, Visual Studio
 
+## veikkauspelit
+Sisältö
+* Python-kirjastojen kokeilua
 
