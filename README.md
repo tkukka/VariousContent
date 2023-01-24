@@ -61,3 +61,7 @@ Contents
 Sisältö
 * Python-kirjastojen kokeilua
 
+## yatzy
+Sisältö
+* Yatzy-noppapeli
+
