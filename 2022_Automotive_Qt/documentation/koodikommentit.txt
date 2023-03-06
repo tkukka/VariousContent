@@ -1,0 +1,18 @@
+Yleistä:
+
+- Yritä Backend-toteutus Qt Remote Objectien taakse
+- Toteuta oma Odometer
+- Voit myös kokeilla siirtää ohjauspaneelin omaan ikkunaansa
+
+main.qml:
+
+- Ohjaa vilkku-nappien yms. avulla Simulator-luokkaa, joka tekee asioita ja kertoo UI:lle mihin tilaan sen pitää mennä
+- SimulationTimeria ei tarvita QML:ssä vaan Simulator-luokan pitäisi automaattisesti päivittää arvojaan kun simulaatio on päällä
+
+Throttle.qml:
+
+- Propertyjen arvoja ei alussa tarvitse erikseen asettaa jos arvo on default (esim. value: 0)
+
+SignalPane.qml
+
+- Timerit eivät loogisesti kuulu Row:n alle
