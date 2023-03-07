@@ -3,10 +3,10 @@
 ## 2022_Automotive_Qt
 
 Sisältö
-* Qt6-projekti (Qt/C++, QML, QtQuick)
+* Qt6-projekteja (Qt/C++, QML, Qt Quick)
 
 Contents
-* A Qt6 project (Qt/C++, QML, QtQuick)
+* Qt6 projects (Qt/C++, QML, Qt Quick)
 
 ## C++_perusteet_2008
 
