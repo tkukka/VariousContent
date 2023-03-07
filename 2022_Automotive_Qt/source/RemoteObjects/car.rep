@@ -1,0 +1,7 @@
+#include <QtCore>
+
+class Car
+{
+	PROP(int mass = 2000);
+	SLOT(void powerUp(QString from));
+};
