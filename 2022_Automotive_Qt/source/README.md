@@ -1,8 +1,10 @@
-# QuickApp
+# Projects
+
+## QuickApp
 
 Speedgauge simulation with Qt Quick.
 
-# RemoteObjects
+## RemoteObjects
 
 Qt Remote Objects experiment.
 
