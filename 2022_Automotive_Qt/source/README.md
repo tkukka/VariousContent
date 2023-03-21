@@ -2,7 +2,9 @@
 
 ## QuickApp
 
-Speedgauge simulation with Qt Quick.
+Speedgauge simulation with Qt Quick.  
+
+![UI view](../documentation/screenshot.png "main view")
 
 ## RemoteObjects
 
