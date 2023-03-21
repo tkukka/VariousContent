@@ -8,7 +8,7 @@ Speedgauge simulation with Qt Quick.
 
 ## RemoteObjects
 
-Qt Remote Objects experiment.
+Qt Remote Objects experiment to demo interprocess messaging.
 
 # Development Environment
 
