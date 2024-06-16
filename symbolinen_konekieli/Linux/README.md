@@ -36,7 +36,9 @@ Intel-syntaksi myös Eclipsen C/C++ debuggeriin:
 Window: Preferences, sieltä C/C++: Debug: GDB. Debug Configuration Defaults, kenttä: GDB command file. 
 Browse:lla haetaan .gdbinit. Ilmestyy koko polku tiedostoon. Pelkkä .gdbinit kentässä ei riitä.
 
-Koko [Eclpse CDT](https://www.eclipse.org/cdt/) softan debuggeri toiminnee samoin.
+Koko [Eclpse CDT](https://www.eclipse.org/cdt/) softan debuggeri toiminnee samoin.  
+
+Lisää: [cdt/StandaloneDebugger.md](https://github.com/eclipse-cdt/cdt/blob/main/StandaloneDebugger.md)  
 
 # Muita debuggereita
 
