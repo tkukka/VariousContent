@@ -47,7 +47,7 @@ private:
     void AddDoses(int amount);
 
     Parameters params;
-    std::vector<Vaccine> doses;
+    //std::vector<Vaccine> doses;  // used only in one method
     Population population;
     const SimulatorHumanFactory humanFactory;
     int side;
