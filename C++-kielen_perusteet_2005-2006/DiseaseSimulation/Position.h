@@ -26,7 +26,7 @@ inline bool isNear(const Position& pos1, const Position& pos2)
     const auto diff_x = std::abs(pos1.XPos() - pos2.XPos());
     const auto diff_y = std::abs(pos1.YPos() - pos2.YPos());
     
-    return (diff_x == 0 && diff_y == 0) || (diff_x == 1 && diff_y == 0) || (diff_x == 1 && diff_y == 1) || (diff_x == 0 && diff_y == 1); 
+    return (diff_x <= 1 && diff_y <= 1);
 }
 
 inline std::ostream& operator<<(std::ostream& o, const Position& pos)
