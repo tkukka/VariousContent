@@ -137,7 +137,7 @@ bool Population::Administer(std::vector<Vaccine>& doses)
     // everybody is vaccinated. second round
     if (indices.empty())
     {
-        int id = 0;
+        id = 0;
         for (const auto& hum : humans)
         {
             if(hum.GetState() != Health::Dead && !hum.isImmuneTo(Birdflu))
@@ -244,19 +244,19 @@ void Population::AgeReport() const
     {
         auto a = hum.Age();
 
-        if ( a < 10)
+        if (a < 10)
         {
             age_0_9++;
         }
-        else if (a >= 10 && a < 20)
+        else if (a < 20)
         {
             age_10_19++;
         }
-        else if (a >= 20 && a < 30)
+        else if (a < 30)
         {
             age_20_29++;
         }
-        else if (a >= 30 && a < 51)
+        else if (a < 51)
         {
             age_30_50++;
         }
