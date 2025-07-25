@@ -32,7 +32,7 @@ public:
     void SetAge(int anAge) { age = anAge; }
     int Age() const { return age; }
     //void SetName(const std::string& aName) { name = aName; }
-    std::string Name() const { return name; }
+    const std::string& Name() const { return name; }
     void SetPosition(const Position& aPosition) { position = aPosition; }
     const Position& GetPosition() const { return position; }
     void SetState(Health aState) { state = aState; }

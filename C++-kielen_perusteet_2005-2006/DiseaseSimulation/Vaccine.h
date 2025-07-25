@@ -9,7 +9,7 @@ public:
     Vaccine(): effectiveness{0} {}
     Vaccine(const std::string& aName, int eff) : effectiveness{eff}, name{aName} {}
     int Effectiveness() const { return effectiveness; }
-    std::string Name() const { return name; }
+    const std::string& Name() const { return name; }
     
 private:
     int effectiveness;
