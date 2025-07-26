@@ -65,11 +65,10 @@ void Simulator::Run()
 void Simulator::AddDoses(int amount)
 {
     std::vector<Vaccine> doses;
-    Vaccine v{params.vaccine_name, params.effectiveness};
 
     for (int i = 0; i < amount; i++)
     {
-        doses.push_back(v);
+        doses.emplace_back(params.vaccine_name, params.effectiveness);
     }
 
     administer_more_vaccines = population.Administer(doses);
