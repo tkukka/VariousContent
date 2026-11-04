@@ -2,11 +2,11 @@
 
 Windows 7 SP1 (64-bit)  
 Visual Studio 2019  
-   * 32-bit: Microsoft Macro Assembler Version 14.24.28316.0
-   * 64-bit: Microsoft Macro Assembler (x64) Version 14.24.28316.0
+   * 32-bit: Microsoft Macro Assembler Version 14.24.28316.0  
+   * 64-bit: Microsoft Macro Assembler (x64) Version 14.24.28316.0  
 
 Windows 11  
-Visual Studio 2022
+Visual Studio 2022  
 
 [Microsoft Macro Assembler (MASM)](https://learn.microsoft.com/en-us/cpp/assembler/masm/microsoft-macro-assembler-reference)  
 [Microsoft Linker](https://learn.microsoft.com/en-us/cpp/build/reference/linking?view=msvc-170)  
@@ -72,10 +72,15 @@ Kykenevät luomaan .exen ilman erillistä linkeriä: Asmc, EuroAssembler, flat a
 [Open Watcom v2 Fork: Debugger](https://github.com/open-watcom/open-watcom-v2)  
 [x64dbg](https://x64dbg.com/)  
 
-### Muut
+### Muut  
 
+[C++ Insights](https://cppinsights.io/)  
+[Library to Instrument Executable Formats (LIEF)](https://lief.re/)  
+[LLVM Explorer](https://llvm-explorer.dev/)  
 [Matt Godbolt's Compiler Explorer](https://godbolt.org/)  
 [Free Code Manipulation Library](https://www.fcml-lib.com/)  
+[x86-64 Playground](https://x64.halb.it/)  
+
 [ModernUI](https://github.com/mrfearless/ModernUI64)  
 
 ### Dokumentit
