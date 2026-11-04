@@ -7,6 +7,8 @@ Visual Studio 2019
 
 Windows 11  
 Visual Studio 2022  
+    * 32-bit:  ml.exe   Macro Assembler Version 14.44.35229.0  
+    * 64-bit: ml64.exe  Macro Assembler (x64) Version 14.44.35229.0  
 
 [Microsoft Macro Assembler (MASM)](https://learn.microsoft.com/en-us/cpp/assembler/masm/microsoft-macro-assembler-reference)  
 [Microsoft Linker](https://learn.microsoft.com/en-us/cpp/build/reference/linking?view=msvc-170)  
