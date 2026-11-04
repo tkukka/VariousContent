@@ -5,6 +5,12 @@ Visual Studio 2019
    * 32-bit: Microsoft Macro Assembler Version 14.24.28316.0
    * 64-bit: Microsoft Macro Assembler (x64) Version 14.24.28316.0
 
+Windows 11  
+Visual Studio 2022
+
+[Microsoft Macro Assembler (MASM)](https://learn.microsoft.com/en-us/cpp/assembler/masm/microsoft-macro-assembler-reference)  
+[Microsoft Linker](https://learn.microsoft.com/en-us/cpp/build/reference/linking?view=msvc-170)  
+
 **Projektin perusasetukset**  
 Oletus: Debug-moodi (x86 tai x64).  
 Kohdat 2-3: projektin on oltava valittu aktiiviseksi Solution Explorer:ssa. Epäaktiivinen -> valikkovalintoja piiloutuu.  
@@ -18,76 +24,82 @@ Kohdat 4-7: Project Properties
 7. Microsoft Macro Assembler: Listing File. Assembled Code Listing File: $(IntDir)%(FileName).lst  
 
 Linkit:  
-[Add an assembler-language file to a Visual Studio C++ project](https://docs.microsoft.com/en-us/cpp/assembler/masm/masm-for-x64-ml64-exe?view=vs-2019#add-an-assembler-language-file-to-a-visual-studio-c-project)  
-[/STACK (Stack Allocations)](https://docs.microsoft.com/en-us/cpp/build/reference/stack-stack-allocations)  
-[.STACK (32-bit MASM)](https://docs.microsoft.com/en-us/cpp/assembler/masm/dot-stack)  
+[Add an assembler-language file to a Visual Studio C++ project](https://learn.microsoft.com/en-us/cpp/assembler/masm/masm-for-x64-ml64-exe?view=msvc-170#add-an-assembler-language-file-to-a-visual-studio-c-project)  
+[/STACK (Stack Allocations)](https://learn.microsoft.com/en-us/cpp/build/reference/stack-stack-allocations?view=msvc-170)  
+[.STACK (32-bit MASM)](https://learn.microsoft.com/en-us/cpp/assembler/masm/dot-stack?view=msvc-170)  
 
 ### Muita assemblereita
 
-[as - the GNU assembler, MSYS2](https://www.msys2.org/)  
+[as - the GNU assembler: MSYS2:n binutils-paketissa](https://www.msys2.org/)  
 [Asmc Macro Assembler](https://github.com/nidud/asmc)  
 [EuroAssembler](https://euroassembler.eu/eadoc/)  
-[flat assembler](http://flatassembler.net/download.php)  
-[GoAsm](http://www.godevtool.com/)  
+[flat assembler](https://flatassembler.net/download.php)  
+[GoAsm](https://www.godevtool.com/)  
 [JWasm](https://github.com/JWasm/jwasm.github.io)  
-[MASM32 SDK](https://www.masm32.com/)  (ei Microsoftin tuotos)  
+[MASM32 SDK](https://masm32.com/index.htm)  (ei Microsoftin tuotos)  
 [NASM](https://nasm.us/)  
-[Open Watcom Assembler](http://openwatcom.org/download.php)  
-[Pelles Macro Assembler](http://www.smorgasbordet.com/pellesc/)  
+[Open Watcom v2 Fork: Assembler](https://github.com/open-watcom/open-watcom-v2)  
+[Pelles C: Macro Assembler](https://www.pellesc.se/)  
+[SASM - Scriptable ASseMbler ](https://git.rosseaux.net/BeRo1985/sasm)  
 [Solar Assembler](http://www.oby.ro/sol_asm/)  
-[UASM](http://www.terraspace.co.uk/uasm.html)  
+[UASM](https://www.terraspace.co.uk/uasm.html)  
 
-[Easy Code - Visual Assembler](http://www.easycode.cat/English/Help/EasyCode.htm)  
-[Visual MASM](http://www.visualmasm.com/)  
+[Easy Code - Visual Assembler](https://www.easycode.cat/English/Help/EasyCode.htm)  
+[RadASM2](https://github.com/mrfearless/RadASM2)  
+[Visual MASM](https://www.visualmasm.com/)  
 
-Kykenevät luomaan .exen ilman linkeriä: Asmc, EuroAssembler, flat assembler, JWasm, Solar Assembler, UASM
+Kykenevät luomaan .exen ilman erillistä linkeriä: Asmc, EuroAssembler, flat assembler, JWasm, SASM, Solar Assembler, UASM
 
 ### Muita linkereitä
 
-[GoLink](http://www.godevtool.com/)  
-[JWlink](https://github.com/JWasm/jwasm.github.io)  
-[ld - The GNU linker, MYS2](https://www.msys2.org/)  
+[GoLink](https://www.godevtool.com/)  
+[JWlink](https://github.com/JWasm/JWlink)  
+[ld - The GNU linker, MSYS2:n binutils-paketissa](https://www.msys2.org/)  
 [lld](https://releases.llvm.org/)  
-[Open Watcom Linker](http://openwatcom.org/download.php)  
-[Pelles Linker polink](http://www.smorgasbordet.com/pellesc/)  
+[mold](https://github.com/rui314/mold)  
+[Open Watcom v2 Fork: Linker](https://github.com/open-watcom/open-watcom-v2)  
+[Pelles C: polink](https://www.pellesc.se/)  
+[wild](https://github.com/wild-linker/wild)  
 
 ### Muita debuggereita
 
 [Eclipse CDT/Standalone Debugger](https://www.eclipse.org/cdt/downloads.php)  
 [edb](https://github.com/eteran/edb-debugger)  
-[GDB the GNU Debugger, MSYS2](https://www.msys2.org/)  
+[GDB the GNU Debugger, MSYS2:n gdb paketti](https://www.msys2.org/)  
 [gdbgui](https://www.gdbgui.com/)  
-[GoBug ](http://www.godevtool.com/)  
-[OllyDbg](http://www.ollydbg.de/)  
-[Open Watcom Debugger](http://openwatcom.org/download.php)  
+[GoBug ](https://www.godevtool.com/)  
+[OllyDbg](https://www.ollydbg.de/)  
+[Open Watcom v2 Fork: Debugger](https://github.com/open-watcom/open-watcom-v2)  
 [x64dbg](https://x64dbg.com/)  
 
 ### Muut
 
 [Matt Godbolt's Compiler Explorer](https://godbolt.org/)  
-[Free Code Manipulation Library](http://www.fcml-lib.com/)  
+[Free Code Manipulation Library](https://www.fcml-lib.com/)  
 [ModernUI](https://github.com/mrfearless/ModernUI64)  
 
 ### Dokumentit
 
-[Microsoft Macro Assembler reference](https://docs.microsoft.com/en-us/cpp/assembler/masm/microsoft-macro-assembler-reference)  
-[Microsoft Macro Assembler (MASM) Unofficial Changelist](http://bytepointer.com/masm/index.htm)  
+[Eclipse CDT/Standalone Debugger](https://github.com/eclipse-cdt/cdt/blob/main/StandaloneDebugger.md)  
+[Microsoft Macro Assembler reference](https://learn.microsoft.com/en-us/cpp/assembler/masm/microsoft-macro-assembler-reference)  
+[Microsoft Macro Assembler (MASM) Unofficial Changelist](https://web.archive.org/web/20210624210202/bytepointer.com/masm/index.htm)  
 [MASM 6.0 References](https://www.pcjs.org/documents/books/mspl13/masm/)  
-[Agner Fog blogi](https://www.agner.org/optimize/)  
-[AMD](https://www.amd.com/en/support/tech-docs)  
+[Agner Fog blogi](https://www.agner.org/optimize/)   
+[AMD](https://docs.amd.com/search/all?query=programmer%27s&content-lang=en-US)  
 [Intel](https://software.intel.com/en-us/articles/intel-sdm)  
-[Windows API Index](https://docs.microsoft.com/en-us/windows/win32/apiindex/windows-api-list)  
-[Calling conventions for different C++ compilers and operating systems By Agner Fog](https://www.agner.org/optimize/calling_conventions.pdf)
-
+[Windows API Index](https://learn.microsoft.com/en-us/windows/win32/apiindex/windows-api-list)  
+[Calling conventions for different C++ compilers and operating systems By Agner Fog](https://www.agner.org/optimize/calling_conventions.pdf)  
+[Assembly Hello World: Windows Edition](https://www.codermusings.com/windows-hello-world-assembly-x64-arm64/)  
+ 
 # 32-bittinen kehitys 64-bittisellä alustalla
 
-[Argument Passing and Naming Conventions](https://docs.microsoft.com/en-us/cpp/cpp/argument-passing-and-naming-conventions)  
-[__stdcall](https://docs.microsoft.com/en-us/cpp/cpp/stdcall)  
-[__cdecl](https://docs.microsoft.com/en-us/cpp/cpp/cdecl)  
+[Argument Passing and Naming Conventions](https://learn.microsoft.com/en-us/cpp/cpp/argument-passing-and-naming-conventions?view=msvc-170)  
+[__stdcall](https://learn.microsoft.com/en-us/cpp/cpp/stdcall?view=msvc-170)  
+[__cdecl](https://learn.microsoft.com/en-us/cpp/cpp/cdecl?view=msvc-170)  
 [x86 calling conventions](https://en.wikipedia.org/wiki/X86_calling_conventions)  
 
 Muita asm-apuja  
-[How to write hello world in assembler under Windows? - winapi](https://php.developreference.com/article/27378914/How+to+write+hello+world+in+assembler+under+Windows%3f)
+[Setup an Assembly Project on Visual Studio 2019 & 2022 - x86 & x64](https://programminghaven.home.blog/2020/02/16/setup-an-assembly-project-on-visual-studio-2019/)  
 
 ### eka_32.asm
 
@@ -244,8 +256,8 @@ Ilman symboleja
 ```
 
 Linkit:  
-[PROC](https://docs.microsoft.com/en-us/cpp/assembler/masm/proc)  
-[Procedures](http://www.c-jump.com/CIS77/ASM/Procedures/lecture.html)  
+[PROC](https://learn.microsoft.com/en-us/cpp/assembler/masm/proc?view=msvc-170)  
+[Procedures](https://www.c-jump.com/CIS77/ASM/Procedures/lecture.html)  
 
 ### vitonen_32.asm
 
@@ -265,10 +277,10 @@ Linkit:
 Linkitetään DLL-kirjasto ajon aikana. Kutsutaan haluttua funktiota. Sovelluksena vakioveikkauksen rivin ja lottorivin arvonta.
 
 Linkit:  
-[RtlGenRandom function](https://docs.microsoft.com/en-us/windows/win32/api/ntsecapi/nf-ntsecapi-rtlgenrandom)  
-[GetProcAddress function](https://docs.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-getprocaddress)  
-[LoadLibraryA function](https://docs.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-loadlibrarya)  
-[FreeLibrary function](https://docs.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-freelibrary)  
+[RtlGenRandom function](https://learn.microsoft.com/en-us/windows/win32/api/ntsecapi/nf-ntsecapi-rtlgenrandom)  
+[GetProcAddress function](https://learn.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-getprocaddress)  
+[LoadLibraryA function](https://learn.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-loadlibrarya)  
+[FreeLibrary function](https://learn.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-freelibrary)  
 
 ### kasi_32.asm
 
@@ -281,10 +293,10 @@ Linkit:
 
 # 64-bittinen kehitys
 
-[x64 software conventions](https://docs.microsoft.com/en-us/cpp/build/x64-software-conventions)  
-[x64 calling convention](https://docs.microsoft.com/en-us/cpp/build/x64-calling-convention)  
+[x64 software conventions](https://learn.microsoft.com/en-us/cpp/build/x64-software-conventions?view=msvc-170)  
+[x64 calling convention](https://learn.microsoft.com/en-us/cpp/build/x64-calling-convention?view=msvc-170)  
 [x86 calling conventions](https://en.wikipedia.org/wiki/X86_calling_conventions)  
-[Moving to Windows Vista x64](https://www.codeproject.com/Articles/17263/Moving-to-Windows-Vista-x64)  
+[Moving to Windows Vista x64](https://web.archive.org/web/20220705180913/https://www.codeproject.com/Articles/17263/Moving-to-Windows-Vista-x64)  
 
 ### eka_64.asm
 
